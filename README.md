@@ -4,7 +4,7 @@ AI-powered PostgreSQL slow query analyzer.
 
 ## Quick Start
 
-    git clone https://github.com/yourusername/slow-query-doctor.git
+    git clone https://github.com/gmartinez-dbai/slow-query-doctor.git
     cd slow-query-doctor
     python -m venv .venv
     source .venv/bin/activate
