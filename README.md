@@ -374,6 +374,15 @@ pip install -r requirements-dev.txt
 - [ ] **Slack/Discord notifications** for critical slow queries
 - [ ] **Database schema context** for smarter recommendations
 
+## v0.2.0 - Self-Learning & Predictive Analysis (Q1 2026)
+
+- Track query performance over time
+- Identify performance regression patterns
+- ML-based anomaly detection for new slow queries
+- Confidence scoring for recommendations
+- Historical trend analysis
+
+
 ---
 
 **Made with ❤️ for PostgreSQL performance optimization**
