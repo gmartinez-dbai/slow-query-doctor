@@ -365,6 +365,7 @@ pip install -r requirements-dev.txt
 
 ## 🔮 Roadmap
 
+- [ ] **Docker support** with multi-stage builds for easy deployment and CI/CD integration
 - [ ] **Multi-database support** (MySQL, SQLite)
 - [ ] **Web dashboard** with interactive reports
 - [ ] **Historical trend analysis** 
