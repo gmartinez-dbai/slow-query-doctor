@@ -16,349 +16,363 @@ Slow Query Doctor automatically analyzes your PostgreSQL slow query logs and pro
 - 📊 **Impact Analysis**: Calculates query impact using duration × frequency scoring
 - 🤖 **AI-Powered Recommendations**: Uses OpenAI GPT to provide specific optimization advice
 - 📝 **Comprehensive Reports**: Generates detailed Markdown reports with statistics and recommendations
-- ⚡ **Batch Processing**: Efficiently analyzes multiple queries in one run
-- 🛠️ **Production Ready**: Robust error handling, logging, and configuration options
+- 📂 **Sample Data Included**: Ready-to-use sample log files for testing and demonstration
 
 ## 🚀 Quick Start
 
-### 1. Installation
+### Installation
 
+1. **Clone the repository:**
 ```bash
-git clone https://github.com/gmartinez-dbai/slow-query-doctor.git
+git clone https://github.com/yourusername/slow-query-doctor.git
 cd slow-query-doctor
+```
+
+2. **Create virtual environment:**
+```bash
 python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+```
+
+3. **Install dependencies:**
+```bash
 pip install -r requirements.txt
 ```
 
-### 2. Configuration
-
-Set your OpenAI API key:
-
+4. **Set up OpenAI API key:**
 ```bash
-export OPENAI_API_KEY='your-openai-api-key-here'
+export OPENAI_API_KEY="your-openai-api-key-here"
 ```
-
-Or create a `.env` file:
-
-```bash
-echo "OPENAI_API_KEY=your-openai-api-key-here" > .env
-```
-
-### 3. Run Analysis
-
-```bash
-python -m slowquerydoctor your_postgres.log
-```
-
-## 📖 Detailed Usage
 
 ### Basic Usage
 
+#### Try with Sample Data
 ```bash
-# Analyze default top 5 queries
-python -m slowquerydoctor postgres.log
+# Analyze the included sample log file
+python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md
 
-# Analyze top 10 queries with custom output
-python -m slowquerydoctor postgres.log --output custom_report.md --top-n 10
+# Analyze top 5 slowest queries
+python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --top-n 5
 
-# Full example with all options
-python -m slowquerydoctor /var/log/postgresql/slow.log \
-    --output reports/performance_analysis.md \
-    --top-n 15
+# Get more detailed AI analysis
+python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --max-tokens 200
 ```
 
-### Command Line Options
+#### With Your Own Logs
+```bash
+# Basic analysis
+python -m slowquerydoctor /path/to/your/postgresql.log --output analysis_report.md
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `log_file` | Path to PostgreSQL slow query log file | Required |
-| `--output` | Output report file path | `reports/report.md` |
-| `--top-n` | Number of top queries to analyze | `5` |
-
-### Example Output
-
-The tool generates a comprehensive Markdown report including:
-
-- **Summary Statistics**: Total queries, execution patterns, duration percentiles
-- **Top Slow Queries**: Ranked by impact score with full details
-- **AI Recommendations**: Specific optimization suggestions for each query
-
-## 🗄️ PostgreSQL Configuration
-
-### Enable Slow Query Logging
-
-To capture slow queries, configure PostgreSQL logging:
-
-```sql
--- Set minimum duration to log (100ms recommended for production)
-ALTER SYSTEM SET log_min_duration_statement = 100;
-
--- Include query details in logs
-ALTER SYSTEM SET log_statement = 'all';
-
--- Apply configuration
-SELECT pg_reload_conf();
+# Advanced options
+python -m slowquerydoctor /path/to/your/postgresql.log \
+  --output detailed_report.md \
+  --top-n 10 \
+  --min-duration 1000 \
+  --max-tokens 150
 ```
 
-### Alternative: Session-Level Configuration
+## 📂 Sample Log Files
 
-For testing or temporary analysis:
+The `sample_logs/` directory contains real PostgreSQL slow query log examples for testing and demonstration:
 
-```sql
--- Enable for current session only
-SET log_min_duration_statement = 100;
-```
+### Available Sample Files
 
-### Log File Location
+- **`postgresql-2025-10-28_192816.log.txt`**: Contains authentic slow queries from a 100M record database including:
+  - **Complex aggregation queries** (15.5+ seconds): Statistical calculations across 40M records
+  - **Expensive correlated subqueries** (109+ seconds): Text pattern matching with per-row subqueries  
+  - **Mathematical operations with window functions** (209+ seconds): Multiple window functions with trigonometric calculations
+  - **Multiple query patterns** that benefit from different optimization strategies (indexes, query rewrites, JOIN optimizations)
 
-Find your PostgreSQL log files:
+### Why `.txt` Extension?
 
-```sql
--- Check current log file location
-SHOW log_directory;
-SHOW log_filename;
+Sample log files use the `.txt` extension instead of `.log` to prevent them from being excluded by `.gitignore` patterns that typically ignore `*.log` files. This ensures the sample data remains available in the repository for testing and demonstration purposes.
 
--- Or check data directory
-SHOW data_directory;
-```
+### Sample Data Features
 
-Common locations:
-- **Ubuntu/Debian**: `/var/log/postgresql/`
-- **CentOS/RHEL**: `/var/lib/pgsql/data/log/`
-- **macOS (Homebrew)**: `/usr/local/var/log/`
-- **Docker**: Check container logs or mounted volumes
+- **Real Performance Issues**: Authentic slow queries from actual 100M record database operations
+- **Variety of Problems**: Different types of performance bottlenecks (missing indexes, correlated subqueries, expensive window functions)
+- **AI-Ready**: Perfect for testing AI recommendation quality with real optimization opportunities
+- **Educational**: Great examples for learning PostgreSQL performance optimization techniques
+- **Range of Complexity**: From 2-second queries to 209-second extreme cases
 
-## 🏗️ Architecture
+### Sample Query Types Included
 
-### Project Structure
+1. **Aggregation with Mathematical Functions** (15.5s)
+   - `AVG`, `STDDEV`, `COUNT` operations on large datasets
+   - Range filtering across 40M records
+   - Perfect for testing index recommendations
+
+2. **Correlated Subqueries with Pattern Matching** (109s)
+   - `LIKE` operations with multiple patterns
+   - Correlated subquery executing for each row
+   - Demonstrates JOIN optimization opportunities
+
+3. **Window Functions with Mathematical Operations** (209s)
+   - Multiple `ROW_NUMBER()`, `RANK()`, `LAG()`, `LEAD()` functions
+   - Complex mathematical calculations (`SQRT`, `SIN`, `COS`, `LOG`)
+   - Heavy sorting and partitioning operations
+
+## 🏗️ Project Architecture
 
 ```
 slow-query-doctor/
-├── slowquerydoctor/           # Main package
-│   ├── __init__.py           # Package initialization
-│   ├── __main__.py           # Entry point for -m execution
-│   ├── main.py               # CLI interface and orchestration
-│   ├── parser.py             # PostgreSQL log parsing logic
-│   ├── analyzer.py           # Query analysis and ranking
-│   ├── llm_client.py         # OpenAI API integration
-│   └── report_generator.py   # Markdown report generation
-├── requirements.txt          # Python dependencies
-├── README.md                # This file
-└── LICENSE                  # MIT License
+├── slowquerydoctor/          # Main package
+│   ├── __init__.py          # Package interface
+│   ├── parser.py            # Log file parsing
+│   ├── analyzer.py          # Query analysis & scoring
+│   ├── llm_client.py        # AI/OpenAI integration
+│   └── report_generator.py  # Markdown report generation
+├── sample_logs/             # Sample PostgreSQL log files
+│   └── postgresql-2025-10-28_192816.log.txt  # Real slow query examples
+├── requirements.txt         # Python dependencies
+└── README.md               # This file
 ```
 
 ### Data Flow
 
-1. **Parse**: Extract slow queries from PostgreSQL logs
-2. **Normalize**: Group similar queries (parameter normalization)
-3. **Analyze**: Calculate impact scores and rank queries
-4. **Generate AI Recommendations**: Use OpenAI to analyze each query
-5. **Report**: Create comprehensive Markdown report
+1. **Parse** → Extract slow queries from PostgreSQL logs
+2. **Analyze** → Calculate impact scores and normalize queries  
+3. **AI Analysis** → Generate optimization recommendations using GPT
+4. **Report** → Create comprehensive Markdown analysis report
 
-### Key Components
+## ⚙️ Configuration
 
-#### Parser (`parser.py`)
-- Extracts timestamp, duration, and query text from logs
-- Handles various PostgreSQL log formats
-- Robust error handling for malformed entries
+### PostgreSQL Setup
 
-#### Analyzer (`analyzer.py`)
-- Normalizes queries by replacing literals with placeholders
-- Groups similar queries for better analysis
-- Calculates impact scores: `average_duration × execution_frequency`
+Enable slow query logging in your `postgresql.conf`:
 
-#### LLM Client (`llm_client.py`)
-- Integrates with OpenAI GPT-4o-mini for cost-effective analysis
-- Generates specific optimization recommendations
-- Includes query statistics in prompts for context-aware suggestions
+```postgresql
+# Log queries taking longer than 1 second
+log_min_duration_statement = 1000
 
-#### Report Generator (`report_generator.py`)
-- Creates professional Markdown reports
-- Includes summary statistics and detailed query analysis
-- Embeds AI recommendations with proper formatting
+# Enable logging collector
+logging_collector = on
 
-## ⚙️ Configuration Options
+# Set log directory (relative to data_directory)
+log_directory = 'log'
 
-### LLM Configuration
+# Log file naming pattern
+log_filename = 'postgresql-%Y-%m-%d_%H%M%S.log'
 
-The tool uses sensible defaults but can be customized:
+# What to log
+log_statement = 'none'
+log_duration = off
+```
 
-```python
-from slowquerydoctor.llm_client import LLMConfig, LLMClient
+Or configure dynamically:
+```sql
+-- Enable for current session
+SET log_min_duration_statement = 1000;
 
-config = LLMConfig(
-    model="gpt-4o-mini",      # Model to use
-    temperature=0.3,          # Response creativity (0.0-1.0)
-    max_tokens=300,          # Maximum response length
-    timeout=30               # Request timeout in seconds
-)
-
-client = LLMClient(config)
+-- Enable globally (requires restart)
+ALTER SYSTEM SET log_min_duration_statement = 1000;
+SELECT pg_reload_conf();
 ```
 
 ### Environment Variables
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `OPENAI_API_KEY` | OpenAI API key | Required |
+| `OPENAI_API_KEY` | OpenAI API key (required) | None |
+| `OPENAI_MODEL` | GPT model to use | `gpt-4o-mini` |
+| `OPENAI_BASE_URL` | Custom OpenAI endpoint | `https://api.openai.com/v1` |
 
-## 📊 Sample Report Output
+## 📊 Sample Output
 
 ```markdown
-# PostgreSQL Performance Analysis Report
+# Slow Query Analysis Report
 
-**Generated:** 2025-10-28 10:30:15
+## Summary
+- **Total queries analyzed**: 8
+- **Slow queries found**: 4  
+- **Total duration**: 336,175.06 ms
+- **Most impactful query**: Mathematical operations with window functions
 
-## Summary Statistics
+## Top Slow Queries
 
-- **Total Queries Analyzed:** 1,247
-- **Unique Query Patterns:** 23
-- **Average Duration:** 156.7 ms
-- **Max Duration:** 2,845.3 ms
-- **P95 Duration:** 450.2 ms
-- **P99 Duration:** 892.1 ms
-- **Total Time Spent:** 195.4 seconds
-
-## Top Slow Queries (by Impact)
-
-### Query #1
+### Query #1: Mathematical Operations with Window Functions (Impact Score: 209,297.06)
+**Duration**: 209,297.06 ms | **Frequency**: 1 | **First seen**: 2025-10-28 20:04:57
 
 ```sql
-SELECT u.*, p.title, p.content FROM users u 
-JOIN posts p ON u.id = p.user_id 
-WHERE u.created_at > ? ORDER BY u.created_at DESC LIMIT ?
+SELECT id, random_number, random_text, created_at,
+    SQRT(ABS(random_number)::numeric) as sqrt_abs_number,
+    LOG(GREATEST(random_number, 1)::numeric) as log_number,
+    SIN(random_number::numeric / 180000.0 * PI()) as sin_degrees,
+    ROW_NUMBER() OVER (ORDER BY random_number) as row_num_asc,
+    AVG(random_number) OVER (ROWS BETWEEN 1000 PRECEDING AND 1000 FOLLOWING) as moving_avg
+FROM large_test_table 
+WHERE random_number BETWEEN 250000 AND 750000
+  AND (id % 7 = 0 OR id % 11 = 0 OR id % 13 = 0)
+ORDER BY SQRT(ABS(random_number)::numeric) DESC
+LIMIT 200;
 ```
 
-- **Average Duration:** 234.5 ms
-- **Max Duration:** 567.2 ms  
-- **Frequency:** 89 executions
-- **Impact Score:** 20,870.5
+**🤖 AI Recommendation:**
+This query suffers from expensive mathematical operations and multiple window functions. Create a composite index on `(random_number, id)` and consider materializing complex calculations. The multiple window functions could be optimized by combining operations. Expected improvement: 70-85% faster execution.
 
-**AI Recommendation:**
+### Query #2: Correlated Subquery with Pattern Matching (Impact Score: 109,234.02)
+**Duration**: 109,234.02 ms | **Frequency**: 1 | **First seen**: 2025-10-28 19:31:23
 
-The primary bottleneck is the ORDER BY clause on `users.created_at` without an index. 
-Create a composite index: `CREATE INDEX idx_users_created_posts ON users(created_at DESC) 
-INCLUDE (id)`. This should reduce execution time by 60-80% and eliminate the expensive 
-sort operation. Consider adding `posts(user_id)` index if not already present.
-
----
+```sql
+SELECT DISTINCT l1.random_number, l1.random_text, l1.created_at,
+    (SELECT COUNT(*) FROM large_test_table l2 WHERE l2.random_number = l1.random_number)
+FROM large_test_table l1
+WHERE l1.random_text LIKE '%data_555%' OR l1.random_text LIKE '%data_777%'
+ORDER BY l1.random_number DESC LIMIT 30;
 ```
 
-## 🔧 Development
+**🤖 AI Recommendation:**
+Replace the correlated subquery with a JOIN or window function. Create indexes on `random_text` (consider GIN for pattern matching) and `random_number`. The LIKE operations with leading wildcards are expensive - consider full-text search if applicable. Expected improvement: 60-80% faster execution.
+```
 
-### Setting Up Development Environment
+## 🔧 Command Line Options
 
 ```bash
-# Clone repository
-git clone https://github.com/gmartinez-dbai/slow-query-doctor.git
-cd slow-query-doctor
-
-# Create virtual environment
-python -m venv .venv
-source .venv/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Install in development mode
-pip install -e .
+python -m slowquerydoctor [LOG_FILE] [OPTIONS]
 ```
 
-### Running Tests
+| Option | Description | Default |
+|--------|-------------|---------|
+| `LOG_FILE` | Path to PostgreSQL log file | Required |
+| `--output`, `-o` | Output report file path | `slow_query_report.md` |
+| `--top-n`, `-n` | Number of top queries to analyze | `10` |
+| `--min-duration` | Minimum duration (ms) to consider | `1000` |
+| `--max-tokens` | Max tokens for AI analysis | `150` |
+| `--model` | OpenAI model to use | `gpt-4o-mini` |
+| `--help`, `-h` | Show help message | - |
 
-```bash
-# Run with pytest (when tests are added)
-pytest tests/
-
-# Run specific module
-python -m slowquerydoctor --help
-```
-
-### Code Style
-
-The project follows standard Python conventions:
-- PEP 8 style guide
-- Type hints where appropriate
-- Comprehensive docstrings
-- Descriptive variable names
-
-## 🚨 Troubleshooting
+## 🐛 Troubleshooting
 
 ### Common Issues
 
-#### "No slow queries found"
-- Verify `log_min_duration_statement` is configured
-- Check log file path and permissions
-- Ensure PostgreSQL is generating logs in expected format
+**"No slow queries found"**
+```bash
+# Check if log file contains duration entries
+grep -i "duration:" your_log_file.log
 
-#### "OpenAI API key not found"
-- Set `OPENAI_API_KEY` environment variable
-- Verify API key is valid and has sufficient credits
-- Check network connectivity to OpenAI API
-
-#### "Error parsing log file"
-- Verify log file format matches PostgreSQL slow query format
-- Check file encoding (UTF-8 expected)
-- Ensure file is not corrupted or truncated
-
-### Log Format Requirements
-
-The tool expects PostgreSQL logs with `log_min_duration_statement` entries in this format:
-
+# Verify PostgreSQL logging is enabled
+psql -c "SHOW log_min_duration_statement;"
 ```
-2025-10-28 10:15:30.123 UTC [12345]: [1-1] user=postgres,db=myapp LOG: duration: 156.789 ms statement: SELECT ...
+
+**"OpenAI API Error"**
+```bash
+# Verify API key is set
+echo $OPENAI_API_KEY
+
+# Test API connectivity
+curl -H "Authorization: Bearer $OPENAI_API_KEY" \
+     https://api.openai.com/v1/models
+```
+
+**"Permission denied on log file"**
+```bash
+# Fix file permissions
+chmod 644 /path/to/postgresql.log
+
+# Or copy to accessible location
+cp /var/log/postgresql/postgresql.log ~/my_log.log
+```
+
+### Log File Locations
+
+| Installation Method | Typical Log Location |
+|-------------------|---------------------|
+| **Homebrew (macOS)** | `/opt/homebrew/var/postgresql@*/log/` |
+| **Ubuntu/Debian** | `/var/log/postgresql/` |
+| **CentOS/RHEL** | `/var/lib/pgsql/*/data/log/` |
+| **Docker** | `/var/lib/postgresql/data/log/` |
+| **Windows** | `C:\Program Files\PostgreSQL\*\data\log\` |
+
+## 🧪 Development
+
+### Running Tests
+```bash
+# Install test dependencies
+pip install pytest pytest-cov
+
+# Run tests
+pytest tests/ -v
+
+# Run with coverage
+pytest tests/ --cov=slowquerydoctor --cov-report=html
+```
+
+### Code Quality
+```bash
+# Format code
+black slowquerydoctor/
+
+# Lint code  
+flake8 slowquerydoctor/
+
+# Type checking
+mypy slowquerydoctor/
+```
+
+### Testing with Sample Data
+```bash
+# Test the parser
+python -c "from slowquerydoctor import parse_postgres_log; print(len(parse_postgres_log('sample_logs/postgresql-2025-10-28_192816.log.txt')))"
+
+# Test full pipeline with sample data
+python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output test_report.md
+
+# Verify AI recommendations are generated
+grep -A 5 "🤖 AI Recommendation" test_report.md
 ```
 
 ## 📋 System Requirements
 
-### Minimum Requirements
 - **Python**: 3.11 or higher
-- **Memory**: 512 MB RAM (for typical log files)
-- **Storage**: Varies by log file size
-- **Network**: Internet access for OpenAI API
-
-### Supported Platforms
-- Linux (Ubuntu 20.04+, CentOS 7+)
-- macOS 10.15+
-- Windows 10/11
+- **Memory**: 512MB+ available RAM
+- **Storage**: 50MB+ free space
+- **Network**: Internet connection for OpenAI API
+- **Platforms**: macOS, Linux, Windows
 
 ### Dependencies
-- `pandas`: Data manipulation and analysis
-- `openai`: OpenAI API client
-- `python-dotenv`: Environment variable management
-- `tqdm`: Progress bars (optional)
 
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit issues, feature requests, or pull requests.
-
-### Development Workflow
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+- `openai>=1.0.0` - OpenAI API client
+- `python-dotenv>=0.19.0` - Environment variable management  
+- `argparse` - Command line parsing (built-in)
+- `re`, `json`, `logging` - Standard library modules
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - see [LICENSE](LICENSE) file for details.
 
-## 👨‍💻 Author
+## 🤝 Contributing
 
-**Giovanni Martinez**
-- GitHub: [@gmartinez-dbai](https://github.com/gmartinez-dbai)
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## 🙏 Acknowledgments
+### Development Setup
+```bash
+# Clone your fork
+git clone https://github.com/yourusername/slow-query-doctor.git
+cd slow-query-doctor
 
-- OpenAI for providing the GPT API
-- PostgreSQL community for excellent documentation
-- Python data science ecosystem (pandas, numpy)
+# Create development environment
+python -m venv .venv
+source .venv/bin/activate
 
-## License
+# Install in development mode
+pip install -e .
+pip install -r requirements-dev.txt
+```
 
-MIT License - Copyright (c) 2025 Giovanni Martinez
+## 🔮 Roadmap
 
-## Author
+- [ ] **Multi-database support** (MySQL, SQLite)
+- [ ] **Web dashboard** with interactive reports
+- [ ] **Historical trend analysis** 
+- [ ] **Query plan integration** with EXPLAIN analysis
+- [ ] **Custom AI prompts** for domain-specific optimization
+- [ ] **Slack/Discord notifications** for critical slow queries
+- [ ] **Database schema context** for smarter recommendations
 
-Giovanni Martinez
+---
+
+**Made with ❤️ for PostgreSQL performance optimization**
