@@ -41,13 +41,15 @@ def main():
         cur = conn.cursor()
 
 
-        print("\nPopulating departments...")
-        departments = [f"Department {i+1}" for i in range(NUM_DEPARTMENTS)]
-        cur.executemany("INSERT INTO departments (name) VALUES (%s) ON CONFLICT DO NOTHING", [(d,) for d in departments])
-        conn.commit()
-        cur.execute("SELECT id FROM departments ORDER BY id")
-        department_ids = [row[0] for row in cur.fetchall()]
-        print(f"Inserted {len(department_ids)} departments.")
+    print("\nPopulating departments...")
+    departments = [f"Department {i+1}" for i in range(NUM_DEPARTMENTS)]
+    print("  Inserting departments...")
+    cur.executemany("INSERT INTO departments (name) VALUES (%s) ON CONFLICT DO NOTHING", [(d,) for d in departments])
+    conn.commit()
+    print("  Fetching department IDs...")
+    cur.execute("SELECT id FROM departments ORDER BY id")
+    department_ids = [row[0] for row in cur.fetchall()]
+    print(f"Inserted {len(department_ids)} departments.")
 
         print("\nPopulating employees...")
         employees = []
@@ -59,8 +61,10 @@ def main():
             employees.append((name, department_id, hire_date, salary))
             if (i+1) % 10000 == 0:
                 print(f"  Prepared {i+1} employees...")
+        print("  Inserting employees...")
         cur.executemany("INSERT INTO employees (name, department_id, hire_date, salary) VALUES (%s, %s, %s, %s)", employees)
         conn.commit()
+        print("  Fetching employee IDs...")
         cur.execute("SELECT id FROM employees ORDER BY id")
         employee_ids = [row[0] for row in cur.fetchall()]
         print(f"Inserted {len(employee_ids)} employees.")
@@ -73,15 +77,18 @@ def main():
             category = random.choice(categories)
             price = round(random.uniform(5, 2000), 2)
             products.append((name, category, price))
+        print("  Inserting products...")
         cur.executemany("INSERT INTO products (name, category, price) VALUES (%s, %s, %s)", products)
         conn.commit()
+        print("  Fetching product IDs and prices...")
         cur.execute("SELECT id, price FROM products ORDER BY id")
         product_rows = cur.fetchall()
         product_ids = [row[0] for row in product_rows]
         product_prices = {row[0]: row[1] for row in product_rows}
         print(f"Inserted {len(product_ids)} products.")
 
-        print("\nPopulating customers...")
+    print("\nPopulating customers...")
+    print("  Generating customer data...")
         customers = []
         used_emails = set()
         for i in range(NUM_CUSTOMERS):
@@ -104,8 +111,10 @@ def main():
             before_count = cur.fetchone()[0]
         except Exception:
             pass
+        print("  Inserting customers...")
         cur.executemany("INSERT INTO customers (name, email, signup_date) VALUES (%s, %s, %s) ON CONFLICT (email) DO NOTHING", customers)
         conn.commit()
+        print("  Fetching customer IDs...")
         cur.execute("SELECT id FROM customers ORDER BY id")
         customer_ids = [row[0] for row in cur.fetchall()]
         inserted_count = len(customer_ids) - (before_count if before_count is not None else 0)
@@ -127,9 +136,11 @@ def main():
             if (i+1) % 100000 == 0:
                 print(f"  Prepared {i+1} sales...")
             if len(sales) % 10000 == 0:
+                print(f"    Inserting sales batch at {i+1}... ({len(sales)} records)")
                 cur.executemany("INSERT INTO sales (product_id, customer_id, sale_date, quantity, total_amount) VALUES (%s, %s, %s, %s, %s)", sales)
                 sales = []
         if sales:
+            print(f"    Inserting final sales batch... ({len(sales)} records)")
             cur.executemany("INSERT INTO sales (product_id, customer_id, sale_date, quantity, total_amount) VALUES (%s, %s, %s, %s, %s)", sales)
         conn.commit()
         print(f"Inserted {NUM_SALES} sales.")
@@ -146,6 +157,7 @@ def main():
             tickets.append((customer_id, created_at, resolved_at, status, subject, description))
             if (i+1) % 10000 == 0:
                 print(f"  Prepared {i+1} tickets...")
+        print("  Inserting support tickets...")
         cur.executemany("INSERT INTO support_tickets (customer_id, created_at, resolved_at, status, subject, description) VALUES (%s, %s, %s, %s, %s, %s)", tickets)
         conn.commit()
         print(f"Inserted {NUM_TICKETS} support tickets.")
@@ -161,9 +173,11 @@ def main():
             if (i+1) % 100000 == 0:
                 print(f"  Prepared {i+1} logs...")
             if len(logs) % 10000 == 0:
+                print(f"    Inserting logs batch at {i+1}... ({len(logs)} records)")
                 cur.executemany("INSERT INTO activity_logs (employee_id, activity_type, activity_time, details) VALUES (%s, %s, %s, %s)", logs)
                 logs = []
         if logs:
+            print(f"    Inserting final logs batch... ({len(logs)} records)")
             cur.executemany("INSERT INTO activity_logs (employee_id, activity_type, activity_time, details) VALUES (%s, %s, %s, %s)", logs)
         conn.commit()
         print(f"Inserted {NUM_LOGS} activity logs.")
