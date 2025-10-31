@@ -197,10 +197,13 @@ class ReportGenerator:
             summary.append("")
             return "\n".join(summary)
 
-        # Statistics - fixed: added ZeroDivisionError protection
+        # Statistics with safe division
         summary.append(f"- **Total Issues Found**: {total_issues}")
-        summary.append(f"- **Queries with Issues**: {queries_with_issues}/{len(queries)} ({queries_with_issues/len(queries)*100:.1f}%)")
-        summary.append(f"- **Average Optimization Score**: {sum(q.optimization_score for q in queries)/len(queries):.1%}")
+        # len(queries) is guaranteed to be > 0 due to guard clause above, but be explicit for clarity
+        num_queries = len(queries)
+        if num_queries > 0:
+            summary.append(f"- **Queries with Issues**: {queries_with_issues}/{num_queries} ({queries_with_issues/num_queries*100:.1f}%)")
+            summary.append(f"- **Average Optimization Score**: {sum(q.optimization_score for q in queries)/num_queries:.1%}")
         summary.append("")
 
         # Most common anti-patterns
