@@ -42,7 +42,6 @@ An intelligent PostgreSQL performance analyzer that uses AI to diagnose slow que
 - [System Requirements](#-system-requirements)
   - [Dependencies](#dependencies)
 - [License](#-license)
-- [Contributing](#-contributing)
   - [Development Setup](#development-setup)
 - [Roadmap, Technical Debt & Contributing](#-roadmap-technical-debt--contributing)
 
