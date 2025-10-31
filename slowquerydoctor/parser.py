@@ -67,7 +67,7 @@ def parse_postgres_log(log_file_path: str, log_format: str = "plain") -> pd.Data
         # Expecting CSV with columns: timestamp,duration_ms,query
         with open(log_file_path, newline='', encoding='utf-8', errors='ignore') as csvfile:
             reader = csv.DictReader(csvfile)
-            rows = [row for row in reader if 'duration_ms' in row and 'query' in row]
+            rows = [row for row in reader if 'timestamp' in row and 'duration_ms' in row and 'query' in row]
         if not rows:
             raise ValueError("No slow query entries found in CSV log.")
         df = pd.DataFrame(rows)
