@@ -106,28 +106,6 @@ class ReportGenerator:
         report.append(self._generate_recommendations_summary(all_queries))
 
         return "\n".join(report)
-    
-    def _generate_summary(self, queries: List[SlowQuery]) -> str:
-        """Generate summary statistics section."""
-        if not queries:
-            return "## 📊 Summary\n\nNo queries to analyze.\n"
-        
-        summary = []
-        summary.append("## 📊 Summary\n")
-        
-        total_duration = sum(q.duration * q.frequency for q in queries)
-        total_executions = sum(q.frequency for q in queries)
-        avg_duration = sum(q.duration for q in queries) / len(queries)
-        max_duration = max(q.duration for q in queries)
-        
-        summary.append(f"- **Total Queries Analyzed**: {len(queries)}")
-        summary.append(f"- **Total Executions**: {total_executions}")
-        summary.append(f"- **Average Duration**: {avg_duration:.2f} ms")
-        summary.append(f"- **Max Duration**: {max_duration:.2f} ms")
-        summary.append(f"- **Total Time Spent**: {total_duration / 1000:.2f} seconds")
-        summary.append("")
-        
-        return "\n".join(summary)
 
     def _generate_query_analysis(self, query: SlowQuery, rank: int) -> str:
         """Generate detailed analysis for a single query."""
@@ -151,9 +129,9 @@ class ReportGenerator:
             analysis.append("#### 🔍 Static Analysis Issues")
             analysis.append(query.static_analysis_report)
 
-        # AI-powered recommendations - fix: use generate_recommendations instead of get_optimization_advice
+        # AI-powered recommendations
         try:
-            ai_recommendation = self.llm_client.generate_recommendations(
+            ai_recommendation = self.llm_client.get_optimization_advice(
                 query.normalized_query,
                 query.duration,
                 query.frequency
@@ -173,12 +151,6 @@ class ReportGenerator:
         summary = []
         summary.append("## 🚨 Anti-Pattern Analysis Summary\n")
 
-        # Guard against empty queries list
-        if not queries:
-            summary.append("No queries to analyze.")
-            summary.append("")
-            return "\n".join(summary)
-
         # Count anti-patterns across all queries
         pattern_counts = {}
         total_issues = 0
@@ -197,13 +169,10 @@ class ReportGenerator:
             summary.append("")
             return "\n".join(summary)
 
-        # Statistics with safe division
+        # Statistics
         summary.append(f"- **Total Issues Found**: {total_issues}")
-        # len(queries) is guaranteed to be > 0 due to guard clause above, but be explicit for clarity
-        num_queries = len(queries)
-        if num_queries > 0:
-            summary.append(f"- **Queries with Issues**: {queries_with_issues}/{num_queries} ({queries_with_issues/num_queries*100:.1f}%)")
-            summary.append(f"- **Average Optimization Score**: {sum(q.optimization_score for q in queries)/num_queries:.1%}")
+        summary.append(f"- **Queries with Issues**: {queries_with_issues}/{len(queries)} ({queries_with_issues/len(queries)*100:.1f}%)")
+        summary.append(f"- **Average Optimization Score**: {sum(q.optimization_score for q in queries)/len(queries):.1%}")
         summary.append("")
 
         # Most common anti-patterns
@@ -219,11 +188,6 @@ class ReportGenerator:
         """Generate summary of key recommendations."""
         summary = []
         summary.append("## 💡 Key Recommendations\n")
-
-        if not queries:
-            summary.append("No queries to analyze.")
-            summary.append("")
-            return "\n".join(summary)
 
         # Priority recommendations based on anti-patterns
         high_impact = [q for q in queries if q.optimization_score < 0.7]
