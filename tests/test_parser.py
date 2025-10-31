@@ -1,5 +1,4 @@
 import pytest
-import pandas as pd
 from slowquerydoctor import parser
 from pathlib import Path
 
