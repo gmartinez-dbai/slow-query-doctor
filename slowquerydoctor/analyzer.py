@@ -132,8 +132,68 @@ class SlowQueryAnalyzer:
         # Sort by impact score (descending)
         return sorted(analyzed_queries, key=lambda q: q.impact_score, reverse=True)
 
-# Update the module-level function
-def analyze_slow_queries(queries: List[Dict], min_duration: float = 1000) -> List[SlowQuery]:
-    """Analyze slow queries and return sorted list by impact score."""
-    analyzer = SlowQueryAnalyzer()
-    return analyzer.analyze_slow_queries(queries, min_duration)
+# Update the module-level function to support both old and new interfaces
+def analyze_slow_queries(data, min_duration: float = 1000, top_n: int = 10):
+    """
+    Analyze slow queries and return sorted list by impact score.
+    
+    Supports two interfaces for backward compatibility:
+    1. New: analyze_slow_queries(queries: List[Dict], min_duration) -> List[SlowQuery]
+    2. Old: analyze_slow_queries(df: pd.DataFrame, top_n) -> Tuple[pd.DataFrame, Dict]
+    
+    Args:
+        data: Either a DataFrame (old interface) or List[Dict] (new interface)
+        min_duration: Minimum duration in ms (new interface only)
+        top_n: Number of top queries to return (old interface only)
+    
+    Returns:
+        Either List[SlowQuery] (new) or Tuple[pd.DataFrame, Dict] (old)
+    """
+    # Check if using old interface (DataFrame input)
+    if isinstance(data, pd.DataFrame):
+        # Old interface: return DataFrame and summary dict
+        df = data
+        if df.empty:
+            logger.warning("Empty dataframe provided to analyzer")
+            return pd.DataFrame(), {}
+
+        logger.info(f"Analyzing {len(df)} query entries")
+
+        # Normalize queries for better grouping
+        df['normalized_query'] = df['query'].apply(normalize_query)
+
+        # Group by normalized query
+        query_stats = df.groupby('normalized_query').agg({
+            'duration_ms': ['mean', 'max', 'min', 'count'],
+            'query': 'first'  # Keep one example of the original query
+        }).reset_index()
+
+        query_stats.columns = ['normalized_query', 'avg_duration', 'max_duration',
+                               'min_duration', 'frequency', 'example_query']
+
+        # Calculate impact score (avg_duration * frequency)
+        query_stats['impact_score'] = query_stats['avg_duration'] * query_stats['frequency']
+
+        # Sort by impact score (not just avg_duration)
+        top_slow = query_stats.sort_values('impact_score', ascending=False).head(top_n)
+
+        # Summary statistics
+        summary = {
+            'total_queries': len(df),
+            'unique_queries': len(query_stats),
+            'avg_duration_overall': float(df['duration_ms'].mean()),
+            'max_duration_overall': float(df['duration_ms'].max()),
+            'min_duration_overall': float(df['duration_ms'].min()),
+            'p50_duration': float(df['duration_ms'].quantile(0.50)),
+            'p95_duration': float(df['duration_ms'].quantile(0.95)),
+            'p99_duration': float(df['duration_ms'].quantile(0.99)),
+            'total_time_spent': float(df['duration_ms'].sum())
+        }
+
+        logger.info(f"Found {len(query_stats)} unique query patterns, returning top {len(top_slow)}")
+        return top_slow, summary
+    
+    else:
+        # New interface: return List[SlowQuery]
+        analyzer = SlowQueryAnalyzer()
+        return analyzer.analyze_slow_queries(data, min_duration)
