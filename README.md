@@ -103,6 +103,9 @@ python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --out
 
 # Get more detailed AI analysis
 python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --max-tokens 200
+
+# Enable verbose (debug) output
+python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --verbose
 ```
 
 #### With Your Own Logs
@@ -115,7 +118,8 @@ python -m slowquerydoctor /path/to/your/postgresql.log \
   --output detailed_report.md \
   --top-n 10 \
   --min-duration 1000 \
-  --max-tokens 150
+  --max-tokens 150 \
+  --verbose
 ```
 
 ## 📂 Sample Log Files
@@ -306,6 +310,7 @@ python -m slowquerydoctor [LOG_FILE] [OPTIONS]
 | `--min-duration` | Minimum duration (ms) to consider | `1000` |
 | `--max-tokens` | Max tokens for AI analysis | `150` |
 | `--model` | OpenAI model to use | `gpt-4o-mini` |
+| `--verbose` | Enable verbose (debug) output for troubleshooting and progress tracking | - |
 | `--help`, `-h` | Show help message | - |
 
 ## 🐛 Troubleshooting

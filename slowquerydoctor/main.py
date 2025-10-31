@@ -47,8 +47,23 @@ def main():
         help='Number of top slow queries to analyze (default: 5)'
     )
 
+    parser.add_argument(
+        '--verbose',
+        action='store_true',
+        help='Enable verbose (debug) output for troubleshooting and progress tracking.'
+    )
+
     args = parser.parse_args()
-    setup_logging()
+
+    if args.verbose:
+        logging.basicConfig(
+            level=logging.DEBUG,
+            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        )
+        logging.getLogger().setLevel(logging.DEBUG)
+    else:
+        setup_logging()
+
     logger = logging.getLogger(__name__)
 
     try:

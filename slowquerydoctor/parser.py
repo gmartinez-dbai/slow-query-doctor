@@ -49,13 +49,15 @@ def parse_postgres_log(log_file_path: str, log_format: str = "plain") -> pd.Data
                 "Ensure log_min_duration_statement is configured."
             )
         log_entries = []
-        for match in matches:
+        for idx, match in enumerate(matches, 1):
             try:
                 log_entries.append({
                     'timestamp': pd.to_datetime(match[0]),
                     'duration_ms': float(match[1]),
                     'query': match[2].strip()
                 })
+                if idx % 1000 == 0:
+                    logger.info(f"Parsed {idx} log entries so far...")
             except Exception as e:
                 logger.warning(f"Skipping malformed entry: {e}")
                 continue
