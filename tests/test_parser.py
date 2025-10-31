@@ -1,5 +1,4 @@
 from slowquerydoctor import parser
-from pathlib import Path
 
 def test_multiline_query_parsing(tmp_path):
     log_content = '''
