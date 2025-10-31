@@ -83,7 +83,7 @@ def parse_postgres_log(log_file_path: str, log_format: str = "plain") -> pd.Data
             for line in f:
                 try:
                     entry = json.loads(line)
-                    if 'duration_ms' in entry and 'query' in entry:
+                    if 'timestamp' in entry and 'duration_ms' in entry and 'query' in entry:
                         log_entries.append(entry)
                 except Exception as e:
                     logger.warning(f"Skipping malformed JSON line: {e}")
