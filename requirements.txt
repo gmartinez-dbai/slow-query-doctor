@@ -1,6 +1,7 @@
 # Core dependencies
 pandas>=2.3.0
 numpy>=2.3.0
+pyyaml>=6.0.0
 
 # LLM client
 openai>=2.6.0
@@ -10,6 +11,9 @@ python-dotenv>=1.1.0
 
 # CLI (optional but useful)
 tqdm>=4.67.0
+
+# Testing
+pytest>=7.0.0
 
 # Type checking (development)
 typing-extensions>=4.15.0

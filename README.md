@@ -5,18 +5,24 @@ An intelligent PostgreSQL performance analyzer that uses AI to diagnose slow que
 ![Python](https://img.shields.io/badge/python-3.11+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![OpenAI](https://img.shields.io/badge/AI-OpenAI%20GPT--4o--mini-orange.svg)
+![Build Status](https://img.shields.io/github/actions/workflow/status/gmartinez-dbai/slow-query-doctor/ci.yml?branch=main)
+![Coverage](https://img.shields.io/codecov/c/github/gmartinez-dbai/slow-query-doctor?logo=codecov)
+![Docker](https://img.shields.io/badge/docker-ready-blue.svg)
 
 ## 🎯 Overview
 
 Slow Query Doctor automatically analyzes your PostgreSQL slow query logs and provides intelligent, AI-powered optimization recommendations. It identifies performance bottlenecks, calculates impact scores, and generates detailed reports with specific suggestions for improving database performance.
 
+
 ### Key Features
 
-- 🔍 **Smart Log Parsing**: Automatically extracts slow queries from PostgreSQL logs
+- 🔍 **Smart Log Parsing**: Extracts slow queries from PostgreSQL logs, now supports multi-line queries and unusual characters
 - 📊 **Impact Analysis**: Calculates query impact using duration × frequency scoring
 - 🤖 **AI-Powered Recommendations**: Uses OpenAI GPT to provide specific optimization advice
 - 📝 **Comprehensive Reports**: Generates detailed Markdown reports with statistics and recommendations
 - 📂 **Sample Data Included**: Ready-to-use sample log files for testing and demonstration
+- 🗂️ **Multiple Log Formats**: Supports plain, CSV, and JSON log formats
+- ⚙️ **Config File Support**: Use a `.slowquerydoctor.yml` file to customize analysis options
 
 ## 🚀 Quick Start
 
@@ -34,9 +40,12 @@ python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 ```
 
+
 3. **Install dependencies:**
 ```bash
 pip install -r requirements.txt
+# Or, for full development setup:
+pip install .[dev,test]
 ```
 
 4. **Set up OpenAI API key:**
@@ -169,6 +178,7 @@ ALTER SYSTEM SET log_min_duration_statement = 1000;
 SELECT pg_reload_conf();
 ```
 
+
 ### Environment Variables
 
 | Variable | Description | Default |
@@ -176,6 +186,10 @@ SELECT pg_reload_conf();
 | `OPENAI_API_KEY` | OpenAI API key (required) | None |
 | `OPENAI_MODEL` | GPT model to use | `gpt-4o-mini` |
 | `OPENAI_BASE_URL` | Custom OpenAI endpoint | `https://api.openai.com/v1` |
+
+### Configuration File
+
+You can create a `.slowquerydoctor.yml` file in your project directory to customize analysis options (e.g., default log format, thresholds, output paths). See `docs/configuration.md` for details and examples.
 
 ## 📊 Sample Output
 
@@ -329,10 +343,16 @@ grep -A 5 "🤖 AI Recommendation" test_report.md
 - **Network**: Internet connection for OpenAI API
 - **Platforms**: macOS, Linux, Windows
 
+
 ### Dependencies
 
 - `openai>=1.0.0` - OpenAI API client
-- `python-dotenv>=0.19.0` - Environment variable management  
+- `python-dotenv>=0.19.0` - Environment variable management
+- `pandas>=2.0.0` - Data analysis and CSV/JSON log support
+- `pyyaml>=6.0.0` - YAML config file support
+- `tqdm>=4.0.0` - Progress bars for large log analysis
+- `pytest`, `pytest-cov` - Testing and coverage (dev)
+- `black`, `flake8`, `mypy`, `isort`, `pre-commit` - Code quality (dev)
 - `argparse` - Command line parsing (built-in)
 - `re`, `json`, `logging` - Standard library modules
 
@@ -360,119 +380,13 @@ source .venv/bin/activate
 
 # Install in development mode
 pip install -e .
-pip install -r requirements-dev.txt
+# Or, for all dev/test dependencies:
+pip install .[dev,test]
 ```
-# SlowQueryDoctor Roadmap
+## 📈 Roadmap, Technical Debt & Contributing
 
-## Current Release: v0.1.1 âœ…
-
-- PostgreSQL slow query log parsing
-- Query normalization and grouping
-- Statistical analysis (impact scores, percentiles)
-- GPT-4 powered optimization recommendations
-- Markdown report generation
-- Docker containerization
-
----
-
-## v0.1.x - Polish & Bug Fixes (November 2025)
-
-**Focus:** Improve v1 based on real user feedback
-
-- [ ] Add better sample outputs showing diverse query patterns
-- [ ] Improve recommendation quality (distinguish between missing indexes, query rewrites, schema changes)
-- [ ] Add more detailed explanations for why queries are slow
-- [ ] Handle edge cases in log parsing (multi-line queries, special characters)
-- [ ] Add support for different PostgreSQL log formats
-- [ ] Improve error messages and user guidance
-- [ ] Add configuration file support (.slowquerydoctor.yml)
-
----
-
-## v0.2.0 - Enhanced Analysis (Q1 2026)
-
-**Focus:** Deeper query analysis and better insights
-
-- [ ] Add EXPLAIN plan analysis integration
-- [ ] Show table/index statistics when available
-- [ ] Detect common anti-patterns (N+1, missing joins, etc.)
-- [ ] Add query complexity scoring
-- [ ] Support for analyzing multiple log files at once
-- [ ] Generate comparison reports (before/after optimization)
-- [ ] Add HTML report generation
-- [ ] Export to JSON/CSV for further analysis
-
----
-
-## v0.3.0 - Self-Learning & Predictive Analysis (Q2 2026)
-
-**Focus:** ML-based intelligence and historical tracking
-
-- [ ] Track query performance over time (historical database)
-- [ ] Identify performance regression patterns
-- [ ] ML-based anomaly detection for new slow queries
-- [ ] Confidence scoring for recommendations
-- [ ] Trend analysis (queries getting slower over time)
-- [ ] Automatic baseline detection
-- [ ] Predictive alerts for queries likely to become slow
-- [ ] Learn from user feedback (which recommendations worked)
-
----
-
-## v0.4.0 - Multi-Database Support (Q3 2026)
-
-**Focus:** Expand beyond PostgreSQL
-
-- [ ] MySQL slow query log support
-- [ ] SQL Server Extended Events support
-- [ ] Oracle AWR report integration
-- [ ] Database-agnostic query analysis
-- [ ] Cross-database performance comparison
-
----
-
-## v1.0.0 - Production Ready (Q4 2026)
-
-**Focus:** Enterprise-grade stability and features
-
-- [ ] Web UI for easier analysis
-- [ ] API for programmatic access
-- [ ] Authentication and multi-user support
-- [ ] Scheduled analysis and alerting
-- [ ] Integration with monitoring tools (Prometheus, Grafana)
-- [ ] Performance regression CI/CD integration
-- [ ] Comprehensive test coverage
-- [ ] Enterprise support options
-
----
-
-## Future Ideas (Backlog)
-
-- Real-time query monitoring integration
-- Automated optimization application (with approval workflow)
-- Query workload simulator
-- Cost estimation for cloud databases
-- Integration with query plan visualizers
-- Mobile app for on-call DBAs
-- Slack/Teams notification integration
-- AI-powered query rewriting suggestions
-
----
-
-## Community Requests
-
-Track feature requests from users here:
-
-- **Ravi Bhatia:** ML/self-learning system for recommendations â†’ Planned for v0.3.0
-- **Uri Dimant:** Better examples showing query tuning (not just index recommendations) â†’ In progress for v0.1.2
-
----
-
-## Contributing
-
-See issues labeled with `good-first-issue` or `help-wanted` for ways to contribute!
-
-Questions or suggestions? Email: gio@gmartinez.net
----
+- See [ROADMAP.md](ROADMAP.md) for the full project roadmap, upcoming features, and community requests.
+- See [TECHNICAL_DEBT.md](TECHNICAL_DEBT.md) for known limitations and areas for future improvement.
+- See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines and code standards.
 
 **Made with ❤️ for Database performance optimization**
