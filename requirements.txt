@@ -2,6 +2,7 @@
 pandas>=2.3.0
 numpy>=2.3.0
 pyyaml>=6.0.0
+psycopg>=3.1.18
 
 # LLM client
 openai>=2.6.0
