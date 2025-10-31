@@ -13,7 +13,7 @@ An intelligent PostgreSQL performance analyzer that uses AI to diagnose slow que
 ## 📚 Table of Contents
 
 - [Overview](#-overview)
-- [Key Features](#key-features)
+- [Key Features](#-key-features)
 - [Quick Start](#-quick-start)
   - [Installation](#installation)
   - [Basic Usage](#basic-usage)
