@@ -1,4 +1,3 @@
-import pytest
 from slowquerydoctor import parser
 from pathlib import Path
 
