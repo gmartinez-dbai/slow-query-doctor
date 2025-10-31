@@ -10,6 +10,7 @@ An intelligent PostgreSQL performance analyzer that uses AI to diagnose slow que
 
 ![Docker](https://img.shields.io/badge/docker-ready-blue.svg)
 
+
 ## 📚 Table of Contents
 
 - [Overview](#-overview)
@@ -30,6 +31,7 @@ An intelligent PostgreSQL performance analyzer that uses AI to diagnose slow que
   - [PostgreSQL Setup](#postgresql-setup)
   - [Environment Variables](#environment-variables)
   - [Configuration File](#configuration-file)
+- [Slow Query Log Setup](#-slow-query-log-setup)
 - [Sample Output](#-sample-output)
 - [Command Line Options](#-command-line-options)
 - [Troubleshooting](#-troubleshooting)
@@ -180,9 +182,13 @@ slow-query-doctor/
 3. **AI Analysis** → Generate optimization recommendations using GPT
 4. **Report** → Create comprehensive Markdown analysis report
 
+
 ## ⚙️ Configuration
 
+
 ### PostgreSQL Setup
+
+See the full guide: [docs/slow_query_log_setup.md](docs/slow_query_log_setup.md)
 
 Enable slow query logging in your `postgresql.conf`:
 
@@ -213,6 +219,17 @@ SET log_min_duration_statement = 1000;
 ALTER SYSTEM SET log_min_duration_statement = 1000;
 SELECT pg_reload_conf();
 ```
+## 🐢 Slow Query Log Setup
+
+For a step-by-step guide to enabling slow query logging, running example queries, and analyzing logs, see:
+
+- [docs/slow_query_log_setup.md](docs/slow_query_log_setup.md)
+
+This guide covers:
+- Editing postgresql.conf
+- Session-level logging
+- Running example slow queries
+- Collecting and analyzing logs with Slow Query Doctor
 
 
 ### Environment Variables
