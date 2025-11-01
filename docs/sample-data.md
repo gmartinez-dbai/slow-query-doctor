@@ -1,7 +1,7 @@
 # 📂 Sample Data & Usage
 
 
-See the [Setup & Usage Examples](../examples.md) for a complete guide to log setup, sample data, and CLI usage.
+See the [Setup & Usage Examples](examples.md) for a complete guide to log setup, sample data, and CLI usage.
 
 ## Sample Log Files
 

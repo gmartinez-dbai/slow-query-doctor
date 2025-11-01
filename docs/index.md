@@ -18,12 +18,12 @@ Welcome to the Slow Query Doctor documentation!
 - [Sample Data & Usage](sample-data.md)
 - [Advanced Features](advanced-features.md)
 - [FAQ](faq.md)
-- [Setup & Usage Examples](../examples.md)
+- [Setup & Usage Examples](examples.md)
 
 ---
 
 
 ## Examples
 
-- [Usage Examples](../examples.md)
+- [Usage Examples](examples.md)
 - [SQL schema, data population, and slow query examples](examples/)

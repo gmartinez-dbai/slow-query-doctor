@@ -18,7 +18,7 @@ pip install -e .
 
 ## Basic Usage
 
-See [Usage Examples](../examples.md) for all CLI and log analysis examples.
+See [Usage Examples](examples.md) for all CLI and log analysis examples.
 
 ## Configuration File
 

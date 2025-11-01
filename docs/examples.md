@@ -1,4 +1,3 @@
-
 # Slow Query Doctor: Setup & Example Usage
 
 This page provides a complete guide for setting up PostgreSQL slow query logging, generating example logs, and analyzing them with Slow Query Doctor.
@@ -123,5 +122,3 @@ The generated report includes:
 - For large logs, the progress bar and periodic messages help track parsing progress.
 
 ---
-
-For more details, see the [README](./README.md).
