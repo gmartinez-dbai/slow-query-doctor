@@ -14,13 +14,16 @@ Welcome to the Slow Query Doctor documentation!
 
 - [Getting Started](getting-started.md)
 - [Configuration](configuration.md)
+
 - [Sample Data & Usage](sample-data.md)
 - [Advanced Features](advanced-features.md)
 - [FAQ](faq.md)
-- [Slow Query Log Setup](slow_query_log_setup.md)
+- [Setup & Usage Examples](../examples.md)
 
 ---
 
-## Example & Setup Scripts
 
+## Examples
+
+- [Usage Examples](../examples.md)
 - [SQL schema, data population, and slow query examples](examples/)

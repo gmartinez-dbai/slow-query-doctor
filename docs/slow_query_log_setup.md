@@ -40,7 +40,7 @@ Check the log_directory you set above. Common locations:
 
 ## 4. Run Example Slow Queries
 
-Use psql or your SQL client to run the queries in docs/examples/example_slow_queries.sql.
+See [Usage Examples](../examples.md) for example slow queries to run and analyze.
 
 
 ## 5. Collect and Analyze Logs
@@ -50,13 +50,13 @@ Copy the relevant log file to your project directory, e.g.:
 cp /var/log/postgresql/postgresql-2025-10-31_*.log ./docs/sample_logs/
 ```
 
-Analyze with Slow Query Doctor:
+
+Analyze with Slow Query Doctor (see [Usage Examples](../examples.md) for more):
 ```
 python -m slowquerydoctor docs/sample_logs/postgresql-2025-10-31_*.log --output report.md
 ```
 
-
-See the README and docs for more options and advanced usage.
+See [Usage Examples](../examples.md) and the README for more options and advanced usage.
 
 ---
 

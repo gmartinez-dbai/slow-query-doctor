@@ -15,18 +15,10 @@ pip install -e .
 ```
 
 
+
 ## Basic Usage
 
-See [README](../README.md#usage) for full details.
-
-- Analyze a sample log (supports plain, CSV, and JSON formats, including multi-line queries):
-  ```bash
-  python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md
-  ```
-- Analyze your own log:
-  ```bash
-  python -m slowquerydoctor /path/to/your/postgresql.log --output analysis_report.md
-  ```
+See [Usage Examples](../examples.md) for all CLI and log analysis examples.
 
 ## Configuration File
 
