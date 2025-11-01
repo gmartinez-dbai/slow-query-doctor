@@ -1,6 +1,8 @@
+# [← Back to Index](index.md)
 # 📂 Sample Data & Usage
 
-See the [Project README](../README.md#sample-log-files) for a summary.
+
+See the [Setup & Usage Examples](examples.md) for a complete guide to log setup, sample data, and CLI usage.
 
 ## Sample Log Files
 
@@ -9,12 +11,10 @@ See the [Project README](../README.md#sample-log-files) for a summary.
 - `.txt` extension is used to avoid `.gitignore` exclusions
 
 
+
 ## Example Usage
 
-```bash
-python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md
-# Supports multi-line queries and multiple log formats (plain, CSV, JSON)
-```
+See [Usage Examples](../examples.md) for all CLI and log analysis examples.
 
 ## Why Use Sample Data?
 

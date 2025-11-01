@@ -47,8 +47,23 @@ def main():
         help='Number of top slow queries to analyze (default: 5)'
     )
 
+    parser.add_argument(
+        '--verbose',
+        action='store_true',
+        help='Enable verbose (debug) output for troubleshooting and progress tracking.'
+    )
+
     args = parser.parse_args()
-    setup_logging()
+
+    if args.verbose:
+        logging.basicConfig(
+            level=logging.DEBUG,
+            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        )
+        logging.getLogger().setLevel(logging.DEBUG)
+    else:
+        setup_logging()
+
     logger = logging.getLogger(__name__)
 
     try:
@@ -62,26 +77,35 @@ def main():
             return 0
 
         # Analyze queries
-        top_queries, summary = analyze_slow_queries(df, top_n=args.top_n)
+        try:
+            top_queries, summary = analyze_slow_queries(df, top_n=args.top_n)
+        except ValueError as analysis_error:
+            logger.warning(str(analysis_error))
+            return 0
+
+        if top_queries.empty:
+            logger.warning("No slow queries met the analysis criteria")
+            return 0
 
         # Generate AI recommendations
         logger.info("Generating recommendations...")
         config = LLMConfig()
         llm_client = LLMClient(config)
 
-        queries_to_analyze = [
-            {
-                'query_text': row['example_query'],
-                'avg_duration': row['avg_duration'],
-                'frequency': row['frequency']
-            }
-            for _, row in top_queries.iterrows()
-        ]
+        queries_to_analyze = []
+        for row in top_queries.itertuples(index=False):
+            queries_to_analyze.append(
+                {
+                    'query_text': str(row.example_query),
+                    'avg_duration': float(row.avg_duration),
+                    'frequency': int(row.frequency)
+                }
+            )
 
         recommendations = llm_client.batch_generate_recommendations(queries_to_analyze)
 
         # Generate report
-        report_gen = ReportGenerator()
+        report_gen = ReportGenerator(llm_client)
         report = report_gen.generate_markdown_report(
             top_queries, summary, recommendations
         )

@@ -1,14 +1,27 @@
-# 📚 Documentation Index
 
-Welcome to the Slow Query Doctor documentation!
+
+![Python](https://img.shields.io/badge/python-3.11+-blue.svg)
+
+# 📚 Slow Query Doctor Documentation
+
+**Slow Query Doctor** is an AI-powered tool for analyzing PostgreSQL slow query logs. It helps you:
+- Parse and summarize slow query logs (plain, CSV, or JSON)
+- Identify the slowest and most frequent queries
+- Get AI-powered recommendations for query optimization
+- Generate detailed Markdown reports
+- Track progress with real-time progress bars
+
+---
+
+## Quick Links
 
 - [Project README](../README.md)
 - [Roadmap](../ROADMAP.md)
 - [Technical Debt](../TECHNICAL_DEBT.md)
-- [Contributing Guide](../CONTRIBUTING.md)
+- [Contributing Guide](../CONTRIBUTING.md) 🚀
 - [Code of Conduct](../CODE_OF_CONDUCT.md)
 
-
+---
 
 ## Contents
 
@@ -17,10 +30,6 @@ Welcome to the Slow Query Doctor documentation!
 - [Sample Data & Usage](sample-data.md)
 - [Advanced Features](advanced-features.md)
 - [FAQ](faq.md)
-- [Slow Query Log Setup](slow_query_log_setup.md)
+- [Setup & Usage Examples](examples.md)
 
 ---
-
-## Example & Setup Scripts
-
-- [SQL schema, data population, and slow query examples](examples/)

@@ -1,0 +1,248 @@
+2025-10-28 19:28:16.557 EDT [89010] LOG:  starting PostgreSQL 18.0 (Homebrew) on aarch64-apple-darwin25.0.0, compiled by Apple clang version 17.0.0 (clang-1700.3.19.1), 64-bit
+2025-10-28 19:28:16.558 EDT [89010] LOG:  listening on IPv6 address "::1", port 5432
+2025-10-28 19:28:16.558 EDT [89010] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2025-10-28 19:28:16.558 EDT [89010] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2025-10-28 19:28:16.563 EDT [89028] LOG:  database system was shut down at 2025-10-28 19:28:15 EDT
+2025-10-28 19:28:16.565 EDT [89010] LOG:  database system is ready to accept connections
+2025-10-28 19:30:47.920 EDT [90412] FATAL:  database "giovannimartinez" does not exist
+2025-10-28 19:30:47.961 EDT [90417] LOG:  statement: 
+	    SELECT datname
+	    FROM   pg_catalog.pg_database;
+	  
+2025-10-28 19:30:47.968 EDT [90417] LOG:  duration: 7.873 ms
+2025-10-28 19:30:50.715 EDT [90419] LOG:  statement: SELECT 
+	    COUNT(*) as total_records,
+	    ROUND(AVG(random_number::numeric), 2) as avg_number,
+	    ROUND(STDDEV(random_number::numeric), 2) as stddev_number,
+	    COUNT(DISTINCT (random_number % 1000)) as unique_modulo_values,
+	    SUM(CASE WHEN random_number % 2 = 0 THEN 1 ELSE 0 END) as even_numbers,
+	    SUM(CASE WHEN random_number % 2 = 1 THEN 1 ELSE 0 END) as odd_numbers,
+	    ROUND(AVG(LENGTH(random_text)), 2) as avg_text_length
+	FROM large_test_table 
+	WHERE random_number BETWEEN 300000 AND 700000;
+2025-10-28 19:31:06.225 EDT [90419] LOG:  duration: 15510.523 ms
+2025-10-28 19:31:23.971 EDT [90419] LOG:  statement: SELECT DISTINCT
+	    l1.random_number,
+	    l1.random_text,
+	    l1.created_at,
+	    (SELECT COUNT(*) 
+	     FROM large_test_table l2 
+	     WHERE l2.random_number = l1.random_number) as duplicate_count
+	FROM large_test_table l1
+	WHERE l1.random_text LIKE '%data_555%'
+	   OR l1.random_text LIKE '%data_777%'
+	   OR l1.random_text LIKE '%data_999%'
+	ORDER BY l1.random_number DESC
+	LIMIT 30;
+2025-10-28 19:33:13.205 EDT [90419] LOG:  duration: 109234.019 ms
+2025-10-28 19:33:16.567 EDT [89026] LOG:  checkpoint starting: time
+2025-10-28 19:33:16.580 EDT [89026] LOG:  checkpoint complete: wrote 0 buffers (0.0%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.004 s, sync=0.001 s, total=0.014 s; sync files=2, longest=0.001 s, average=0.001 s; distance=0 kB, estimate=0 kB; lsn=6/B087E360, redo lsn=6/B087E308
+2025-10-28 19:33:33.176 EDT [90419] LOG:  statement: SELECT 
+	    id,
+	    random_number,
+	    random_text,
+	    SQRT(random_number::numeric) as sqrt_value,
+	    SIN(random_number::numeric / 100000.0) as sin_value,
+	    CASE 
+	        WHEN random_number % 7 = 0 THEN 'LUCKY_SEVEN'
+	        WHEN random_number % 13 = 0 THEN 'UNLUCKY_THIRTEEN'
+	        WHEN random_number % 3 = 0 THEN 'DIVISIBLE_BY_THREE'
+	        ELSE 'OTHER'
+	    END as number_category,
+	    ROW_NUMBER() OVER (ORDER BY random_number DESC) as rank_desc
+	FROM large_test_table 
+	WHERE random_number > 950000
+	  AND LENGTH(random_text) > 12
+	ORDER BY random_number DESC
+	LIMIT 50;
+2025-10-28 19:33:35.335 EDT [90419] LOG:  duration: 2160.902 ms
+2025-10-28 19:36:45.023 EDT [93559] LOG:  statement: SELECT 
+	    id,
+	    random_number,
+	    random_text,
+	    SQRT(random_number::numeric) as sqrt_value,
+	    SIN(random_number::numeric / 100000.0) as sin_value,
+	    CASE 
+	        WHEN random_number % 7 = 0 THEN 'LUCKY_SEVEN'
+	        WHEN random_number % 13 = 0 THEN 'UNLUCKY_THIRTEEN'
+	        WHEN random_number % 3 = 0 THEN 'DIVISIBLE_BY_THREE'
+	        ELSE 'OTHER'
+	    END as number_category,
+	    ROW_NUMBER() OVER (ORDER BY random_number DESC) as rank_desc
+	FROM large_test_table 
+	WHERE random_number > 950000
+	  AND LENGTH(random_text) > 12
+	ORDER BY random_number DESC
+	LIMIT 50;
+2025-10-28 19:36:47.235 EDT [93559] LOG:  duration: 2212.355 ms
+2025-10-28 19:36:57.807 EDT [93559] LOG:  statement: SELECT DISTINCT
+	    id,
+	    random_number,
+	    random_text,
+	    LENGTH(random_text) as text_length,
+	    POSITION('data_' in random_text) as data_position,
+	    CASE 
+	        WHEN random_text LIKE '%data_1%' AND random_text LIKE '%data_2%' THEN 'CONTAINS_1_AND_2'
+	        WHEN random_text LIKE '%data_9%' THEN 'CONTAINS_9'
+	        WHEN LENGTH(random_text) > 15 THEN 'LONG_TEXT'
+	        ELSE 'OTHER'
+	    END as text_category,
+	    (SELECT COUNT(*) 
+	     FROM large_test_table lt2 
+	     WHERE lt2.random_text = large_test_table.random_text) as text_duplicate_count,
+	    EXTRACT(EPOCH FROM (created_at - '2025-01-01'::timestamp)) as seconds_since_2025
+	FROM large_test_table 
+	WHERE (random_text LIKE '%data_12%' 
+	       OR random_text LIKE '%data_34%' 
+	       OR random_text LIKE '%data_56%'
+	       OR random_text LIKE '%data_78%')
+	  AND random_number NOT IN (
+	      SELECT random_number 
+	      FROM large_test_table 
+	      WHERE random_text LIKE '%data_99%'
+	      LIMIT 1000
+	  )
+	ORDER BY text_length DESC, random_number ASC
+	LIMIT 75;
+2025-10-28 19:59:47.262 EDT [93559] ERROR:  canceling statement due to user request
+2025-10-28 19:59:47.262 EDT [93559] STATEMENT:  SELECT DISTINCT
+	    id,
+	    random_number,
+	    random_text,
+	    LENGTH(random_text) as text_length,
+	    POSITION('data_' in random_text) as data_position,
+	    CASE 
+	        WHEN random_text LIKE '%data_1%' AND random_text LIKE '%data_2%' THEN 'CONTAINS_1_AND_2'
+	        WHEN random_text LIKE '%data_9%' THEN 'CONTAINS_9'
+	        WHEN LENGTH(random_text) > 15 THEN 'LONG_TEXT'
+	        ELSE 'OTHER'
+	    END as text_category,
+	    (SELECT COUNT(*) 
+	     FROM large_test_table lt2 
+	     WHERE lt2.random_text = large_test_table.random_text) as text_duplicate_count,
+	    EXTRACT(EPOCH FROM (created_at - '2025-01-01'::timestamp)) as seconds_since_2025
+	FROM large_test_table 
+	WHERE (random_text LIKE '%data_12%' 
+	       OR random_text LIKE '%data_34%' 
+	       OR random_text LIKE '%data_56%'
+	       OR random_text LIKE '%data_78%')
+	  AND random_number NOT IN (
+	      SELECT random_number 
+	      FROM large_test_table 
+	      WHERE random_text LIKE '%data_99%'
+	      LIMIT 1000
+	  )
+	ORDER BY text_length DESC, random_number ASC
+	LIMIT 75;
+2025-10-28 19:59:51.211 EDT [93559] LOG:  statement: SELECT DISTINCT
+	    id,
+	    random_number,
+	    random_text,
+	    LENGTH(random_text) as text_length,
+	    POSITION('data_' in random_text) as data_position,
+	    CASE 
+	        WHEN random_text LIKE '%data_1%' AND random_text LIKE '%data_2%' THEN 'CONTAINS_1_AND_2'
+	        WHEN random_text LIKE '%data_9%' THEN 'CONTAINS_9'
+	        WHEN LENGTH(random_text) > 15 THEN 'LONG_TEXT'
+	        ELSE 'OTHER'
+	    END as text_category,
+	    (SELECT COUNT(*) 
+	     FROM large_test_table lt2 
+	     WHERE lt2.random_text = large_test_table.random_text) as text_duplicate_count,
+	    EXTRACT(EPOCH FROM (created_at - '2025-01-01'::timestamp)) as seconds_since_2025
+	FROM large_test_table 
+	WHERE (random_text LIKE '%data_12%' 
+	       OR random_text LIKE '%data_34%' 
+	       OR random_text LIKE '%data_56%'
+	       OR random_text LIKE '%data_78%')
+	  AND random_number NOT IN (
+	      SELECT random_number 
+	      FROM large_test_table 
+	      WHERE random_text LIKE '%data_99%'
+	      LIMIT 1000
+	  )
+	ORDER BY text_length DESC, random_number ASC
+	LIMIT 75;
+2025-10-28 20:04:17.757 EDT [93559] ERROR:  canceling statement due to user request
+2025-10-28 20:04:17.757 EDT [93559] STATEMENT:  SELECT DISTINCT
+	    id,
+	    random_number,
+	    random_text,
+	    LENGTH(random_text) as text_length,
+	    POSITION('data_' in random_text) as data_position,
+	    CASE 
+	        WHEN random_text LIKE '%data_1%' AND random_text LIKE '%data_2%' THEN 'CONTAINS_1_AND_2'
+	        WHEN random_text LIKE '%data_9%' THEN 'CONTAINS_9'
+	        WHEN LENGTH(random_text) > 15 THEN 'LONG_TEXT'
+	        ELSE 'OTHER'
+	    END as text_category,
+	    (SELECT COUNT(*) 
+	     FROM large_test_table lt2 
+	     WHERE lt2.random_text = large_test_table.random_text) as text_duplicate_count,
+	    EXTRACT(EPOCH FROM (created_at - '2025-01-01'::timestamp)) as seconds_since_2025
+	FROM large_test_table 
+	WHERE (random_text LIKE '%data_12%' 
+	       OR random_text LIKE '%data_34%' 
+	       OR random_text LIKE '%data_56%'
+	       OR random_text LIKE '%data_78%')
+	  AND random_number NOT IN (
+	      SELECT random_number 
+	      FROM large_test_table 
+	      WHERE random_text LIKE '%data_99%'
+	      LIMIT 1000
+	  )
+	ORDER BY text_length DESC, random_number ASC
+	LIMIT 75;
+2025-10-28 20:04:57.498 EDT [14253] LOG:  statement: SELECT 
+	    id,
+	    random_number,
+	    random_text,
+	    created_at,
+	    SQRT(ABS(random_number)::numeric) as sqrt_abs_number,
+	    LOG(GREATEST(random_number, 1)::numeric) as log_number,
+	    SIN(random_number::numeric / 180000.0 * PI()) as sin_degrees,
+	    COS(random_number::numeric / 180000.0 * PI()) as cos_degrees,
+	    POWER(random_number::numeric, 0.3) as cube_root_approx,
+	    ROW_NUMBER() OVER (ORDER BY random_number) as row_num_asc,
+	    ROW_NUMBER() OVER (ORDER BY random_number DESC) as row_num_desc,
+	    RANK() OVER (ORDER BY (random_number % 1000)) as modulo_rank,
+	    LAG(random_number, 1) OVER (ORDER BY id) as prev_number,
+	    LEAD(random_number, 1) OVER (ORDER BY id) as next_number,
+	    AVG(random_number) OVER (ROWS BETWEEN 1000 PRECEDING AND 1000 FOLLOWING) as moving_avg,
+	    COUNT(*) OVER (PARTITION BY (random_number / 100000)::integer) as partition_count
+	FROM large_test_table 
+	WHERE random_number BETWEEN 250000 AND 750000
+	  AND (id % 7 = 0 OR id % 11 = 0 OR id % 13 = 0)
+	  AND LENGTH(random_text) BETWEEN 12 AND 20
+	ORDER BY SQRT(ABS(random_number)::numeric) DESC, SIN(random_number::numeric / 180000.0 * PI()) ASC
+	LIMIT 200;
+2025-10-28 20:08:26.795 EDT [14253] LOG:  duration: 209297.059 ms
+2025-10-28 20:12:54.225 EDT [14253] LOG:  statement: SELECT DISTINCT
+	    id,
+	    random_number,
+	    random_text,
+	    LENGTH(random_text) as text_length,
+	    POSITION('data_' in random_text) as data_position,
+	    CASE 
+	        WHEN random_text LIKE '%data_1%' AND random_text LIKE '%data_2%' THEN 'CONTAINS_1_AND_2'
+	        WHEN random_text LIKE '%data_9%' THEN 'CONTAINS_9'
+	        WHEN LENGTH(random_text) > 15 THEN 'LONG_TEXT'
+	        ELSE 'OTHER'
+	    END as text_category,
+	    (SELECT COUNT(*) 
+	     FROM large_test_table lt2 
+	     WHERE lt2.random_text = large_test_table.random_text) as text_duplicate_count,
+	    EXTRACT(EPOCH FROM (created_at - '2025-01-01'::timestamp)) as seconds_since_2025
+	FROM large_test_table 
+	WHERE (random_text LIKE '%data_12%' 
+	       OR random_text LIKE '%data_34%' 
+	       OR random_text LIKE '%data_56%'
+	       OR random_text LIKE '%data_78%')
+	  AND random_number NOT IN (
+	      SELECT random_number 
+	      FROM large_test_table 
+	      WHERE random_text LIKE '%data_99%'
+	      LIMIT 1000
+	  )
+	ORDER BY text_length DESC, random_number ASC
+	LIMIT 75;

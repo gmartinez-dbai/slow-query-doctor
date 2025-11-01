@@ -1,24 +1,12 @@
+# [← Back to Index](index.md)
 # ⚙️ Configuration
 
 For a summary, see the [Project README](../README.md#configuration).
 
-## PostgreSQL Setup
 
-- Enable slow query logging in `postgresql.conf`:
-  ```postgresql
-  log_min_duration_statement = 1000
-  logging_collector = on
-  log_directory = 'log'
-  log_filename = 'postgresql-%Y-%m-%d_%H%M%S.log'
-  log_statement = 'none'
-  log_duration = off
-  ```
-- Or configure dynamically:
-  ```sql
-  SET log_min_duration_statement = 1000;
-  ALTER SYSTEM SET log_min_duration_statement = 1000;
-  SELECT pg_reload_conf();
-  ```
+## PostgreSQL Log Setup
+
+See [Setup & Usage Examples](examples.md) for complete instructions on enabling slow query logging in PostgreSQL.
 
 
 ## Configuration File (.slowquerydoctor.yml)
