@@ -1,3 +1,4 @@
+# [← Back to Index](index.md)
 # 🚀 Getting Started
 
 Welcome to Slow Query Doctor!

@@ -1,3 +1,13 @@
+# Table of Contents
+
+- [1. Enable Slow Query Logging in PostgreSQL](#1-enable-slow-query-logging-in-postgresql)
+- [2. Find Your Log Files](#2-find-your-log-files)
+- [3. Generate Example Slow Queries](#3-generate-example-slow-queries)
+- [4. Collect and Analyze Logs](#4-collect-and-analyze-logs)
+- [5. Supported Log Formats](#5-supported-log-formats)
+- [6. Example Output](#6-example-output)
+- [7. Troubleshooting](#7-troubleshooting)
+# [← Back to Index](index.md)
 # Slow Query Doctor: Setup & Example Usage
 
 This page provides a complete guide for setting up PostgreSQL slow query logging, generating example logs, and analyzing them with Slow Query Doctor.
@@ -55,13 +65,19 @@ SELECT COUNT(*) FROM sales WHERE amount > 1000;
 
 ---
 
+
 ## 4. Collect and Analyze Logs
 
-Copy the relevant log file to your project directory, e.g.:
+Copy the relevant log file to your project directory's `sample_logs/` folder (create it if it doesn't exist). For example:
 
 ```sh
+mkdir -p sample_logs
 cp /var/log/postgresql/postgresql-2025-10-31_*.log ./sample_logs/
 ```
+
+**Sample log file:**
+
+- `sample_logs/postgresql-2025-10-31_122408.log.txt` (plain text, multi-line queries supported)
 
 ### Analyze with Slow Query Doctor
 
