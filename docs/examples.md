@@ -130,6 +130,12 @@ The generated report includes:
 - Query statistics
 - AI-powered recommendations
 
+### Execution Debug Screenshot
+
+![Verbose CLI run showing progress output and debug details](img/2025-11-01_12-50-27.png)
+
+> The screenshot is tall so you may need to scroll to view the full debugging session capture.
+
 ---
 
 ## 7. Troubleshooting

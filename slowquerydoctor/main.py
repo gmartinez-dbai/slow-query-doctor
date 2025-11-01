@@ -77,26 +77,35 @@ def main():
             return 0
 
         # Analyze queries
-        top_queries, summary = analyze_slow_queries(df, top_n=args.top_n)
+        try:
+            top_queries, summary = analyze_slow_queries(df, top_n=args.top_n)
+        except ValueError as analysis_error:
+            logger.warning(str(analysis_error))
+            return 0
+
+        if top_queries.empty:
+            logger.warning("No slow queries met the analysis criteria")
+            return 0
 
         # Generate AI recommendations
         logger.info("Generating recommendations...")
         config = LLMConfig()
         llm_client = LLMClient(config)
 
-        queries_to_analyze = [
-            {
-                'query_text': row['example_query'],
-                'avg_duration': row['avg_duration'],
-                'frequency': row['frequency']
-            }
-            for _, row in top_queries.iterrows()
-        ]
+        queries_to_analyze = []
+        for row in top_queries.itertuples(index=False):
+            queries_to_analyze.append(
+                {
+                    'query_text': str(row.example_query),
+                    'avg_duration': float(row.avg_duration),
+                    'frequency': int(row.frequency)
+                }
+            )
 
         recommendations = llm_client.batch_generate_recommendations(queries_to_analyze)
 
         # Generate report
-        report_gen = ReportGenerator()
+        report_gen = ReportGenerator(llm_client)
         report = report_gen.generate_markdown_report(
             top_queries, summary, recommendations
         )
