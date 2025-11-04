@@ -8,7 +8,7 @@ from typing import Any, Dict, List, Sequence, Tuple, TypedDict, Union, cast
 
 import pandas as pd  # type: ignore[import]
 
-from .antipatterns import StaticQueryRewriter, AntiPatternMatch  # Add this import
+from .antipatterns import StaticQueryRewriter, AntiPatternMatch  # This import is used for query rewriting and anti-pattern detection
 
 logger = logging.getLogger(__name__)
 
