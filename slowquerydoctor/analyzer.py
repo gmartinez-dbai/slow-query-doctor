@@ -63,11 +63,13 @@ class SlowQuery:
 
 
 class QueryRecord(TypedDict):
+    """Represents a raw query record from logs."""
     statement: str
     duration: float
     timestamp: str
 
 class NormalizedQueryRecord(TypedDict):
+    """Represents a normalized query record."""
     raw: str
     normalized: str
     duration: float
@@ -79,7 +81,7 @@ class SlowQueryAnalyzer:
     """Analyzes slow queries and calculates impact scores."""
 
     def __init__(self) -> None:
-        self.query_rewriter = StaticQueryRewriter()  # Add this line
+        self.query_rewriter = StaticQueryRewriter() # Initialize the query rewriter
 
     def analyze_slow_queries(
         self,
