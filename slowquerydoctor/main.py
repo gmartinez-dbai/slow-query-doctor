@@ -8,7 +8,7 @@ import logging
 from pathlib import Path
 
 from .parser import parse_postgres_log
-from .analyzer import analyze_slow_queries
+from .analyzer import run_slow_query_analysis
 from .llm_client import LLMClient, LLMConfig
 from .report_generator import ReportGenerator
 
@@ -78,7 +78,7 @@ def main():
 
         # Analyze queries
         try:
-            top_queries, summary = analyze_slow_queries(df, top_n=args.top_n)
+            top_queries, summary = run_slow_query_analysis(df, top_n=args.top_n)
         except ValueError as analysis_error:
             logger.warning(str(analysis_error))
             return 0
