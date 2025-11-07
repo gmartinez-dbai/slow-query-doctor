@@ -1,6 +1,10 @@
 """
 Slow Query Doctor - AI-powered database performance analyzer
-Currently supports PostgreSQL with MySQL/SQL Server planned for v0.4.0
+
+Database Support: PostgreSQL (MySQL/SQL Server in v0.4.0)
+AI Providers: 
+  - v0.1.x: OpenAI GPT only (requires OPENAI_API_KEY)
+  - v0.2.0+: Configurable (Ollama default, OpenAI optional)
 """
 
 __version__ = "0.1.6"

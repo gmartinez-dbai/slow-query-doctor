@@ -11,7 +11,7 @@
 - Anti-pattern detection
 - Multi-format log support (plain, CSV, JSON)
 
-**Privacy Note**: v0.1.x sends data to OpenAI's public API. For sensitive database logs, wait for v0.2.0 with local Ollama support.
+**AI Provider Limitation**: v0.1.x supports **OpenAI GPT models only** (requires OPENAI_API_KEY). For sensitive database logs, consider waiting for v0.2.0 with local Ollama support and configurable AI providers.
 
 ---
 
@@ -133,9 +133,9 @@ Track feature requests from users here:
 
 | Version | Timeline | Status | Key Features |
 |---------|----------|--------|--------------|
-| v0.1.5 | ✅ SHIPPED | Mature | PostgreSQL analyzer with OpenAI integration |
-| v0.1.6 | Nov 2025 | � Feature Freeze | **Final v0.1.x with new features** - Documentation, architecture, AI provider planning |
-| v0.1.7+ | Ongoing | 🐛 Bug Fixes Only | Critical fixes, no new features |
+| v0.1.5 | ✅ SHIPPED | Mature | PostgreSQL analyzer with **OpenAI only** |
+| v0.1.6 | Nov 2025 | 🔒 Feature Freeze | **Final v0.1.x with new features** - Documentation, architecture, **OpenAI only** |
+| v0.1.7+ | Ongoing | 🐛 Bug Fixes Only | Critical fixes, **OpenAI only**, no new features |
 | v0.2.0 | Nov 2025 - Q1 2026 | 🔧 In Progress | **Configurable AI providers** (Ollama default, OpenAI optional), enhanced config system, EXPLAIN plans, HTML reports |
 | v0.3.0 | Q2 2026 | 🚫 Do Not Start | ML/self-learning, anomaly detection |
 | v0.4.0 | Q3 2026 | 📋 Planned | **MySQL, SQL Server support** |

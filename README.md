@@ -10,7 +10,8 @@ An intelligent database performance analyzer that uses AI to diagnose slow queri
 
 ![Python](https://img.shields.io/badge/python-3.11+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
-![OpenAI](https://img.shields.io/badge/AI-OpenAI%20GPT--4o--mini-orange.svg)
+![OpenAI](https://img.shields.io/badge/AI-OpenAI%20Only%20v0.1.x-orange.svg)
+![Ollama](https://img.shields.io/badge/AI-Ollama%20Coming%20v0.2.0-blue.svg)
 ![PostgreSQL](https://img.shields.io/badge/database-PostgreSQL%20Ready-336791?logo=postgresql&logoColor=white)
 ![MySQL](https://img.shields.io/badge/database-MySQL%20Planned%20v0.4.0-4479A1?logo=mysql&logoColor=white)
 ![SQL Server](https://img.shields.io/badge/database-SQL%20Server%20Planned%20v0.4.0-CC2927?logo=microsoftssqlserver&logoColor=white)
@@ -58,12 +59,21 @@ An intelligent database performance analyzer that uses AI to diagnose slow queri
 
 Slow Query Doctor automatically analyzes your **PostgreSQL** slow query logs and provides intelligent, AI-powered optimization recommendations. It identifies performance bottlenecks, calculates impact scores, and generates detailed reports with specific suggestions for improving database performance.
 
-### 🗄️ **Database Support Status**
+### 🗄️ **Database & AI Support Status**
+
+**Database Support:**
 | Database | Status | Version | Timeline |
 |----------|--------|---------|----------|
 | **PostgreSQL** | ✅ **Fully Supported** | v0.1.x+ | Available now |
 | **MySQL** | 🚧 Planned | v0.4.0 | Q3 2026 |
 | **SQL Server** | 🚧 Planned | v0.4.0 | Q3 2026 |
+
+**AI Provider Support:**
+| AI Provider | Status | Version | Timeline |
+|------------|--------|---------|----------|
+| **OpenAI GPT** | ✅ **Current Only** | v0.1.x | Available now |
+| **Ollama (Local)** | 🚧 **Default in Future** | v0.2.0+ | Nov 2025 - Q1 2026 |
+| **Multiple Providers** | 🚧 Configurable | v0.2.0+ | Nov 2025 - Q1 2026 |
 
 > **📢 Want to influence MySQL/SQL Server development?** Check out our [future database sample directories](docs/sample_logs/) and share your specific requirements!
 
@@ -74,12 +84,16 @@ Slow Query Doctor automatically analyzes your **PostgreSQL** slow query logs and
 
 - 🔍 **Smart Log Parsing**: Extracts slow queries from database logs, supports multi-line queries and unusual characters
 - 📊 **Impact Analysis**: Calculates query impact using duration × frequency scoring
-- 🤖 **AI-Powered Recommendations**: Configurable AI providers (OpenAI in v0.1.x, Ollama default + OpenAI optional in v0.2.0+)
+- 🤖 **AI-Powered Recommendations**: 
+  - **v0.1.x**: OpenAI GPT models only (requires API key)
+  - **v0.2.0+**: Configurable providers (Ollama default, OpenAI optional)
 - 📝 **Comprehensive Reports**: Generates detailed Markdown reports with statistics and recommendations
 - 📂 **Sample Data Included**: Ready-to-use sample PostgreSQL log files for testing and demonstration
 - 🗂️ **Multiple Log Formats**: Supports plain, CSV, and JSON log formats
 - ⚙️ **Config File Support**: Use a `.slowquerydoctor.yml` file to customize analysis options
-- 🔒 **Privacy-First**: v0.2.0+ defaults to local Ollama models with configurable OpenAI option
+- 🔒 **Privacy Evolution**: 
+  - **v0.1.x**: OpenAI public API (privacy considerations for sensitive data)
+  - **v0.2.0+**: Local Ollama models by default (enterprise-safe)
 - 🔧 **Extensible**: Future-ready architecture supports multiple AI providers
 
 ## 🚀 Quick Start
@@ -109,10 +123,12 @@ pip install -r requirements.txt
 pip install .[dev,test]
 ```
 
-4. **Set up OpenAI API key:**
+4. **Set up OpenAI API key (Required for v0.1.x):**
 ```bash
 export OPENAI_API_KEY="your-openai-api-key-here"
 ```
+
+> **⚠️ OpenAI API Key Required**: v0.1.x only supports OpenAI GPT models. You must have a valid OpenAI API key to use AI recommendations. Local Ollama support comes in v0.2.0.
 
 ### Basic Usage
 
@@ -273,20 +289,22 @@ This guide covers:
 
 ### Environment Variables
 
-**Current (v0.1.x - OpenAI only):**
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `OPENAI_API_KEY` | OpenAI API key (required) | None |
-| `OPENAI_MODEL` | GPT model to use | `gpt-4o-mini` |
-| `OPENAI_BASE_URL` | Custom OpenAI endpoint | `https://api.openai.com/v1` |
+**Current (v0.1.x - OpenAI Only):**
+| Variable | Description | Default | Required |
+|----------|-------------|---------|----------|
+| `OPENAI_API_KEY` | OpenAI API key | None | ✅ **Required** |
+| `OPENAI_MODEL` | GPT model to use | `gpt-4o-mini` | Optional |
+| `OPENAI_BASE_URL` | Custom OpenAI endpoint | `https://api.openai.com/v1` | Optional |
 
-**Coming in v0.2.0 (Configurable AI providers):**
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `AI_PROVIDER` | AI provider selection | `ollama` |
-| `AI_BASE_URL` | Provider endpoint | `http://localhost:11434` (Ollama) |
-| `AI_MODEL` | Provider-specific model | `llama2` (Ollama) / `gpt-4o-mini` (OpenAI) |
-| `AI_API_KEY` | API key (if required) | None (Ollama) / Required (OpenAI) |
+**Coming in v0.2.0 (Configurable AI Providers):**
+| Variable | Description | Default | Required |
+|----------|-------------|---------|----------|
+| `AI_PROVIDER` | AI provider selection | `ollama` | Optional |
+| `AI_BASE_URL` | Provider endpoint | `http://localhost:11434` | Optional |
+| `AI_MODEL` | Provider-specific model | `llama2` (Ollama) | Optional |
+| `AI_API_KEY` | API key (if required by provider) | None (Ollama) / Required (OpenAI) | Conditional |
+
+> **🚨 Breaking Change in v0.2.0**: Environment variables will change from `OPENAI_*` to `AI_*` format for consistency across providers.
 
 ### Configuration File
 
@@ -370,7 +388,7 @@ grep -i "duration:" your_log_file.log
 psql -c "SHOW log_min_duration_statement;"
 ```
 
-**"OpenAI API Error"**
+**"OpenAI API Error" (v0.1.x Only)**
 ```bash
 # Verify API key is set
 echo $OPENAI_API_KEY
@@ -379,6 +397,8 @@ echo $OPENAI_API_KEY
 curl -H "Authorization: Bearer $OPENAI_API_KEY" \
      https://api.openai.com/v1/models
 ```
+
+> **💡 Alternative**: If you prefer local AI processing for privacy, consider waiting for v0.2.0 with Ollama support (Nov 2025 - Q1 2026).
 
 **"Permission denied on log file"**
 ```bash
@@ -494,10 +514,12 @@ pip install .[dev,test]
 - **v0.3.0** (Q2 2026): ML/self-learning features 📋
 - **v0.4.0** (Q3 2026): **MySQL and SQL Server support** 📋
 
-**AI Provider Strategy:**
-- **v0.1.x**: OpenAI only (privacy concerns for sensitive data)
-- **v0.2.0+**: Ollama by default + OpenAI configurable (privacy-first approach)
-- **Future**: Extensible to Claude, Gemini, custom models
+**AI Provider Evolution:**
+- **v0.1.x CURRENT**: OpenAI GPT models only (requires OPENAI_API_KEY)
+- **v0.2.0 COMING**: Configurable providers with Ollama as privacy-first default
+- **v0.2.0+ FUTURE**: Extensible to Claude, Gemini, custom endpoints
+
+> **⚠️ Privacy Note for v0.1.x**: Current version sends query data to OpenAI's public API. For sensitive production logs, consider waiting for v0.2.0 with local Ollama support.
 
 **When asked about new features**: 
 - **For v0.1.x**: "v0.1.6 is the final feature release. New features go to v0.2.0+ roadmap."

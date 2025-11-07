@@ -110,4 +110,5 @@ ALTER DATABASE [YourDatabase] SET QUERY_STORE (
 ---
 
 **Timeline**: SQL Server support planned for v0.4.0 (Q3 2026)  
-**Current Focus**: Perfecting PostgreSQL analysis with v0.2.0 configurable AI providers
+**Current Focus**: Perfecting PostgreSQL analysis with v0.2.0 configurable AI providers  
+**AI Note**: Current v0.1.x requires OpenAI API key; v0.2.0+ will support local Ollama models
