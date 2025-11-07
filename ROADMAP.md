@@ -28,6 +28,9 @@
 - [x] Prepare codebase for multi-database expansion in v0.4.0
 - [x] Plan configurable AI provider architecture (Ollama default, OpenAI optional)
 - [x] Design extensible AI provider system for future models (Claude, Gemini, etc.)
+- [x] Create placeholder sample log directories for MySQL and SQL Server
+- [x] Add comprehensive AI provider extensibility guide in ARCHITECTURE.md
+- [x] Establish release tagging strategy (v0.1.6-final-feature)
 
 **Post-v0.1.6**: Only critical bug fixes allowed in v0.1.x branch. Feature development moves to v0.2.0.
 
@@ -81,6 +84,11 @@
 - [ ] Cross-database performance comparison
 - [ ] Unified configuration for multiple database types
 - [ ] Database-specific optimization recommendations
+
+**Early Feedback Collection:**
+- 📁 `docs/sample_logs/mysql/` - Configuration examples and feedback templates
+- 📁 `docs/sample_logs/sqlserver/` - Extended Events samples and feedback collection
+- 🎯 **Goal**: Collect real-world requirements before development starts
 
 **Note:** Oracle support not planned - focusing on PostgreSQL, MySQL, and SQL Server as the most common enterprise databases.
 

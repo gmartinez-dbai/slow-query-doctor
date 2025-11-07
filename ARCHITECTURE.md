@@ -349,17 +349,129 @@ def detect_your_pattern(self, query: str) -> List[AntiPatternMatch]:
 ```
 
 ### 3. Additional AI Providers
-Extend `AIProvider` enum and implement provider-specific clients:
+
+#### How to Add a New AI Provider
+
+**Step 1**: Extend the `AIProvider` enum in `llm_client.py`:
 ```python
 class AIProvider(Enum):
     OLLAMA = "ollama"
     OPENAI = "openai"
-    CLAUDE = "claude"      # Future
-    GEMINI = "gemini"      # Future
+    CLAUDE = "claude"      # Your new provider
+    GEMINI = "gemini"      # Another provider
+    CUSTOM = "custom"      # For private endpoints
+```
 
+**Step 2**: Create provider-specific client class:
+```python
 class ClaudeLLMClient(LLMClient):
-    def batch_generate_recommendations(self, queries):
-        # Claude AI integration
+    """Claude AI provider implementation"""
+    
+    def __init__(self, config: LLMConfig):
+        super().__init__(config)
+        # Claude-specific initialization
+        self.client = anthropic.Anthropic(api_key=config.api_key)
+    
+    def batch_generate_recommendations(self, queries: List[Dict]) -> List[str]:
+        """Generate recommendations using Claude API"""
+        recommendations = []
+        for query_info in queries:
+            try:
+                response = self.client.messages.create(
+                    model=self.config.model or "claude-3-sonnet-20240229",
+                    max_tokens=self.config.max_tokens,
+                    temperature=self.config.temperature,
+                    messages=[{
+                        "role": "user", 
+                        "content": self._build_prompt(query_info)
+                    }]
+                )
+                recommendations.append(response.content[0].text)
+            except Exception as e:
+                logger.error(f"Claude API error: {e}")
+                recommendations.append("Error generating recommendation")
+        return recommendations
+    
+    def _build_prompt(self, query_info: Dict) -> str:
+        """Build Claude-specific prompt format"""
+        return f"""Analyze this slow SQL query and provide optimization recommendations:
+        
+Query: {query_info['query_text']}
+Duration: {query_info['avg_duration']}ms
+Frequency: {query_info['frequency']} times
+
+Provide specific, actionable optimization suggestions."""
+```
+
+**Step 3**: Update the factory method in `LLMClient`:
+```python
+@classmethod
+def create_client(cls, provider: AIProvider, config: LLMConfig) -> 'LLMClient':
+    """Factory method to create provider-specific clients"""
+    if provider == AIProvider.OPENAI:
+        return OpenAILLMClient(config)
+    elif provider == AIProvider.OLLAMA:
+        return OllamaLLMClient(config)
+    elif provider == AIProvider.CLAUDE:
+        return ClaudeLLMClient(config)
+    elif provider == AIProvider.GEMINI:
+        return GeminiLLMClient(config)
+    else:
+        raise ValueError(f"Unsupported AI provider: {provider}")
+```
+
+**Step 4**: Add configuration support:
+```yaml
+# .slowquerydoctor.yml
+ai_provider: "claude"
+ai_base_url: "https://api.anthropic.com"
+ai_model: "claude-3-sonnet-20240229"
+ai_api_key: "${CLAUDE_API_KEY}"
+ai_max_tokens: 300
+ai_temperature: 0.3
+```
+
+**Step 5**: Add environment variable support:
+```bash
+# Environment variables
+AI_PROVIDER=claude
+CLAUDE_API_KEY=your-claude-api-key
+AI_MODEL=claude-3-sonnet-20240229
+```
+
+#### Provider Implementation Checklist
+
+When adding a new provider, ensure:
+
+- [ ] **Error Handling**: Robust exception handling for API failures
+- [ ] **Rate Limiting**: Implement backoff and retry logic
+- [ ] **Model Configuration**: Support provider-specific model names
+- [ ] **Authentication**: Handle API keys, tokens, or custom auth
+- [ ] **Prompt Engineering**: Optimize prompts for the specific model
+- [ ] **Response Parsing**: Handle provider-specific response formats  
+- [ ] **Timeout Handling**: Configure appropriate request timeouts
+- [ ] **Logging**: Add appropriate debug and error logging
+- [ ] **Testing**: Unit tests for the new provider integration
+- [ ] **Documentation**: Update configuration examples and README
+
+#### Example: Custom Private Endpoint
+
+```python
+class CustomLLMClient(LLMClient):
+    """For private/enterprise AI endpoints"""
+    
+    def __init__(self, config: LLMConfig):
+        super().__init__(config)
+        self.base_url = config.base_url or "https://your-private-ai.company.com"
+        self.headers = {
+            "Authorization": f"Bearer {config.api_key}",
+            "Content-Type": "application/json",
+            "X-API-Version": "2024-01"
+        }
+    
+    def batch_generate_recommendations(self, queries: List[Dict]) -> List[str]:
+        # Implementation for your custom endpoint
+        pass
 ```
 
 ### 4. New Output Formats
@@ -424,6 +536,49 @@ mypy>=1.0.0            # Type checking
 
 ---
 
+## Release and Tagging Strategy
+
+### Version Tagging Convention
+
+To clearly communicate the development roadmap and feature freeze states:
+
+**v0.1.x Series (Feature Complete)**:
+- `v0.1.6-final-feature` - Final release with new features
+- `v0.1.7` - Bug fixes only
+- `v0.1.8` - Bug fixes only
+
+**v0.2.x Series (Active Development)**:
+- `v0.2.0-beta.1` - Early beta with Ollama integration
+- `v0.2.0-rc.1` - Release candidate
+- `v0.2.0` - Stable release
+
+**Special Tags**:
+- `v0.1.6-final-feature` - Explicitly marks the end of v0.1.x feature development
+- `v0.2.0-ai-providers` - Major milestone for configurable AI providers
+- `v0.4.0-multi-database` - Major milestone for MySQL/SQL Server support
+
+### Release Branch Strategy
+
+```bash
+# Feature development branches
+feature/v0.2.0-ollama-integration
+feature/v0.2.0-explain-plans
+feature/v0.2.0-html-reports
+
+# Release branches
+release/v0.1.x    # Bug fixes only after v0.1.6
+release/v0.2.0    # Active feature development
+release/v0.3.0    # Future ML features
+
+# Maintenance
+hotfix/v0.1.7-critical-parser-fix
+```
+
+This tagging strategy makes it immediately clear to anyone browsing the repository:
+- Which releases contain new features vs. bug fixes
+- Where the feature development boundary lies
+- What major capabilities each release introduced
+
 ## Related Documentation
 
 - [README.md](README.md) - Project overview and quick start
@@ -435,5 +590,7 @@ mypy>=1.0.0            # Type checking
 - [docs/examples.md](docs/examples.md) - Usage examples
 - [docs/advanced-features.md](docs/advanced-features.md) - Advanced configuration
 - [docs/sample-data.md](docs/sample-data.md) - Sample log files documentation
+- [docs/sample_logs/mysql/](docs/sample_logs/mysql/) - Future MySQL sample logs
+- [docs/sample_logs/sqlserver/](docs/sample_logs/sqlserver/) - Future SQL Server sample logs
 
 **Made with ❤️ for database performance optimization**

@@ -128,7 +128,16 @@ python -m slowquerydoctor /path/to/your/postgresql.log \
 
 ## 📂 Sample Log Files
 
-The `sample_logs/` directory contains real database slow query log examples for testing and demonstration (currently PostgreSQL format):
+The `docs/sample_logs/` directory contains database slow query log examples for testing and demonstration:
+
+### Current Support (v0.1.x)
+- **PostgreSQL**: Real sample logs from 100M record database operations
+
+### Future Support (v0.4.0 - Q3 2026)
+- **MySQL**: Placeholder directory with configuration examples and feedback collection
+- **SQL Server**: Placeholder directory with Extended Events samples and configuration
+
+> 💡 **Early Feedback Welcome**: If you're a MySQL or SQL Server user, visit the placeholder directories to see planned formats and share your specific use cases!
 
 ### Available Sample Files
 

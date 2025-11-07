@@ -59,11 +59,17 @@
 # - [ravi-ideas] (defer to v0.3 milestone)
 
 # ============================================================================
-# WEEKLY DISCIPLINE
+# WEEKLY DISCIPLINE & RELEASE STRATEGY
 # ============================================================================
-# Don't chase v0.3 features while v0.1.5 isn't fully polished
+# Don't chase v0.3 features while v0.1.x isn't fully polished
 # ML is 6+ months away - stop asking about it before v0.2 ships
-# Focus: Ship v1 excellently, not quickly
+# Focus: Ship excellently, not quickly
+#
+# TAGGING STRATEGY:
+# v0.1.6-final-feature = Last v0.1.x with new features
+# v0.1.7+ = Bug fixes only (no -final suffix needed)
+# v0.2.0-beta.1 = Early AI provider integration
+# v0.2.0-ai-providers = Major AI milestone
 
 # ============================================================================
 # COMMIT MESSAGE TEMPLATE
