@@ -1,12 +1,19 @@
 # 🩺 Slow Query Doctor
 
-An intelligent PostgreSQL performance analyzer that uses AI to diagnose slow queries and provide actionable optimization recommendations.
+An intelligent database performance analyzer that uses AI to diagnose slow queries and provide actionable optimization recommendations.
+
+## 🎯 **Current Support: PostgreSQL Only**
+**✅ Ready to use**: PostgreSQL slow query analysis with AI-powered recommendations  
+**🚧 Coming Q3 2026**: MySQL and SQL Server support in v0.4.0
+
+> **🚀 Interested in early MySQL/SQL Server testing?** [File an issue](https://github.com/iqtoolkit/slow-query-doctor/issues/new?labels=mysql-feedback,sqlserver-feedback&title=Early%20Testing%20Interest) to get involved before v0.4.0 development starts!
 
 ![Python](https://img.shields.io/badge/python-3.11+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![OpenAI](https://img.shields.io/badge/AI-OpenAI%20GPT--4o--mini-orange.svg)
-![Build Status](https://img.shields.io/github/actions/workflow/status/gmartinez-dbai/slow-query-doctor/ci.yml?branch=main)
-![Coverage](https://img.shields.io/codecov/c/github/gmartinez-dbai/slow-query-doctor?logo=codecov)
+![PostgreSQL](https://img.shields.io/badge/database-PostgreSQL%20Ready-336791?logo=postgresql&logoColor=white)
+![MySQL](https://img.shields.io/badge/database-MySQL%20Planned%20v0.4.0-4479A1?logo=mysql&logoColor=white)
+![SQL Server](https://img.shields.io/badge/database-SQL%20Server%20Planned%20v0.4.0-CC2927?logo=microsoftssqlserver&logoColor=white)
 
 ![Docker](https://img.shields.io/badge/docker-ready-blue.svg)
 
@@ -49,20 +56,36 @@ An intelligent PostgreSQL performance analyzer that uses AI to diagnose slow que
 
 ## 🎯 Overview
 
-Slow Query Doctor automatically analyzes your PostgreSQL slow query logs and provides intelligent, AI-powered optimization recommendations. It identifies performance bottlenecks, calculates impact scores, and generates detailed reports with specific suggestions for improving database performance.
+Slow Query Doctor automatically analyzes your **PostgreSQL** slow query logs and provides intelligent, AI-powered optimization recommendations. It identifies performance bottlenecks, calculates impact scores, and generates detailed reports with specific suggestions for improving database performance.
+
+### 🗄️ **Database Support Status**
+| Database | Status | Version | Timeline |
+|----------|--------|---------|----------|
+| **PostgreSQL** | ✅ **Fully Supported** | v0.1.x+ | Available now |
+| **MySQL** | 🚧 Planned | v0.4.0 | Q3 2026 |
+| **SQL Server** | 🚧 Planned | v0.4.0 | Q3 2026 |
+
+> **📢 Want to influence MySQL/SQL Server development?** Check out our [future database sample directories](docs/sample_logs/) and share your specific requirements!
+
+> **v0.1.6 Release Note**: This is the **final v0.1.x release with new features**. It includes comprehensive architecture documentation and prepares the codebase for multi-database support coming in v0.4.0. All references have been updated from "PostgreSQL-specific" to "database log analyzer" to reflect our roadmap for MySQL and SQL Server support. Future v0.1.x releases (v0.1.7+) will contain **bug fixes only** - all new features move to v0.2.0+.
 
 
 ### Key Features
 
-- 🔍 **Smart Log Parsing**: Extracts slow queries from PostgreSQL logs, now supports multi-line queries and unusual characters
+- 🔍 **Smart Log Parsing**: Extracts slow queries from database logs, supports multi-line queries and unusual characters
 - 📊 **Impact Analysis**: Calculates query impact using duration × frequency scoring
-- 🤖 **AI-Powered Recommendations**: Uses OpenAI GPT to provide specific optimization advice
+- 🤖 **AI-Powered Recommendations**: Configurable AI providers (OpenAI in v0.1.x, Ollama default + OpenAI optional in v0.2.0+)
 - 📝 **Comprehensive Reports**: Generates detailed Markdown reports with statistics and recommendations
-- 📂 **Sample Data Included**: Ready-to-use sample log files for testing and demonstration
+- 📂 **Sample Data Included**: Ready-to-use sample PostgreSQL log files for testing and demonstration
 - 🗂️ **Multiple Log Formats**: Supports plain, CSV, and JSON log formats
 - ⚙️ **Config File Support**: Use a `.slowquerydoctor.yml` file to customize analysis options
+- 🔒 **Privacy-First**: v0.2.0+ defaults to local Ollama models with configurable OpenAI option
+- 🔧 **Extensible**: Future-ready architecture supports multiple AI providers
 
 ## 🚀 Quick Start
+
+> **⚡ Ready to analyze PostgreSQL slow queries right now?** Follow the installation below.  
+> **🔮 Planning for MySQL/SQL Server?** [Join the early feedback program](https://github.com/iqtoolkit/slow-query-doctor/discussions) to shape v0.4.0 development!
 
 ### Installation
 
@@ -124,7 +147,18 @@ python -m slowquerydoctor /path/to/your/postgresql.log \
 
 ## 📂 Sample Log Files
 
-The `sample_logs/` directory contains real PostgreSQL slow query log examples for testing and demonstration:
+The `docs/sample_logs/` directory contains database slow query log examples for testing and demonstration:
+
+### ✅ **Current Support (v0.1.x)**
+- **PostgreSQL**: Real sample logs from 100M record database operations with authentic slow queries
+
+### 🚧 **Future Support (v0.4.0 - Q3 2026)**
+- **MySQL**: Placeholder directory with configuration examples and feedback collection → [View samples](docs/sample_logs/mysql/)
+- **SQL Server**: Placeholder directory with Extended Events samples and configuration → [View samples](docs/sample_logs/sqlserver/)
+
+> 🎯 **Early Feedback Opportunities**: 
+> - **MySQL Users**: [Share your slow query log formats and challenges](https://github.com/iqtoolkit/slow-query-doctor/issues/new?labels=mysql-feedback&title=MySQL%20Requirements)
+> - **SQL Server DBAs**: [Tell us about your Extended Events setup and pain points](https://github.com/iqtoolkit/slow-query-doctor/issues/new?labels=sqlserver-feedback&title=SQL%20Server%20Requirements)
 
 ### Available Sample Files
 
@@ -181,16 +215,17 @@ slow-query-doctor/
 
 ### Data Flow
 
-1. **Parse** → Extract slow queries from PostgreSQL logs
+1. **Parse** → Extract slow queries from database logs (currently PostgreSQL)
 2. **Analyze** → Calculate impact scores and normalize queries  
-3. **AI Analysis** → Generate optimization recommendations using GPT
+3. **AI Analysis** → Generate optimization recommendations using AI models
 4. **Report** → Create comprehensive Markdown analysis report
+
+> **Multi-Database Roadmap**: MySQL and SQL Server support planned for v0.4.0 (Q3 2026)
 
 
 ## ⚙️ Configuration
 
-
-### PostgreSQL Setup
+### 🐘 **PostgreSQL Setup** (Current Focus)
 
 See the full guide: [docs/slow_query_log_setup.md](docs/slow_query_log_setup.md)
 
@@ -238,11 +273,20 @@ This guide covers:
 
 ### Environment Variables
 
+**Current (v0.1.x - OpenAI only):**
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `OPENAI_API_KEY` | OpenAI API key (required) | None |
 | `OPENAI_MODEL` | GPT model to use | `gpt-4o-mini` |
 | `OPENAI_BASE_URL` | Custom OpenAI endpoint | `https://api.openai.com/v1` |
+
+**Coming in v0.2.0 (Configurable AI providers):**
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `AI_PROVIDER` | AI provider selection | `ollama` |
+| `AI_BASE_URL` | Provider endpoint | `http://localhost:11434` (Ollama) |
+| `AI_MODEL` | Provider-specific model | `llama2` (Ollama) / `gpt-4o-mini` (OpenAI) |
+| `AI_API_KEY` | API key (if required) | None (Ollama) / Required (OpenAI) |
 
 ### Configuration File
 
@@ -443,8 +487,25 @@ pip install .[dev,test]
 ```
 ## 📈 Roadmap, Technical Debt & Contributing
 
-- See [ROADMAP.md](ROADMAP.md) for the full project roadmap, upcoming features, and community requests.
+**Database Support Roadmap:**
+- **v0.1.6** (Nov 2025): Final v0.1.x feature release - Documentation & architecture updates 🔒
+- **v0.1.7+**: Bug fixes only (feature freeze for v0.1.x branch)
+- **v0.2.0** (Nov 2025 - Q1 2026): Configurable AI providers (Ollama default), enhanced config system, EXPLAIN plans, HTML reports 🔧
+- **v0.3.0** (Q2 2026): ML/self-learning features 📋
+- **v0.4.0** (Q3 2026): **MySQL and SQL Server support** 📋
+
+**AI Provider Strategy:**
+- **v0.1.x**: OpenAI only (privacy concerns for sensitive data)
+- **v0.2.0+**: Ollama by default + OpenAI configurable (privacy-first approach)
+- **Future**: Extensible to Claude, Gemini, custom models
+
+**When asked about new features**: 
+- **For v0.1.x**: "v0.1.6 is the final feature release. New features go to v0.2.0+ roadmap."
+- **For MySQL/SQL Server**: "Added to v0.4.0 roadmap (Q3 2026) - we're focusing on perfecting PostgreSQL analysis first with v0.2.0 configurable AI providers."
+
+- See [ROADMAP.md](ROADMAP.md) for the full project roadmap, timeline, and community requests.
 - See [TECHNICAL_DEBT.md](TECHNICAL_DEBT.md) for known limitations and areas for future improvement.
 - See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines and code standards.
+- See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed system architecture and extension points.
 
 **Made with ❤️ for Database performance optimization**

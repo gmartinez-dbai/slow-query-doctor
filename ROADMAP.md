@@ -1,55 +1,71 @@
 # 🚦 Slow Query Doctor Roadmap
 
-## Current Release: v0.1.1
+## Current Release: v0.1.5 ✅ SHIPPED
 
-- PostgreSQL slow query log parsing
+- Database slow query log parsing (PostgreSQL focus)
 - Query normalization and grouping
 - Statistical analysis (impact scores, percentiles)
-- GPT-4 powered optimization recommendations
+- AI-powered optimization recommendations (OpenAI only)
 - Markdown report generation
 - Docker containerization
+- Anti-pattern detection
+- Multi-format log support (plain, CSV, JSON)
+
+**Privacy Note**: v0.1.x sends data to OpenAI's public API. For sensitive database logs, wait for v0.2.0 with local Ollama support.
 
 ---
 
+## v0.1.6 - Final v0.1.x Feature Release (November 2025) 🔒 FEATURE FREEZE
 
-## v0.1.x - Polish & Bug Fixes (November 2025)
+**Focus:** Complete documentation and prepare for v0.2.0
 
-**Focus:** Improve v1 based on real user feedback
+**🚨 IMPORTANT**: This is the **FINAL v0.1.x release with new features**. Any future v0.1.x updates (v0.1.7+) will be **bug fixes only**. All new features go to v0.2.0+.
 
-- [x] Add better sample outputs showing diverse query patterns
-- [x] Improve recommendation quality (distinguish between missing indexes, query rewrites, schema changes)
-- [x] Add more detailed explanations for why queries are slow
-- [x] Handle edge cases in log parsing (multi-line queries, special characters)
-- [x] Add support for different PostgreSQL log formats (plain, CSV, JSON)
-- [x] Improve error messages and user guidance
-- [x] Add configuration file support (.slowquerydoctor.yml)
+- [x] Add comprehensive ARCHITECTURE.md documentation
+- [x] Update all references from "PostgreSQL-specific" to "database log analyzer"
+- [x] Clear roadmap timeline and scope boundaries
+- [x] Project discipline guidelines (.gitmessage)
+- [x] Prepare codebase for multi-database expansion in v0.4.0
+- [x] Plan configurable AI provider architecture (Ollama default, OpenAI optional)
+- [x] Design extensible AI provider system for future models (Claude, Gemini, etc.)
+- [x] Create placeholder sample log directories for MySQL and SQL Server
+- [x] Add comprehensive AI provider extensibility guide in ARCHITECTURE.md
+- [x] Establish release tagging strategy (v0.1.6-final-feature)
+
+**Post-v0.1.6**: Only critical bug fixes allowed in v0.1.x branch. Feature development moves to v0.2.0.
 
 ---
 
+## v0.2.0 - Enhanced Analysis & Flexible AI (Nov 2025 - Q1 2026) 🔧 IN PROGRESS
 
-## v0.2.0 - Enhanced Analysis (Q1 2026)
+**Focus:** Enterprise-grade analysis with configurable AI providers
 
-**Focus:** Deeper query analysis and better insights
+**🚨 AI PROVIDER FLEXIBILITY**
+- Database logs = sensitive business data
+- **Default: Ollama** (local, private, enterprise-safe)
+- **Optional: OpenAI** (configurable for non-sensitive environments)
+- **Future-ready**: Pluggable architecture for multiple AI providers
 
+**Features:**
+- [ ] **Configurable AI providers** (Ollama default, OpenAI optional)
+- [ ] **Flexible model configuration** (custom endpoints, multiple models)
+- [ ] **Enhanced configuration system** (expanded .slowquerydoctor.yml options)
 - [ ] Add EXPLAIN plan analysis integration
-- [ ] Show table/index statistics when available
-- [ ] Detect common anti-patterns (N+1, missing joins, etc.)
-- [ ] Add query complexity scoring
-- [ ] Support for analyzing multiple log files at once
-- [ ] Generate comparison reports (before/after optimization)
-- [ ] Add HTML report generation
-- [ ] Export to JSON/CSV for further analysis
-- [ ] Expand config file options and log format auto-detection
+- [ ] Enhanced anti-pattern detection engine
+- [ ] HTML report generation (interactive dashboards)
+- [ ] Multi-file analysis (batch processing)
+- [ ] FastAPI backend for programmatic access
+- [ ] Query complexity scoring and classification
 
 ---
 
-## v0.3.0 - Self-Learning & Predictive Analysis (Q2 2026)
+## v0.3.0 - Self-Learning & ML Intelligence (Q2 2026) 🚫 DO NOT START
 
 **Focus:** ML-based intelligence and historical tracking
 
 - [ ] Track query performance over time (historical database)
-- [ ] Identify performance regression patterns
 - [ ] ML-based anomaly detection for new slow queries
+- [ ] Identify performance regression patterns
 - [ ] Confidence scoring for recommendations
 - [ ] Trend analysis (queries getting slower over time)
 - [ ] Automatic baseline detection
@@ -62,11 +78,19 @@
 
 **Focus:** Expand beyond PostgreSQL
 
-- [ ] MySQL slow query log support
-- [ ] SQL Server Extended Events support
-- [ ] Oracle AWR report integration
-- [ ] Database-agnostic query analysis
+- [ ] **MySQL slow query log support**
+- [ ] **SQL Server Extended Events support**
+- [ ] Database-agnostic query analysis engine
 - [ ] Cross-database performance comparison
+- [ ] Unified configuration for multiple database types
+- [ ] Database-specific optimization recommendations
+
+**Early Feedback Collection:**
+- 📁 `docs/sample_logs/mysql/` - Configuration examples and feedback templates
+- 📁 `docs/sample_logs/sqlserver/` - Extended Events samples and feedback collection
+- 🎯 **Goal**: Collect real-world requirements before development starts
+
+**Note:** Oracle support not planned - focusing on PostgreSQL, MySQL, and SQL Server as the most common enterprise databases.
 
 ---
 
@@ -102,8 +126,20 @@
 
 Track feature requests from users here:
 
-- **Ravi Bhatia:** ML/self-learning system for recommendations → Planned for v0.3.0
-- **Uri Dimant:** Better examples showing query tuning (not just index recommendations) → In progress for v0.1.2
+- **Ravi Bhatia:** ML/self-learning system for recommendations → BACKLOG (v0.3.0, Q2 2026)
+- **Uri Dimant:** Query rewrites (not just indexes) → IMPLEMENTED ✅
+
+## Version Timeline Summary
+
+| Version | Timeline | Status | Key Features |
+|---------|----------|--------|--------------|
+| v0.1.5 | ✅ SHIPPED | Mature | PostgreSQL analyzer with OpenAI integration |
+| v0.1.6 | Nov 2025 | � Feature Freeze | **Final v0.1.x with new features** - Documentation, architecture, AI provider planning |
+| v0.1.7+ | Ongoing | 🐛 Bug Fixes Only | Critical fixes, no new features |
+| v0.2.0 | Nov 2025 - Q1 2026 | 🔧 In Progress | **Configurable AI providers** (Ollama default, OpenAI optional), enhanced config system, EXPLAIN plans, HTML reports |
+| v0.3.0 | Q2 2026 | 🚫 Do Not Start | ML/self-learning, anomaly detection |
+| v0.4.0 | Q3 2026 | 📋 Planned | **MySQL, SQL Server support** |
+| v1.0.0 | Q4 2026 | 📋 Planned | Web UI, enterprise features |
 
 ---
 
