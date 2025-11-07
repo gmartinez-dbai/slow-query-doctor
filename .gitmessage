@@ -14,18 +14,18 @@
 # ⚠️  v0.1.7+ = BUG FIXES ONLY (no new features)
 
 # ============================================================================
-# AI PROVIDER STRATEGY: FLEXIBLE WITH PRIVACY-FIRST DEFAULT
+# AI PROVIDER STRATEGY: EVOLUTION FROM OPENAI TO CONFIGURABLE
 # ============================================================================
 # Database logs = sensitive business data (PostgreSQL now, MySQL/SQL Server in v0.4.0)
-# v0.1.x: OpenAI only (compliance risk for sensitive data)
+# v0.1.x: OpenAI ONLY (requires OPENAI_API_KEY, privacy risk for sensitive data)
 # v0.2.0+: Configurable providers - Ollama DEFAULT, OpenAI optional
-# Future: Extensible to other AI providers (Claude, Gemini, etc.)
+# Future: Extensible to other AI providers (Claude, Gemini, custom endpoints)
 
-# If this commit touches AI integration:
-# [ ] Ollama as default? YES / NO
-# [ ] OpenAI still configurable? YES / NO
-# [ ] Supports custom endpoints? YES / NO
-# [ ] Privacy-compliant by default? YES / NO
+# If this commit touches AI integration, confirm version:
+# [ ] v0.1.x: OpenAI only? YES / NO
+# [ ] v0.2.0+: Ollama default + OpenAI optional? YES / NO
+# [ ] Maintains backward compatibility? YES / NO
+# [ ] Updates environment variable names consistently? YES / NO
 
 # ============================================================================
 # v0.2.0 SCOPE (DO NOT EXPAND)

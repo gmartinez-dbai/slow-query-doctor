@@ -89,12 +89,13 @@ class SlowQuery:
 - `AIProvider`: Enum for supported providers (OpenAI, Ollama, future: Claude, Gemini)
 
 **Features**:
-- **Configurable AI providers** (Ollama default, OpenAI optional)
+- **v0.1.x**: OpenAI API integration only
+- **v0.2.0+**: Configurable AI providers (Ollama default, OpenAI optional)
 - **Custom endpoints** and model configuration
 - Batch recommendation generation
 - Timeout and error handling
 - Environment variable integration
-- **Privacy-first defaults** (local Ollama)
+- **Privacy evolution**: OpenAI (v0.1.x) → Local Ollama default (v0.2.0+)
 
 **Architecture**:
 ```python
@@ -240,17 +241,26 @@ ReportGenerator.generate_markdown_report(top_queries, summary, recommendations) 
 ## Configuration System
 
 ### Environment Variables
+
+**Current (v0.1.x - OpenAI Only)**:
 ```bash
-# AI Provider Configuration (v0.2.0+)
+OPENAI_API_KEY     # OpenAI API key (REQUIRED)
+OPENAI_MODEL       # Model selection (default: gpt-4o-mini)  
+OPENAI_BASE_URL    # Custom OpenAI endpoint
+```
+
+**Coming (v0.2.0+ - Configurable Providers)**:
+```bash
+# Primary AI Provider Configuration
 AI_PROVIDER        # Provider selection (default: ollama)
 AI_BASE_URL        # Custom endpoint for any provider
 AI_MODEL           # Model selection (provider-specific)
 AI_API_KEY         # API key (if required by provider)
 
-# Legacy OpenAI (v0.1.x compatibility)
-OPENAI_API_KEY     # OpenAI API key
-OPENAI_MODEL       # Model selection (default: gpt-4o-mini)  
-OPENAI_BASE_URL    # Custom OpenAI endpoint
+# Backward Compatibility (will be deprecated)
+OPENAI_API_KEY     # Still supported for OpenAI provider
+OPENAI_MODEL       # Still supported for OpenAI provider
+OPENAI_BASE_URL    # Still supported for OpenAI provider
 ```
 
 ### Configuration File (`.slowquerydoctor.yml`)
@@ -263,16 +273,17 @@ min_duration_ms: 1000
 top_n: 10
 impact_threshold: 0.8
 
-# AI Provider settings (v0.2.0+)
-ai_provider: "ollama"        # ollama (default), openai
+# Current AI settings (v0.1.x - OpenAI only)
+openai_model: "gpt-4o-mini"
+openai_max_tokens: 200
+openai_temperature: 0.3
+
+# Coming AI provider settings (v0.2.0+)
+ai_provider: "ollama"        # ollama (default), openai, claude, gemini
 ai_base_url: "http://localhost:11434"  # Custom endpoint
 ai_model: "llama2"           # Provider-specific model
 ai_max_tokens: 200
 ai_temperature: 0.3
-
-# Legacy OpenAI settings (v0.1.x compatibility)
-openai_model: "gpt-4o-mini"
-openai_max_tokens: 200
 
 # Output settings
 output_dir: "reports"
