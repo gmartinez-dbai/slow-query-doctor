@@ -81,21 +81,25 @@ class SlowQuery:
 
 ### 3. LLM Client Module (`llm_client.py`)
 
-**Purpose**: Interfaces with OpenAI API for intelligent recommendations
+**Purpose**: Interfaces with configurable AI providers for intelligent recommendations
 
 **Key Classes**:
-- `LLMConfig`: Configuration data class
+- `LLMConfig`: Configuration data class with provider selection
 - `LLMClient`: Main API client with batch processing
+- `AIProvider`: Enum for supported providers (OpenAI, Ollama, future: Claude, Gemini)
 
 **Features**:
-- Configurable models, temperature, token limits
+- **Configurable AI providers** (Ollama default, OpenAI optional)
+- **Custom endpoints** and model configuration
 - Batch recommendation generation
 - Timeout and error handling
 - Environment variable integration
+- **Privacy-first defaults** (local Ollama)
 
 **Architecture**:
 ```python
 class LLMClient:
+    def __init__(self, provider: AIProvider = AIProvider.OLLAMA)
     def batch_generate_recommendations(self, queries: List[Dict]) -> List[str]
 ```
 
@@ -237,9 +241,16 @@ ReportGenerator.generate_markdown_report(top_queries, summary, recommendations) 
 
 ### Environment Variables
 ```bash
-OPENAI_API_KEY     # Required for AI features
+# AI Provider Configuration (v0.2.0+)
+AI_PROVIDER        # Provider selection (default: ollama)
+AI_BASE_URL        # Custom endpoint for any provider
+AI_MODEL           # Model selection (provider-specific)
+AI_API_KEY         # API key (if required by provider)
+
+# Legacy OpenAI (v0.1.x compatibility)
+OPENAI_API_KEY     # OpenAI API key
 OPENAI_MODEL       # Model selection (default: gpt-4o-mini)  
-OPENAI_BASE_URL    # Custom API endpoint
+OPENAI_BASE_URL    # Custom OpenAI endpoint
 ```
 
 ### Configuration File (`.slowquerydoctor.yml`)
@@ -252,10 +263,16 @@ min_duration_ms: 1000
 top_n: 10
 impact_threshold: 0.8
 
-# LLM settings
-model: "gpt-4o-mini"
-max_tokens: 200
-temperature: 0.3
+# AI Provider settings (v0.2.0+)
+ai_provider: "ollama"        # ollama (default), openai
+ai_base_url: "http://localhost:11434"  # Custom endpoint
+ai_model: "llama2"           # Provider-specific model
+ai_max_tokens: 200
+ai_temperature: 0.3
+
+# Legacy OpenAI settings (v0.1.x compatibility)
+openai_model: "gpt-4o-mini"
+openai_max_tokens: 200
 
 # Output settings
 output_dir: "reports"
@@ -331,12 +348,18 @@ def detect_your_pattern(self, query: str) -> List[AntiPatternMatch]:
     # Implementation
 ```
 
-### 3. Alternative AI Providers
-Implement `LLMClient` interface:
+### 3. Additional AI Providers
+Extend `AIProvider` enum and implement provider-specific clients:
 ```python
-class CustomLLMClient(LLMClient):
+class AIProvider(Enum):
+    OLLAMA = "ollama"
+    OPENAI = "openai"
+    CLAUDE = "claude"      # Future
+    GEMINI = "gemini"      # Future
+
+class ClaudeLLMClient(LLMClient):
     def batch_generate_recommendations(self, queries):
-        # Custom AI integration
+        # Claude AI integration
 ```
 
 ### 4. New Output Formats

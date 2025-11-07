@@ -5,37 +5,48 @@
 - Database slow query log parsing (PostgreSQL focus)
 - Query normalization and grouping
 - Statistical analysis (impact scores, percentiles)
-- AI-powered optimization recommendations (OpenAI integration)
+- AI-powered optimization recommendations (OpenAI only)
 - Markdown report generation
 - Docker containerization
 - Anti-pattern detection
 - Multi-format log support (plain, CSV, JSON)
 
+**Privacy Note**: v0.1.x sends data to OpenAI's public API. For sensitive database logs, wait for v0.2.0 with local Ollama support.
+
 ---
 
-## v0.1.6 - Documentation & Architecture (November 2025)
+## v0.1.6 - Final v0.1.x Feature Release (November 2025) 🔒 FEATURE FREEZE
 
 **Focus:** Complete documentation and prepare for v0.2.0
+
+**🚨 IMPORTANT**: This is the **FINAL v0.1.x release with new features**. Any future v0.1.x updates (v0.1.7+) will be **bug fixes only**. All new features go to v0.2.0+.
 
 - [x] Add comprehensive ARCHITECTURE.md documentation
 - [x] Update all references from "PostgreSQL-specific" to "database log analyzer"
 - [x] Clear roadmap timeline and scope boundaries
 - [x] Project discipline guidelines (.gitmessage)
 - [x] Prepare codebase for multi-database expansion in v0.4.0
+- [x] Plan configurable AI provider architecture (Ollama default, OpenAI optional)
+- [x] Design extensible AI provider system for future models (Claude, Gemini, etc.)
+
+**Post-v0.1.6**: Only critical bug fixes allowed in v0.1.x branch. Feature development moves to v0.2.0.
 
 ---
 
-## v0.2.0 - Enhanced Analysis & Privacy (Nov 2025 - Q1 2026) 🔧 IN PROGRESS
+## v0.2.0 - Enhanced Analysis & Flexible AI (Nov 2025 - Q1 2026) 🔧 IN PROGRESS
 
-**Focus:** Enterprise-grade analysis with local AI
+**Focus:** Enterprise-grade analysis with configurable AI providers
 
-**🚨 CORE CONSTRAINT: OLLAMA NOT OPENAI**
-- PostgreSQL logs = sensitive business data
-- v0.1.x OpenAI = compliance violation
-- v0.2.0 Ollama = local, private, enterprise-safe
+**🚨 AI PROVIDER FLEXIBILITY**
+- Database logs = sensitive business data
+- **Default: Ollama** (local, private, enterprise-safe)
+- **Optional: OpenAI** (configurable for non-sensitive environments)
+- **Future-ready**: Pluggable architecture for multiple AI providers
 
 **Features:**
-- [ ] **Ollama integration** (replace OpenAI for data privacy)
+- [ ] **Configurable AI providers** (Ollama default, OpenAI optional)
+- [ ] **Flexible model configuration** (custom endpoints, multiple models)
+- [ ] **Enhanced configuration system** (expanded .slowquerydoctor.yml options)
 - [ ] Add EXPLAIN plan analysis integration
 - [ ] Enhanced anti-pattern detection engine
 - [ ] HTML report generation (interactive dashboards)
@@ -115,8 +126,9 @@ Track feature requests from users here:
 | Version | Timeline | Status | Key Features |
 |---------|----------|--------|--------------|
 | v0.1.5 | ✅ SHIPPED | Mature | PostgreSQL analyzer with OpenAI integration |
-| v0.1.6 | Nov 2025 | 🔧 Current | Documentation, architecture, project discipline |
-| v0.2.0 | Nov 2025 - Q1 2026 | 🔧 In Progress | **Ollama integration**, EXPLAIN plans, HTML reports |
+| v0.1.6 | Nov 2025 | � Feature Freeze | **Final v0.1.x with new features** - Documentation, architecture, AI provider planning |
+| v0.1.7+ | Ongoing | 🐛 Bug Fixes Only | Critical fixes, no new features |
+| v0.2.0 | Nov 2025 - Q1 2026 | 🔧 In Progress | **Configurable AI providers** (Ollama default, OpenAI optional), enhanced config system, EXPLAIN plans, HTML reports |
 | v0.3.0 | Q2 2026 | 🚫 Do Not Start | ML/self-learning, anomaly detection |
 | v0.4.0 | Q3 2026 | 📋 Planned | **MySQL, SQL Server support** |
 | v1.0.0 | Q4 2026 | 📋 Planned | Web UI, enterprise features |

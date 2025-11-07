@@ -51,19 +51,20 @@ An intelligent database performance analyzer that uses AI to diagnose slow queri
 
 Slow Query Doctor automatically analyzes your database slow query logs and provides intelligent, AI-powered optimization recommendations. Currently focused on PostgreSQL, it identifies performance bottlenecks, calculates impact scores, and generates detailed reports with specific suggestions for improving database performance.
 
-> **v0.1.6 Release Note**: This version includes comprehensive architecture documentation and prepares the codebase for multi-database support coming in v0.4.0. All references have been updated from "PostgreSQL-specific" to "database log analyzer" to reflect our roadmap for MySQL and SQL Server support.
+> **v0.1.6 Release Note**: This is the **final v0.1.x release with new features**. It includes comprehensive architecture documentation and prepares the codebase for multi-database support coming in v0.4.0. All references have been updated from "PostgreSQL-specific" to "database log analyzer" to reflect our roadmap for MySQL and SQL Server support. Future v0.1.x releases (v0.1.7+) will contain **bug fixes only** - all new features move to v0.2.0+.
 
 
 ### Key Features
 
 - 🔍 **Smart Log Parsing**: Extracts slow queries from database logs, supports multi-line queries and unusual characters
 - 📊 **Impact Analysis**: Calculates query impact using duration × frequency scoring
-- 🤖 **AI-Powered Recommendations**: Uses AI to provide specific optimization advice (OpenAI in v0.1.x, Ollama in v0.2.0+)
+- 🤖 **AI-Powered Recommendations**: Configurable AI providers (OpenAI in v0.1.x, Ollama default + OpenAI optional in v0.2.0+)
 - 📝 **Comprehensive Reports**: Generates detailed Markdown reports with statistics and recommendations
 - 📂 **Sample Data Included**: Ready-to-use sample PostgreSQL log files for testing and demonstration
 - 🗂️ **Multiple Log Formats**: Supports plain, CSV, and JSON log formats
 - ⚙️ **Config File Support**: Use a `.slowquerydoctor.yml` file to customize analysis options
-- 🔒 **Enterprise-Ready**: v0.2.0+ uses local Ollama models for data privacy compliance
+- 🔒 **Privacy-First**: v0.2.0+ defaults to local Ollama models with configurable OpenAI option
+- 🔧 **Extensible**: Future-ready architecture supports multiple AI providers
 
 ## 🚀 Quick Start
 
@@ -243,11 +244,20 @@ This guide covers:
 
 ### Environment Variables
 
+**Current (v0.1.x - OpenAI only):**
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `OPENAI_API_KEY` | OpenAI API key (required) | None |
 | `OPENAI_MODEL` | GPT model to use | `gpt-4o-mini` |
 | `OPENAI_BASE_URL` | Custom OpenAI endpoint | `https://api.openai.com/v1` |
+
+**Coming in v0.2.0 (Configurable AI providers):**
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `AI_PROVIDER` | AI provider selection | `ollama` |
+| `AI_BASE_URL` | Provider endpoint | `http://localhost:11434` (Ollama) |
+| `AI_MODEL` | Provider-specific model | `llama2` (Ollama) / `gpt-4o-mini` (OpenAI) |
+| `AI_API_KEY` | API key (if required) | None (Ollama) / Required (OpenAI) |
 
 ### Configuration File
 
@@ -449,12 +459,20 @@ pip install .[dev,test]
 ## 📈 Roadmap, Technical Debt & Contributing
 
 **Database Support Roadmap:**
-- **v0.1.6** (Nov 2025): Documentation & architecture updates ✅
-- **v0.2.0** (Nov 2025 - Q1 2026): Ollama integration, EXPLAIN plans, HTML reports 🔧
+- **v0.1.6** (Nov 2025): Final v0.1.x feature release - Documentation & architecture updates 🔒
+- **v0.1.7+**: Bug fixes only (feature freeze for v0.1.x branch)
+- **v0.2.0** (Nov 2025 - Q1 2026): Configurable AI providers (Ollama default), enhanced config system, EXPLAIN plans, HTML reports 🔧
 - **v0.3.0** (Q2 2026): ML/self-learning features 📋
 - **v0.4.0** (Q3 2026): **MySQL and SQL Server support** 📋
 
-**When asked about MySQL/SQL Server**: "Added to v0.4.0 roadmap (Q3 2026) - we're focusing on perfecting PostgreSQL analysis first with v0.2.0 Ollama integration."
+**AI Provider Strategy:**
+- **v0.1.x**: OpenAI only (privacy concerns for sensitive data)
+- **v0.2.0+**: Ollama by default + OpenAI configurable (privacy-first approach)
+- **Future**: Extensible to Claude, Gemini, custom models
+
+**When asked about new features**: 
+- **For v0.1.x**: "v0.1.6 is the final feature release. New features go to v0.2.0+ roadmap."
+- **For MySQL/SQL Server**: "Added to v0.4.0 roadmap (Q3 2026) - we're focusing on perfecting PostgreSQL analysis first with v0.2.0 configurable AI providers."
 
 - See [ROADMAP.md](ROADMAP.md) for the full project roadmap, timeline, and community requests.
 - See [TECHNICAL_DEBT.md](TECHNICAL_DEBT.md) for known limitations and areas for future improvement.

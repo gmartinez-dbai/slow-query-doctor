@@ -6,22 +6,26 @@
 
 # PROJECT STATE (Nov 7, 2025)
 # ✅ v0.1.5: SHIPPED and mature (PostgreSQL analyzer)
-# 🔧 v0.1.6: CURRENT (docs update, database-agnostic prep)
-# 🔧 v0.2.0: IN PROGRESS (Nov 2025 - Q1 2026, Ollama integration)
+# � v0.1.6: FEATURE FREEZE - Final v0.1.x with new features
+# 🔧 v0.2.0: IN PROGRESS (Nov 2025 - Q1 2026, configurable AI)
 # 🚫 v0.3.0: DO NOT START (Q2 2026, ML features)
 # 📋 v0.4.0: PLANNED (Q3 2026, MySQL/SQL Server support)
+# 
+# ⚠️  v0.1.7+ = BUG FIXES ONLY (no new features)
 
 # ============================================================================
-# CORE CONSTRAINT: OLLAMA NOT OPENAI
+# AI PROVIDER STRATEGY: FLEXIBLE WITH PRIVACY-FIRST DEFAULT
 # ============================================================================
 # Database logs = sensitive business data (PostgreSQL now, MySQL/SQL Server in v0.4.0)
-# v0.1.x used OpenAI public API = compliance violation
-# v0.2.0+ uses Ollama = local, private, enterprise-safe
+# v0.1.x: OpenAI only (compliance risk for sensitive data)
+# v0.2.0+: Configurable providers - Ollama DEFAULT, OpenAI optional
+# Future: Extensible to other AI providers (Claude, Gemini, etc.)
 
-# If this commit touches LLM integration:
-# [ ] Using Ollama? YES / NO
-# [ ] No OpenAI fallback? YES / NO
-# [ ] Data stays on-premises? YES / NO
+# If this commit touches AI integration:
+# [ ] Ollama as default? YES / NO
+# [ ] OpenAI still configurable? YES / NO
+# [ ] Supports custom endpoints? YES / NO
+# [ ] Privacy-compliant by default? YES / NO
 
 # ============================================================================
 # v0.2.0 SCOPE (DO NOT EXPAND)
@@ -30,7 +34,7 @@
 # ✅ Anti-patterns
 # ✅ HTML reports
 # ✅ Multi-file analysis
-# ✅ Ollama integration
+# ✅ Configurable AI providers (Ollama default, OpenAI optional)
 # ✅ FastAPI backend
 
 # ❌ NOT v0.2.0:
@@ -39,6 +43,10 @@
 # - Web UI (that's v1.0.0, Q4 2026)
 # - Anomaly detection (that's v0.3.0)
 # - Oracle support (not planned - focusing on PostgreSQL, MySQL, SQL Server)
+# 
+# ❌ NOT v0.1.x (FEATURE FREEZE after v0.1.6):
+# - Any new features → Go to v0.2.0+ roadmap
+# - v0.1.7+ = Critical bug fixes only
 
 # ============================================================================
 # CONTRIBUTOR TRACKING
@@ -68,10 +76,11 @@
 
 # Related to v0.2.0 feature:
 # - [ ] EXPLAIN plans
-# - [ ] Anti-patterns
+# - [ ] Enhanced anti-patterns
 # - [ ] HTML reports
 # - [ ] Multi-file analysis
-# - [ ] Ollama integration
+# - [ ] Configurable AI providers (Ollama/OpenAI)
+# - [ ] Enhanced config file system
 # - [ ] FastAPI backend
 
 # ============================================================================
