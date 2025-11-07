@@ -1,0 +1,77 @@
+# v0.2.0 Project Discipline Reminders
+
+# ============================================================================
+# BEFORE YOU COMMIT - READ THIS
+# ============================================================================
+
+# PROJECT STATE (Nov 7, 2025)
+# ✅ v0.1.5: SHIPPED and mature (PostgreSQL analyzer)
+# 🔧 v0.1.6: CURRENT (docs update, database-agnostic prep)
+# 🔧 v0.2.0: IN PROGRESS (Nov 2025 - Q1 2026, Ollama integration)
+# 🚫 v0.3.0: DO NOT START (Q2 2026, ML features)
+# 📋 v0.4.0: PLANNED (Q3 2026, MySQL/SQL Server support)
+
+# ============================================================================
+# CORE CONSTRAINT: OLLAMA NOT OPENAI
+# ============================================================================
+# Database logs = sensitive business data (PostgreSQL now, MySQL/SQL Server in v0.4.0)
+# v0.1.x used OpenAI public API = compliance violation
+# v0.2.0+ uses Ollama = local, private, enterprise-safe
+
+# If this commit touches LLM integration:
+# [ ] Using Ollama? YES / NO
+# [ ] No OpenAI fallback? YES / NO
+# [ ] Data stays on-premises? YES / NO
+
+# ============================================================================
+# v0.2.0 SCOPE (DO NOT EXPAND)
+# ============================================================================
+# ✅ EXPLAIN plans
+# ✅ Anti-patterns
+# ✅ HTML reports
+# ✅ Multi-file analysis
+# ✅ Ollama integration
+# ✅ FastAPI backend
+
+# ❌ NOT v0.2.0:
+# - ML/self-learning (that's v0.3.0, Q2 2026)
+# - MySQL/SQL Server (that's v0.4.0, Q3 2026)
+# - Web UI (that's v1.0.0, Q4 2026)
+# - Anomaly detection (that's v0.3.0)
+# - Oracle support (not planned - focusing on PostgreSQL, MySQL, SQL Server)
+
+# ============================================================================
+# CONTRIBUTOR TRACKING
+# ============================================================================
+# Uri's feedback: Query rewrites (not just indexes) → IMPLEMENTED
+# Ravi's ideas: ML features → BACKLOG (v0.3)
+
+# If addressing feedback, tag it:
+# - [uri-feedback] for query rewrite improvements
+# - [ravi-ideas] (defer to v0.3 milestone)
+
+# ============================================================================
+# WEEKLY DISCIPLINE
+# ============================================================================
+# Don't chase v0.3 features while v0.1.5 isn't fully polished
+# ML is 6+ months away - stop asking about it before v0.2 ships
+# Focus: Ship v1 excellently, not quickly
+
+# ============================================================================
+# COMMIT MESSAGE TEMPLATE
+# ============================================================================
+
+# [v0.2.0] Brief description of what this commit does
+
+# More details here if needed.
+# Reference: GH-123 or @uri or @ravi if relevant
+
+# Related to v0.2.0 feature:
+# - [ ] EXPLAIN plans
+# - [ ] Anti-patterns
+# - [ ] HTML reports
+# - [ ] Multi-file analysis
+# - [ ] Ollama integration
+# - [ ] FastAPI backend
+
+# ============================================================================

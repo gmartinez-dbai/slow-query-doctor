@@ -1,6 +1,6 @@
 # 🩺 Slow Query Doctor
 
-An intelligent PostgreSQL performance analyzer that uses AI to diagnose slow queries and provide actionable optimization recommendations.
+An intelligent database performance analyzer that uses AI to diagnose slow queries and provide actionable optimization recommendations. Currently supports PostgreSQL with MySQL and SQL Server support planned for v0.4.0 (Q3 2026).
 
 ![Python](https://img.shields.io/badge/python-3.11+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
@@ -49,18 +49,21 @@ An intelligent PostgreSQL performance analyzer that uses AI to diagnose slow que
 
 ## 🎯 Overview
 
-Slow Query Doctor automatically analyzes your PostgreSQL slow query logs and provides intelligent, AI-powered optimization recommendations. It identifies performance bottlenecks, calculates impact scores, and generates detailed reports with specific suggestions for improving database performance.
+Slow Query Doctor automatically analyzes your database slow query logs and provides intelligent, AI-powered optimization recommendations. Currently focused on PostgreSQL, it identifies performance bottlenecks, calculates impact scores, and generates detailed reports with specific suggestions for improving database performance.
+
+> **v0.1.6 Release Note**: This version includes comprehensive architecture documentation and prepares the codebase for multi-database support coming in v0.4.0. All references have been updated from "PostgreSQL-specific" to "database log analyzer" to reflect our roadmap for MySQL and SQL Server support.
 
 
 ### Key Features
 
-- 🔍 **Smart Log Parsing**: Extracts slow queries from PostgreSQL logs, now supports multi-line queries and unusual characters
+- 🔍 **Smart Log Parsing**: Extracts slow queries from database logs, supports multi-line queries and unusual characters
 - 📊 **Impact Analysis**: Calculates query impact using duration × frequency scoring
-- 🤖 **AI-Powered Recommendations**: Uses OpenAI GPT to provide specific optimization advice
+- 🤖 **AI-Powered Recommendations**: Uses AI to provide specific optimization advice (OpenAI in v0.1.x, Ollama in v0.2.0+)
 - 📝 **Comprehensive Reports**: Generates detailed Markdown reports with statistics and recommendations
-- 📂 **Sample Data Included**: Ready-to-use sample log files for testing and demonstration
+- 📂 **Sample Data Included**: Ready-to-use sample PostgreSQL log files for testing and demonstration
 - 🗂️ **Multiple Log Formats**: Supports plain, CSV, and JSON log formats
 - ⚙️ **Config File Support**: Use a `.slowquerydoctor.yml` file to customize analysis options
+- 🔒 **Enterprise-Ready**: v0.2.0+ uses local Ollama models for data privacy compliance
 
 ## 🚀 Quick Start
 
@@ -124,7 +127,7 @@ python -m slowquerydoctor /path/to/your/postgresql.log \
 
 ## 📂 Sample Log Files
 
-The `sample_logs/` directory contains real PostgreSQL slow query log examples for testing and demonstration:
+The `sample_logs/` directory contains real database slow query log examples for testing and demonstration (currently PostgreSQL format):
 
 ### Available Sample Files
 
@@ -181,10 +184,12 @@ slow-query-doctor/
 
 ### Data Flow
 
-1. **Parse** → Extract slow queries from PostgreSQL logs
+1. **Parse** → Extract slow queries from database logs (currently PostgreSQL)
 2. **Analyze** → Calculate impact scores and normalize queries  
-3. **AI Analysis** → Generate optimization recommendations using GPT
+3. **AI Analysis** → Generate optimization recommendations using AI models
 4. **Report** → Create comprehensive Markdown analysis report
+
+> **Multi-Database Roadmap**: MySQL and SQL Server support planned for v0.4.0 (Q3 2026)
 
 
 ## ⚙️ Configuration
@@ -443,8 +448,17 @@ pip install .[dev,test]
 ```
 ## 📈 Roadmap, Technical Debt & Contributing
 
-- See [ROADMAP.md](ROADMAP.md) for the full project roadmap, upcoming features, and community requests.
+**Database Support Roadmap:**
+- **v0.1.6** (Nov 2025): Documentation & architecture updates ✅
+- **v0.2.0** (Nov 2025 - Q1 2026): Ollama integration, EXPLAIN plans, HTML reports 🔧
+- **v0.3.0** (Q2 2026): ML/self-learning features 📋
+- **v0.4.0** (Q3 2026): **MySQL and SQL Server support** 📋
+
+**When asked about MySQL/SQL Server**: "Added to v0.4.0 roadmap (Q3 2026) - we're focusing on perfecting PostgreSQL analysis first with v0.2.0 Ollama integration."
+
+- See [ROADMAP.md](ROADMAP.md) for the full project roadmap, timeline, and community requests.
 - See [TECHNICAL_DEBT.md](TECHNICAL_DEBT.md) for known limitations and areas for future improvement.
 - See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines and code standards.
+- See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed system architecture and extension points.
 
 **Made with ❤️ for Database performance optimization**

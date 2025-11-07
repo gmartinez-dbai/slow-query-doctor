@@ -1,55 +1,57 @@
 # 🚦 Slow Query Doctor Roadmap
 
-## Current Release: v0.1.1
+## Current Release: v0.1.5 ✅ SHIPPED
 
-- PostgreSQL slow query log parsing
+- Database slow query log parsing (PostgreSQL focus)
 - Query normalization and grouping
 - Statistical analysis (impact scores, percentiles)
-- GPT-4 powered optimization recommendations
+- AI-powered optimization recommendations (OpenAI integration)
 - Markdown report generation
 - Docker containerization
+- Anti-pattern detection
+- Multi-format log support (plain, CSV, JSON)
 
 ---
 
+## v0.1.6 - Documentation & Architecture (November 2025)
 
-## v0.1.x - Polish & Bug Fixes (November 2025)
+**Focus:** Complete documentation and prepare for v0.2.0
 
-**Focus:** Improve v1 based on real user feedback
-
-- [x] Add better sample outputs showing diverse query patterns
-- [x] Improve recommendation quality (distinguish between missing indexes, query rewrites, schema changes)
-- [x] Add more detailed explanations for why queries are slow
-- [x] Handle edge cases in log parsing (multi-line queries, special characters)
-- [x] Add support for different PostgreSQL log formats (plain, CSV, JSON)
-- [x] Improve error messages and user guidance
-- [x] Add configuration file support (.slowquerydoctor.yml)
+- [x] Add comprehensive ARCHITECTURE.md documentation
+- [x] Update all references from "PostgreSQL-specific" to "database log analyzer"
+- [x] Clear roadmap timeline and scope boundaries
+- [x] Project discipline guidelines (.gitmessage)
+- [x] Prepare codebase for multi-database expansion in v0.4.0
 
 ---
 
+## v0.2.0 - Enhanced Analysis & Privacy (Nov 2025 - Q1 2026) 🔧 IN PROGRESS
 
-## v0.2.0 - Enhanced Analysis (Q1 2026)
+**Focus:** Enterprise-grade analysis with local AI
 
-**Focus:** Deeper query analysis and better insights
+**🚨 CORE CONSTRAINT: OLLAMA NOT OPENAI**
+- PostgreSQL logs = sensitive business data
+- v0.1.x OpenAI = compliance violation
+- v0.2.0 Ollama = local, private, enterprise-safe
 
+**Features:**
+- [ ] **Ollama integration** (replace OpenAI for data privacy)
 - [ ] Add EXPLAIN plan analysis integration
-- [ ] Show table/index statistics when available
-- [ ] Detect common anti-patterns (N+1, missing joins, etc.)
-- [ ] Add query complexity scoring
-- [ ] Support for analyzing multiple log files at once
-- [ ] Generate comparison reports (before/after optimization)
-- [ ] Add HTML report generation
-- [ ] Export to JSON/CSV for further analysis
-- [ ] Expand config file options and log format auto-detection
+- [ ] Enhanced anti-pattern detection engine
+- [ ] HTML report generation (interactive dashboards)
+- [ ] Multi-file analysis (batch processing)
+- [ ] FastAPI backend for programmatic access
+- [ ] Query complexity scoring and classification
 
 ---
 
-## v0.3.0 - Self-Learning & Predictive Analysis (Q2 2026)
+## v0.3.0 - Self-Learning & ML Intelligence (Q2 2026) 🚫 DO NOT START
 
 **Focus:** ML-based intelligence and historical tracking
 
 - [ ] Track query performance over time (historical database)
-- [ ] Identify performance regression patterns
 - [ ] ML-based anomaly detection for new slow queries
+- [ ] Identify performance regression patterns
 - [ ] Confidence scoring for recommendations
 - [ ] Trend analysis (queries getting slower over time)
 - [ ] Automatic baseline detection
@@ -62,11 +64,14 @@
 
 **Focus:** Expand beyond PostgreSQL
 
-- [ ] MySQL slow query log support
-- [ ] SQL Server Extended Events support
-- [ ] Oracle AWR report integration
-- [ ] Database-agnostic query analysis
+- [ ] **MySQL slow query log support**
+- [ ] **SQL Server Extended Events support**
+- [ ] Database-agnostic query analysis engine
 - [ ] Cross-database performance comparison
+- [ ] Unified configuration for multiple database types
+- [ ] Database-specific optimization recommendations
+
+**Note:** Oracle support not planned - focusing on PostgreSQL, MySQL, and SQL Server as the most common enterprise databases.
 
 ---
 
@@ -102,8 +107,19 @@
 
 Track feature requests from users here:
 
-- **Ravi Bhatia:** ML/self-learning system for recommendations → Planned for v0.3.0
-- **Uri Dimant:** Better examples showing query tuning (not just index recommendations) → In progress for v0.1.2
+- **Ravi Bhatia:** ML/self-learning system for recommendations → BACKLOG (v0.3.0, Q2 2026)
+- **Uri Dimant:** Query rewrites (not just indexes) → IMPLEMENTED ✅
+
+## Version Timeline Summary
+
+| Version | Timeline | Status | Key Features |
+|---------|----------|--------|--------------|
+| v0.1.5 | ✅ SHIPPED | Mature | PostgreSQL analyzer with OpenAI integration |
+| v0.1.6 | Nov 2025 | 🔧 Current | Documentation, architecture, project discipline |
+| v0.2.0 | Nov 2025 - Q1 2026 | 🔧 In Progress | **Ollama integration**, EXPLAIN plans, HTML reports |
+| v0.3.0 | Q2 2026 | 🚫 Do Not Start | ML/self-learning, anomaly detection |
+| v0.4.0 | Q3 2026 | 📋 Planned | **MySQL, SQL Server support** |
+| v1.0.0 | Q4 2026 | 📋 Planned | Web UI, enterprise features |
 
 ---
 

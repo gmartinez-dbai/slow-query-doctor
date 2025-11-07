@@ -24,13 +24,13 @@ def setup_logging():
 def main():
     """Main CLI function"""
     parser = argparse.ArgumentParser(
-        description='Slow Query Doctor - AI-powered PostgreSQL slow query analyzer'
+        description='Slow Query Doctor - AI-powered database slow query analyzer (PostgreSQL support)'
     )
 
     parser.add_argument(
         'log_file',
         type=str,
-        help='Path to PostgreSQL slow query log file'
+        help='Path to database slow query log file (PostgreSQL format)'
     )
 
     parser.add_argument(

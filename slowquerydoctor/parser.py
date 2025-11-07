@@ -19,10 +19,10 @@ def load_config(config_path: str = ".slowquerydoctor.yml") -> dict:
 
 def parse_postgres_log(log_file_path: str, log_format: str = "plain") -> pd.DataFrame:
     """
-    Parses PostgreSQL log file and extracts slow queries
+    Parses database log file and extracts slow queries (currently PostgreSQL format)
 
     Args:
-        log_file_path: Path to the PostgreSQL log file
+        log_file_path: Path to the database log file
         log_format: 'plain', 'csv', or 'json'
 
     Returns:

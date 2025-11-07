@@ -1,8 +1,9 @@
 """
-Slow Query Doctor - AI-powered PostgreSQL performance analyzer
+Slow Query Doctor - AI-powered database performance analyzer
+Currently supports PostgreSQL with MySQL/SQL Server planned for v0.4.0
 """
 
-__version__ = "0.1.5"
+__version__ = "0.1.6"
 
 from .parser import parse_postgres_log
 from .analyzer import run_slow_query_analysis, normalize_query
