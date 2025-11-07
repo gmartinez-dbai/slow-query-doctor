@@ -1,14 +1,14 @@
-import hashlib
-import logging
-import math
-import re
-from collections import defaultdict
-from dataclasses import dataclass, field
-from typing import Any, Dict, List, Sequence, Tuple, TypedDict, Union, cast
+import hashlib # This import is used for generating query hashes
+import logging #This import is used for logging warnings and info
+import math # This import is used for mathematical computations
+import re # this import is used for regular expressions
+from collections import defaultdict # This import is used for grouping queries
+from dataclasses import dataclass, field #This import is used for data classes
+from typing import Any, Dict, List, Sequence, Tuple, TypedDict, Union, cast # This import is used for type hinting
 
-import pandas as pd  # type: ignore[import]
+import pandas as pd  # This import is used for data manipulation and analysis
 
-from .antipatterns import StaticQueryRewriter, AntiPatternMatch  # Add this import
+from .antipatterns import StaticQueryRewriter, AntiPatternMatch  # This import is used for query rewriting and anti-pattern detection
 
 logger = logging.getLogger(__name__)
 
@@ -63,11 +63,13 @@ class SlowQuery:
 
 
 class QueryRecord(TypedDict):
+    """Represents a raw query record from logs."""
     statement: str
     duration: float
     timestamp: str
 
 class NormalizedQueryRecord(TypedDict):
+    """Represents a normalized query record."""
     raw: str
     normalized: str
     duration: float
@@ -79,7 +81,7 @@ class SlowQueryAnalyzer:
     """Analyzes slow queries and calculates impact scores."""
 
     def __init__(self) -> None:
-        self.query_rewriter = StaticQueryRewriter()  # Add this line
+        self.query_rewriter = StaticQueryRewriter() # Initialize the query rewriter
 
     def analyze_slow_queries(
         self,
@@ -251,7 +253,7 @@ def _build_dataframe(queries: List[SlowQuery]) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def analyze_slow_queries(
+def run_slow_query_analysis(
     data: Union[pd.DataFrame, Sequence[QueryRecord]],
     top_n: int = 5,
     min_duration: float = 0.0
