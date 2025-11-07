@@ -1,12 +1,19 @@
 # 🩺 Slow Query Doctor
 
-An intelligent database performance analyzer that uses AI to diagnose slow queries and provide actionable optimization recommendations. Currently supports PostgreSQL with MySQL and SQL Server support planned for v0.4.0 (Q3 2026).
+An intelligent database performance analyzer that uses AI to diagnose slow queries and provide actionable optimization recommendations.
+
+## 🎯 **Current Support: PostgreSQL Only**
+**✅ Ready to use**: PostgreSQL slow query analysis with AI-powered recommendations  
+**🚧 Coming Q3 2026**: MySQL and SQL Server support in v0.4.0
+
+> **🚀 Interested in early MySQL/SQL Server testing?** [File an issue](https://github.com/iqtoolkit/slow-query-doctor/issues/new?labels=mysql-feedback,sqlserver-feedback&title=Early%20Testing%20Interest) to get involved before v0.4.0 development starts!
 
 ![Python](https://img.shields.io/badge/python-3.11+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![OpenAI](https://img.shields.io/badge/AI-OpenAI%20GPT--4o--mini-orange.svg)
-![Build Status](https://img.shields.io/github/actions/workflow/status/gmartinez-dbai/slow-query-doctor/ci.yml?branch=main)
-![Coverage](https://img.shields.io/codecov/c/github/gmartinez-dbai/slow-query-doctor?logo=codecov)
+![PostgreSQL](https://img.shields.io/badge/database-PostgreSQL%20Ready-336791?logo=postgresql&logoColor=white)
+![MySQL](https://img.shields.io/badge/database-MySQL%20Planned%20v0.4.0-4479A1?logo=mysql&logoColor=white)
+![SQL Server](https://img.shields.io/badge/database-SQL%20Server%20Planned%20v0.4.0-CC2927?logo=microsoftssqlserver&logoColor=white)
 
 ![Docker](https://img.shields.io/badge/docker-ready-blue.svg)
 
@@ -49,7 +56,16 @@ An intelligent database performance analyzer that uses AI to diagnose slow queri
 
 ## 🎯 Overview
 
-Slow Query Doctor automatically analyzes your database slow query logs and provides intelligent, AI-powered optimization recommendations. Currently focused on PostgreSQL, it identifies performance bottlenecks, calculates impact scores, and generates detailed reports with specific suggestions for improving database performance.
+Slow Query Doctor automatically analyzes your **PostgreSQL** slow query logs and provides intelligent, AI-powered optimization recommendations. It identifies performance bottlenecks, calculates impact scores, and generates detailed reports with specific suggestions for improving database performance.
+
+### 🗄️ **Database Support Status**
+| Database | Status | Version | Timeline |
+|----------|--------|---------|----------|
+| **PostgreSQL** | ✅ **Fully Supported** | v0.1.x+ | Available now |
+| **MySQL** | 🚧 Planned | v0.4.0 | Q3 2026 |
+| **SQL Server** | 🚧 Planned | v0.4.0 | Q3 2026 |
+
+> **📢 Want to influence MySQL/SQL Server development?** Check out our [future database sample directories](docs/sample_logs/) and share your specific requirements!
 
 > **v0.1.6 Release Note**: This is the **final v0.1.x release with new features**. It includes comprehensive architecture documentation and prepares the codebase for multi-database support coming in v0.4.0. All references have been updated from "PostgreSQL-specific" to "database log analyzer" to reflect our roadmap for MySQL and SQL Server support. Future v0.1.x releases (v0.1.7+) will contain **bug fixes only** - all new features move to v0.2.0+.
 
@@ -67,6 +83,9 @@ Slow Query Doctor automatically analyzes your database slow query logs and provi
 - 🔧 **Extensible**: Future-ready architecture supports multiple AI providers
 
 ## 🚀 Quick Start
+
+> **⚡ Ready to analyze PostgreSQL slow queries right now?** Follow the installation below.  
+> **🔮 Planning for MySQL/SQL Server?** [Join the early feedback program](https://github.com/iqtoolkit/slow-query-doctor/discussions) to shape v0.4.0 development!
 
 ### Installation
 
@@ -130,14 +149,16 @@ python -m slowquerydoctor /path/to/your/postgresql.log \
 
 The `docs/sample_logs/` directory contains database slow query log examples for testing and demonstration:
 
-### Current Support (v0.1.x)
-- **PostgreSQL**: Real sample logs from 100M record database operations
+### ✅ **Current Support (v0.1.x)**
+- **PostgreSQL**: Real sample logs from 100M record database operations with authentic slow queries
 
-### Future Support (v0.4.0 - Q3 2026)
-- **MySQL**: Placeholder directory with configuration examples and feedback collection
-- **SQL Server**: Placeholder directory with Extended Events samples and configuration
+### 🚧 **Future Support (v0.4.0 - Q3 2026)**
+- **MySQL**: Placeholder directory with configuration examples and feedback collection → [View samples](docs/sample_logs/mysql/)
+- **SQL Server**: Placeholder directory with Extended Events samples and configuration → [View samples](docs/sample_logs/sqlserver/)
 
-> 💡 **Early Feedback Welcome**: If you're a MySQL or SQL Server user, visit the placeholder directories to see planned formats and share your specific use cases!
+> 🎯 **Early Feedback Opportunities**: 
+> - **MySQL Users**: [Share your slow query log formats and challenges](https://github.com/iqtoolkit/slow-query-doctor/issues/new?labels=mysql-feedback&title=MySQL%20Requirements)
+> - **SQL Server DBAs**: [Tell us about your Extended Events setup and pain points](https://github.com/iqtoolkit/slow-query-doctor/issues/new?labels=sqlserver-feedback&title=SQL%20Server%20Requirements)
 
 ### Available Sample Files
 
@@ -204,8 +225,7 @@ slow-query-doctor/
 
 ## ⚙️ Configuration
 
-
-### PostgreSQL Setup
+### 🐘 **PostgreSQL Setup** (Current Focus)
 
 See the full guide: [docs/slow_query_log_setup.md](docs/slow_query_log_setup.md)
 
