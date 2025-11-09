@@ -6,8 +6,8 @@ This document describes the automated, single-source-of-truth release steps used
 Key artifacts created by the repository:
 
 - `VERSION` (repo root) — single source of truth for the project version.
-- `scripts/propagate_version.sh` — helper script that reads `VERSION`, updates common files (if present), commits, and tags the repo.
-- `.github/workflows/propagate-version.yml` — manual/branch-triggered workflow to run the propagate script and push the tag.
+- `scripts/propagate_version.py` — helper script (Python) that reads `VERSION`, computes or applies metadata updates (Chart.yaml, src/__init__.py, Dockerfile). The script supports `--dry-run` to print unified diffs.
+- NOTE: The previous `propagate-version` GitHub Actions workflow has been removed; propagation is expected to be run locally or via an explicitly-reviewed PR workflow.
 
 Release steps (order: 1 → 2 → 3)
 
@@ -31,14 +31,30 @@ Release steps (order: 1 → 2 → 3)
 
 Where to run the propagation
 
-- Manually via the Actions UI: go to `Actions → Propagate Version → Run workflow`.
-- Or push to a `bump-version/*` branch to trigger the workflow automatically (the workflow pushes commits and tags back to the repo).
+Local-first (recommended): run the propagation script locally and create a PR for review.
+
+Use the `--dry-run` flag to preview exactly what would change (the script prints unified diffs):
+
+```bash
+# dry-run preview (no files changed)
+python3 scripts/propagate_version.py --dry-run
+```
+
+If the diffs look good, run the script to apply changes (it will commit and tag):
+
+```bash
+# apply changes and create commit + tag (will push if remote is configured)
+python3 scripts/propagate_version.py
+```
+
+Alternatively, prefer creating a `bump-version/*` or `release/*` branch, run the script locally on that branch, commit and push, open a PR for review, then merge and tag from `main` once approved.
 
 Notes and best practices
 
 - Keep `VERSION` at the repo root for discoverability and automation.
-- The `propagate_version.sh` script is intentionally conservative: it updates `src/__init__.py`, `Chart.yaml` files, and `Dockerfile` if they exist. If your repository uses different metadata locations, extend the script accordingly.
-- The workflow uses the built-in `GITHUB_TOKEN` and `persist-credentials: true` to push commits/tags. If you prefer signed tags or a bot account, switch to a dedicated deploy key or bot token in `secrets`.
+The `propagate_version.py` script is intentionally conservative: it updates `src/__init__.py`, `Chart.yaml` files, and `Dockerfile` if they exist. It supports a `--dry-run` mode to preview changes as unified diffs. If your repository uses different metadata locations, extend the script accordingly.
+
+If you require automated pushes/tags from CI in the future, prefer the PR-creation pattern (Action opens a branch and PR) so changes are reviewed before being merged and tagged. For GA releases, a maintainer should perform the final tag signing and publishing step.
 
 Suggested additions (future):
 
@@ -50,7 +66,7 @@ Useful links
 
 - `VERSION` file: `/VERSION`
 - Propagate script: `/scripts/propagate_version.sh`
-- Propagate workflow: `/.github/workflows/propagate-version.yml`
+- Propagate helper script: `/scripts/propagate_version.py`
 - Branching & release strategy (notes, internal): `/notes/GITHUB_Branching_Release_Strategy.md`
 
 ``` 
