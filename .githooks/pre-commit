@@ -1,0 +1,79 @@
+#!/bin/bash
+
+# Git pre-commit hook to ensure version consistency
+# This runs automatically before every commit
+
+set -e
+
+echo "🔄 Running pre-commit version synchronization..."
+
+# Check for .venv directory in repo root
+if [ ! -d ".venv" ]; then
+    echo "❌ Virtual environment '.venv' not found in repository root!"
+    echo "💡 Please create it first:"
+    echo "   python -m venv .venv"
+    echo "   source .venv/bin/activate"
+    echo "   pip install -r requirements.txt"
+    exit 1
+fi
+
+# Source the virtual environment
+echo "🐍 Activating virtual environment..."
+source .venv/bin/activate
+
+# Install/update requirements if needed
+if [ -f "requirements.txt" ]; then
+    echo "📦 Ensuring requirements are installed..."
+    pip install -r requirements.txt > /dev/null 2>&1
+fi
+
+# Check if VERSION file exists and has been modified
+if git diff --cached --name-only | grep -q "VERSION"; then
+    echo "📝 VERSION file changed, propagating to all files..."
+    
+    # Run the version propagation script
+    if [ -f "scripts/propagate_version.py" ]; then
+        python scripts/propagate_version.py
+        
+        # Stage the updated files
+        echo "📦 Staging updated version files..."
+        git add pyproject.toml slowquerydoctor/__init__.py Dockerfile
+        
+        echo "✅ Version synchronization complete!"
+    else
+        echo "⚠️  Warning: scripts/propagate_version.py not found"
+        exit 1
+    fi
+else
+    echo "ℹ️  VERSION file unchanged, skipping version sync"
+fi
+
+# Optional: Run basic linting on staged Python files
+if git diff --cached --name-only | grep -q "\.py$"; then
+    echo "🔍 Running quick lint check on Python files..."
+    
+    # Only lint staged files
+    staged_py_files=$(git diff --cached --name-only --diff-filter=ACM | grep "\.py$" || true)
+    
+    if [ -n "$staged_py_files" ]; then
+        # Check if black is available in the virtual environment
+        if python -c "import black" 2>/dev/null; then
+            echo "  Running black formatter check..."
+            python -m black --check --quiet $staged_py_files || {
+                echo "❌ Code formatting issues found. Run: source .venv/bin/activate && python -m black $staged_py_files"
+                exit 1
+            }
+        fi
+        
+        # Check if flake8 is available in the virtual environment
+        if python -c "import flake8" 2>/dev/null; then
+            echo "  Running flake8 linting..."
+            python -m flake8 $staged_py_files --max-line-length=88 --extend-ignore=E203,W503 || {
+                echo "❌ Linting issues found. Fix them before committing."
+                exit 1
+            }
+        fi
+    fi
+fi
+
+echo "✅ Pre-commit checks passed!"
