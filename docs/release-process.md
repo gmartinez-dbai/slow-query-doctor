@@ -72,9 +72,61 @@ Suggested additions (future):
 
 Useful links
 
-- `VERSION` file: `/VERSION`
-- Propagate script: `/scripts/propagate_version.sh`
-- Propagate helper script: `/scripts/propagate_version.py`
-- Branching & release strategy (notes, internal): `/notes/GITHUB_Branching_Release_Strategy.md`
 
+---
+
+# DBA-Grade Branching Model for Release Lifecycle
+
+Here’s a **DBA-grade, disciplined branching model** to move through the alpha → beta → RC → GA software release lifecycle. This keeps your repo clean and instantly signals project maturity to contributors and stakeholders.
+
+| Phase  | Purpose                    | Branch Name        | Tag Example        | Actions                                               |
+|--------|----------------------------|--------------------|--------------------|-------------------------------------------------------|
+| α      | Initial unstable changes   | `feature/vX.Y.0`   | `vX.Y.0-alpha.N`   | All dev goes here. Frequent push/PR. Merge to develop.|
+| β      | Feature complete, testable | `develop`          | `vX.Y.0-beta.N`    | Hardening, bugfixes, docs. No breaking features.      |
+| RC     | Release Candidate          | `release/vX.Y.0`   | `vX.Y.0-rc.N`      | Finalize, critical/blocker fixes only.                |
+| GA     | General Availability       | `main` (prod)      | `vX.Y.0`           | Merge release → main. Tag, deploy, announce.          |
+
+---
+
+## Step-by-step Branch Flow
+
+1. **Alpha**
+	- All **new code** starts in `feature/vX.Y.0` branches (per-feature, then aggregate).
+	- Merge to a shared `develop` branch when features begin to combine.
+	- Tag as `vX.Y.0-alpha.1`, `vX.Y.0-alpha.2`, etc.
+
+2. **Beta**
+	- Once features are “locked,” create `develop` as your main **integration branch**.
+	- No *new* features—just stabilization.
+	- CI runs here. Tag as `vX.Y.0-beta.1`, etc.
+
+3. **Release Candidate (RC)**
+	- When close to production: cut `release/vX.Y.0` from `develop`.
+	- Only bugfixes, release notes, and doc changes permitted.
+	- Tag as `vX.Y.0-rc.1`, `rc.2`, etc.
+	- If blockers, fix in `release/vX.Y.0` and merge back to `develop`.
+
+4. **General Availability (GA)**
+	- Final, stable release: merge `release/vX.Y.0` → `main`.
+	- Tag as `vX.Y.0` (no suffix).
+	- Deploy, announce, maintain bugfixes as patch branches.
+
+---
+
+## Quick Git View
+
+- **feature/v0.2.0** (early work, unstable)  
+ ↳ **develop** (integration, beta)  
+  ↳ **release/v0.2.0** (RC + hotfix)  
+   ↳ **main** (GA, production)
+
+---
+
+**TL;DR:**
+- Major WIP: `feature/`
+- Beta: `develop`
+- Release Candidate: `release/`
+- Production: `main`
+
+Let me know if you want git commands or a one-line workflow for creating branches or tags!
 ``` 
