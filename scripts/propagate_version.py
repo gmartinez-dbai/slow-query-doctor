@@ -25,6 +25,33 @@ ROOT = os.path.dirname(os.path.dirname(__file__))
 os.chdir(ROOT)
 
 
+def validate_version_consistency(version):
+    errors = []
+    # Validate __init__.py
+    init_path = os.path.join('slowquerydoctor', '__init__.py')
+    if os.path.isfile(init_path):
+        text = open(init_path, 'r', encoding='utf8').read()
+        match = re.search(r'__version__\s*=\s*"([^"]+)"', text)
+        if match and match.group(1) != version:
+            errors.append(f"slowquerydoctor/__init__.py version '{match.group(1)}' does not match VERSION '{version}'")
+    # Validate Dockerfile LABEL version
+    docker_path = 'Dockerfile'
+    if os.path.isfile(docker_path):
+        text = open(docker_path, 'r', encoding='utf8').read()
+        match = re.search(r'LABEL version="([^"]+)"', text)
+        if match and match.group(1) != version:
+            errors.append(f"Dockerfile LABEL version '{match.group(1)}' does not match VERSION '{version}'")
+    # Validate Dockerfile ENV SLOW_QUERY_DOCTOR_VERSION
+    env_match = re.search(r'ENV SLOW_QUERY_DOCTOR_VERSION=([\w\.-]+)', text)
+    if env_match and env_match.group(1) != version:
+        errors.append(f"Dockerfile ENV SLOW_QUERY_DOCTOR_VERSION '{env_match.group(1)}' does not match VERSION '{version}'")
+    if errors:
+        print("Version consistency validation failed:")
+        for err in errors:
+            print("  -", err)
+        sys.exit(2)
+    print("Version consistency validated.")
+
 def read_version():
     p = os.path.join(ROOT, 'VERSION')
     if not os.path.isfile(p):
@@ -117,6 +144,7 @@ def git_commit_and_tag(version):
 def main():
     version = read_version()
     print('Propagating version', version)
+    validate_version_consistency(version)
     changed_any = False
     if update_init_py(version):
         changed_any = True

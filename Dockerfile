@@ -70,14 +70,14 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD python -c "import slowquerydoctor; print('OK')" || exit 1
 
 # Labels for metadata
-LABEL maintainer="Giovanni Martinez <gio@gmartinez.net>" \
+LABEL maintainer="Giovanni Martinez <gio@iqtoolkit.ai>" \
       version="0.1.0" \
       description="AI-powered PostgreSQL slow query analyzer" \
       org.opencontainers.image.title="Slow Query Doctor" \
       org.opencontainers.image.description="AI-powered PostgreSQL performance analyzer" \
       org.opencontainers.image.version="0.1.0" \
-      org.opencontainers.image.authors="Giovanni Martinez <gio@gmartinez.net>" \
-      org.opencontainers.image.source="https://github.com/gmartinez-dbai/slow-query-doctor" \
+      org.opencontainers.image.authors="Giovanni Martinez <gio@iqtoolkit.ai>" \
+      org.opencontainers.image.source="https://github.com/iqtoolkit/slow-query-doctor" \
       org.opencontainers.image.licenses="MIT"
 
 # Default command
