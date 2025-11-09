@@ -129,4 +129,48 @@ Here’s a **DBA-grade, disciplined branching model** to move through the alpha 
 - Production: `main`
 
 Let me know if you want git commands or a one-line workflow for creating branches or tags!
+
+---
+
+## Basic Git Workflow Actions
+
+### Alpha (feature branch)
+```bash
+# Create a new feature branch for alpha development
+git checkout -b feature/v0.2.0
+# Push changes
+git push -u origin feature/v0.2.0
+# Tag alpha release
+git tag v0.2.0-alpha.1
+git push origin v0.2.0-alpha.1
+```
+
+### Beta (develop branch)
+```bash
+# Merge feature branch into develop
+git checkout develop
+git merge feature/v0.2.0
+# Tag beta release
+git tag v0.2.0-beta.1
+git push origin v0.2.0-beta.1
+```
+
+### Release Candidate (release branch)
+```bash
+# Create release branch from develop
+git checkout -b release/v0.2.0 develop
+# Tag RC release
+git tag v0.2.0-rc.1
+git push origin v0.2.0-rc.1
+```
+
+### General Availability (main branch)
+```bash
+# Merge release branch into main
+git checkout main
+git merge release/v0.2.0
+# Tag GA release
+git tag v0.2.0
+git push origin v0.2.0
+```
 ``` 
