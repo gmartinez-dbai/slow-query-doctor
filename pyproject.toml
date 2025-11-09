@@ -9,10 +9,10 @@ description = "AI-powered PostgreSQL performance analyzer that diagnoses slow qu
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
-    {name = "Giovanni Martinez", email = "gio@gmartinez.net"},
+    {name = "Giovanni Martinez", email = "gio@iqtoolkit.ai"},
 ]
 maintainers = [
-    {name = "Giovanni Martinez", email = "gio@gmartinez.net"},
+    {name = "Giovanni Martinez", email = "gio@iqtoolkit.ai"},
 ]
 keywords = [
     "postgresql",

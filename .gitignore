@@ -136,3 +136,6 @@ Thumbs.db
 
 # Personal notes
 notes/
+
+# vscode settings
+.vscode/settings.json
