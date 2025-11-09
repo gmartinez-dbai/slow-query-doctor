@@ -26,6 +26,28 @@ os.chdir(ROOT)
 
 
 def validate_version_consistency(version):
+    # Check all docs for version consistency
+    docs_errors = []
+    docs_dir = os.path.join(ROOT, 'docs')
+    for root, _, files in os.walk(docs_dir):
+        for fname in files:
+            if fname.endswith('.md') or fname.endswith('.rst'):
+                fpath = os.path.join(root, fname)
+                with open(fpath, 'r', encoding='utf8') as f:
+                    content = f.read()
+                    # Look for version strings like v0.x.x, 0.x.x, alpha, beta, rc
+                    import re
+                    pattern = r'(v?\d+\.\d+\.\d+(-alpha\.\d+|-beta\.\d+|-rc\.\d+)?)'
+                    matches = re.findall(pattern, content)
+                    for m in matches:
+                        if version not in m:
+                            docs_errors.append(f"{fpath}: found version string '{m}' not matching VERSION '{version}'")
+    if docs_errors:
+        print("[PRE-COMMIT] Documentation version consistency issues:")
+        for err in docs_errors:
+            print("  -", err)
+        print("[PRE-COMMIT] Please update documentation version references to match VERSION file.")
+        sys.exit(2)
     errors = []
     # Validate __init__.py
     init_path = os.path.join('slowquerydoctor', '__init__.py')
@@ -34,23 +56,33 @@ def validate_version_consistency(version):
         match = re.search(r'__version__\s*=\s*"([^"]+)"', text)
         if match and match.group(1) != version:
             errors.append(f"slowquerydoctor/__init__.py version '{match.group(1)}' does not match VERSION '{version}'")
-    # Validate Dockerfile LABEL version
+    # Validate Dockerfile LABEL version and ENV SLOW_QUERY_DOCTOR_VERSION
     docker_path = 'Dockerfile'
     if os.path.isfile(docker_path):
         text = open(docker_path, 'r', encoding='utf8').read()
-        match = re.search(r'LABEL version="([^"]+)"', text)
+        label_match = re.search(r'LABEL version="([^"]+)"', text)
+        env_match = re.search(r'ENV SLOW_QUERY_DOCTOR_VERSION=([\w\.-]+)', text)
+        image_label_match = re.search(r'org.opencontainers.image.version="([^"]+)"', text)
+        if label_match and label_match.group(1) != version:
+            errors.append(f"Dockerfile LABEL version '{label_match.group(1)}' does not match VERSION '{version}'")
+        if env_match and env_match.group(1) != version:
+            errors.append(f"Dockerfile ENV SLOW_QUERY_DOCTOR_VERSION '{env_match.group(1)}' does not match VERSION '{version}'")
+        if image_label_match and image_label_match.group(1) != version:
+            errors.append(f"Dockerfile org.opencontainers.image.version '{image_label_match.group(1)}' does not match VERSION '{version}'")
+    # Validate pyproject.toml version
+    pyproject_path = 'pyproject.toml'
+    if os.path.isfile(pyproject_path):
+        text = open(pyproject_path, 'r', encoding='utf8').read()
+        match = re.search(r'^version\s*=\s*"([^"]+)"', text, re.MULTILINE)
         if match and match.group(1) != version:
-            errors.append(f"Dockerfile LABEL version '{match.group(1)}' does not match VERSION '{version}'")
-    # Validate Dockerfile ENV SLOW_QUERY_DOCTOR_VERSION
-    env_match = re.search(r'ENV SLOW_QUERY_DOCTOR_VERSION=([\w\.-]+)', text)
-    if env_match and env_match.group(1) != version:
-        errors.append(f"Dockerfile ENV SLOW_QUERY_DOCTOR_VERSION '{env_match.group(1)}' does not match VERSION '{version}'")
+            errors.append(f"pyproject.toml version '{match.group(1)}' does not match VERSION '{version}'")
     if errors:
-        print("Version consistency validation failed:")
+        print("[PRE-COMMIT] Version consistency validation failed:")
         for err in errors:
             print("  -", err)
+        print("[PRE-COMMIT] Please update all version fields to match VERSION file.")
         sys.exit(2)
-    print("Version consistency validated.")
+    print(f"[PRE-COMMIT] Version consistency validated: All files match VERSION '{version}'.")
 
 def read_version():
     p = os.path.join(ROOT, 'VERSION')
