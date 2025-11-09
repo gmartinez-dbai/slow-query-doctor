@@ -5,16 +5,24 @@ This document describes the automated, single-source-of-truth release steps used
 
 Key artifacts created by the repository:
 
-- `VERSION` (repo root) — single source of truth for the project version.
-- `scripts/propagate_version.py` — helper script (Python) that reads `VERSION`, computes or applies metadata updates (Chart.yaml, src/__init__.py, Dockerfile). The script supports `--dry-run` to print unified diffs.
-- NOTE: The previous `propagate-version` GitHub Actions workflow has been removed; propagation is expected to be run locally or via an explicitly-reviewed PR workflow.
 
+## Semantic Versioning and Pre-release Naming
+
+The project follows [semantic versioning](https://semver.org/) for all releases. For pre-releases, use the following conventions:
+
+- **Alpha releases:** `v0.2.0-alpha.1`, `v0.2.0-alpha.2`, ...
+- **Beta releases:** `v0.2.0-beta.1`, `v0.2.0-beta.2`, ...
+- **Release candidates:** `v0.2.0-rc.1`, `v0.2.0-rc.2`, ...
+
+For general availability (GA) releases, use `v0.2.0`, `v1.0.0`, etc.
+
+Update the `VERSION` file with the appropriate version string before running the propagation workflow.
 Release steps (order: 1 → 2 → 3)
 
 1) Single-source-of-truth version
 
 - Maintain the version in the `VERSION` file at the repository root. This file is authoritative.
-- When you want to create a release, update `VERSION` to the intended version (for example `0.2.0` or `0.2.0-alpha`).
+- When you want to create a release, update `VERSION` to the intended version (for example `v0.2.0` or `v0.2.0-alpha`).
 - Use the propagate workflow to update tracked files and create the git tag automatically.
 
 2) Automated changelog / release notes
