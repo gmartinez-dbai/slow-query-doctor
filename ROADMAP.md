@@ -143,6 +143,15 @@ Track feature requests from users here:
 
 ---
 
+## Release & Versioning (short)
+
+See the published release process and versioning guide in the documentation: `docs/release-process.md`.
+Key points:
+- `VERSION` at repo root is the single source of truth.
+- Use the provided GitHub Action `/.github/workflows/propagate-version.yml` to propagate and tag releases.
+- Automate changelog generation (Release Drafter or conventional-changelog) and add security scans to CI for release gating.
+
+
 ## Contributing
 
 See issues labeled with `good-first-issue` or `help-wanted` for ways to contribute!
