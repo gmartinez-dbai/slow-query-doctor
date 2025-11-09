@@ -1,0 +1,31 @@
+name: Container image scan
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build-and-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build image (scan tag)
+        uses: docker/build-push-action@v4
+        with:
+          push: false
+          tags: |
+            iqtoolkit/iqtoolkit:scan-${{ github.sha }}
+
+      - name: Trivy scan image
+        uses: aquasecurity/trivy-action@v0.4.0
+        with:
+          image-ref: iqtoolkit/iqtoolkit:scan-${{ github.sha }}
+          format: 'template'
+          template: '{{range .Results}}{{.Target}}: {{.Vulnerabilities | len}}\n{{end}}'

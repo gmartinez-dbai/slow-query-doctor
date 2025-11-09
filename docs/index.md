@@ -20,6 +20,7 @@
 - [Technical Debt](../TECHNICAL_DEBT.md)
 - [Contributing Guide](../CONTRIBUTING.md) 🚀
 - [Code of Conduct](../CODE_OF_CONDUCT.md)
+ - [Release Process & Versioning](release-process.md)
 
 ---
 

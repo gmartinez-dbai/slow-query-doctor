@@ -83,3 +83,4 @@ LABEL maintainer="Giovanni Martinez <gio@gmartinez.net>" \
 # Default command
 ENTRYPOINT ["slow-query-doctor"]
 CMD ["--help"]
+LABEL version="0.2.0-alpha"
