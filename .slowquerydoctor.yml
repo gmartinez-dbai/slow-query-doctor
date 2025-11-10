@@ -1,0 +1,8 @@
+# Example .slowquerydoctor.yml
+log_format: csv
+min_duration: 1000
+output: my_report.md
+top_n: 10
+llm_provider: openai  # or 'ollama'
+openai_model: gpt-4o-mini
+ollama_model: llama2

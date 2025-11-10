@@ -1,39 +1,63 @@
-from openai import OpenAI
+
 import os
 import logging
 from typing import Optional, Dict
 from dataclasses import dataclass
 
+try:
+    from openai import OpenAI
+except ImportError:
+    OpenAI = None
+try:
+    import ollama
+except ImportError:
+    ollama = None
+
 logger = logging.getLogger(__name__)
 
 
 @dataclass
+
 class LLMConfig:
     """Configuration for LLM client"""
 
     api_key: Optional[str] = None
-    model: str = "gpt-4o-mini"  # More cost-effective default
+    llm_provider: str = "openai"  # 'openai' or 'ollama'
+    openai_model: str = "gpt-4o-mini"
+    ollama_model: str = "llama2"
     temperature: float = 0.3
     max_tokens: int = 300
     timeout: int = 30
 
 
+
 class LLMClient:
-    """Client for interacting with OpenAI API"""
+    """Client for interacting with OpenAI or Ollama API"""
 
     def __init__(self, config: Optional[LLMConfig] = None):
         self.config = config or LLMConfig()
+        self.provider = self.config.llm_provider.lower()
 
-        # Get API key from config or environment
-        api_key = self.config.api_key or os.getenv("OPENAI_API_KEY")
-        if not api_key:
-            raise ValueError(
-                "OpenAI API key not found. Set OPENAI_API_KEY environment variable "
-                "or pass it in LLMConfig."
-            )
+        if self.provider == "openai":
+            if OpenAI is None:
+                raise ImportError("openai package not installed")
+            api_key = self.config.api_key or os.getenv("OPENAI_API_KEY")
+            if not api_key:
+                raise ValueError(
+                    "OpenAI API key not found. Set OPENAI_API_KEY environment variable "
+                    "or pass it in LLMConfig."
+                )
+            self.client = OpenAI(api_key=api_key, timeout=self.config.timeout)
+            self.model = self.config.openai_model
+            logger.info(f"Initialized OpenAI client with model: {self.model}")
+        elif self.provider == "ollama":
+            if ollama is None:
+                raise ImportError("ollama package not installed")
+            self.model = self.config.ollama_model
+            logger.info(f"Initialized Ollama client with model: {self.model}")
+        else:
+            raise ValueError(f"Unknown LLM provider: {self.provider}")
 
-        self.client = OpenAI(api_key=api_key, timeout=self.config.timeout)
-        logger.info(f"Initialized LLM client with model: {self.config.model}")
 
     def generate_recommendations(
         self,
@@ -44,44 +68,38 @@ class LLMClient:
         impact_score: Optional[float] = None,
     ) -> str:
         """
-        Uses GPT to analyze query and suggest optimizations
-
-        Args:
-            query_text: SQL query to analyze
-            avg_duration: Average execution duration in ms
-            frequency: Number of times query was executed
-            max_duration: Maximum execution duration in ms
-            impact_score: Calculated impact score
-
-        Returns:
-            Optimization recommendations as string
+        Uses LLM to analyze query and suggest optimizations
         """
         try:
             prompt = self._build_prompt(
                 query_text, avg_duration, frequency, max_duration, impact_score
             )
-
             logger.debug(
                 f"Requesting recommendations for query (avg: {avg_duration:.2f}ms)"
             )
-
-            response = self.client.chat.completions.create(
-                model=self.config.model,
-                messages=[
-                    {
-                        "role": "system",
-                        "content": "You are a PostgreSQL performance optimization expert.",
-                    },
-                    {"role": "user", "content": prompt},
-                ],
-                temperature=self.config.temperature,
-                max_tokens=self.config.max_tokens,
-            )
-
-            recommendation = response.choices[0].message.content
-            logger.info("Successfully generated recommendations")
-            return recommendation
-
+            if self.provider == "openai":
+                response = self.client.chat.completions.create(
+                    model=self.model,
+                    messages=[
+                        {
+                            "role": "system",
+                            "content": "You are a PostgreSQL performance optimization expert.",
+                        },
+                        {"role": "user", "content": prompt},
+                    ],
+                    temperature=self.config.temperature,
+                    max_tokens=self.config.max_tokens,
+                )
+                recommendation = response.choices[0].message.content
+                logger.info("Successfully generated recommendations (OpenAI)")
+                return recommendation
+            elif self.provider == "ollama":
+                response = ollama.chat(
+                    model=self.model,
+                    messages=[{"role": "user", "content": prompt}]
+                )
+                logger.info("Successfully generated recommendations (Ollama)")
+                return response['message']['content'].strip()
         except Exception as e:
             logger.error(f"Error generating recommendations: {e}")
             return f"Error generating recommendations: {str(e)}"

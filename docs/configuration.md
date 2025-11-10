@@ -11,6 +11,7 @@ See [Setup & Usage Examples](examples.md) for complete instructions on enabling 
 
 ## Configuration File (.slowquerydoctor.yml)
 
+
 You can create a `.slowquerydoctor.yml` file in your project directory to customize analysis options. Example:
 
 ```yaml
@@ -18,8 +19,12 @@ log_format: csv
 min_duration: 1000
 output: my_report.md
 top_n: 10
+llm_provider: openai  # or 'ollama'
 openai_model: gpt-4o-mini
+ollama_model: llama2
 ```
+
+Set `llm_provider` to `openai` or `ollama` to choose which LLM backend to use. Specify the model for each provider with `openai_model` or `ollama_model`.
 
 See the README and this file for all available options.
 
