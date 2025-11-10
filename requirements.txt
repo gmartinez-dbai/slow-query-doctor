@@ -1,3 +1,4 @@
+ollama
 tqdm>=4.0.0
 # Core dependencies
 pandas>=2.3.0
