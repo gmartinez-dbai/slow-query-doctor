@@ -1,6 +1,6 @@
 import os
 import logging
-from typing import Optional, Dict
+from typing import Optional, Dict, Any, List
 from dataclasses import dataclass
 
 try:
@@ -23,6 +23,7 @@ class LLMConfig:
     llm_provider: str = "openai"  # 'openai' or 'ollama'
     openai_model: str = "gpt-4o-mini"
     ollama_model: str = "llama2"
+    ollama_host: Optional[str] = None
     temperature: float = 0.3
     max_tokens: int = 300
     timeout: int = 30
@@ -34,6 +35,7 @@ class LLMClient:
     def __init__(self, config: Optional[LLMConfig] = None):
         self.config = config or LLMConfig()
         self.provider = self.config.llm_provider.lower()
+        self._ollama_client = None
 
         if self.provider == "openai":
             if OpenAI is None:
@@ -50,6 +52,20 @@ class LLMClient:
         elif self.provider == "ollama":
             if ollama is None:
                 raise ImportError("ollama package not installed")
+            if self.config.ollama_host and hasattr(ollama, "Client"):
+                try:
+                    self._ollama_client = ollama.Client(host=self.config.ollama_host)
+                    logger.info(
+                        "Initialized Ollama client with custom host: %s",
+                        self.config.ollama_host,
+                    )
+                except Exception as client_error:  # pragma: no cover - network dependent
+                    logger.warning(
+                        "Failed to initialize Ollama client with host %s (%s). Falling back to default host.",
+                        self.config.ollama_host,
+                        client_error,
+                    )
+                    self._ollama_client = None
             self.model = self.config.ollama_model
             logger.info(f"Initialized Ollama client with model: {self.model}")
         else:
@@ -90,8 +106,10 @@ class LLMClient:
                 logger.info("Successfully generated recommendations (OpenAI)")
                 return recommendation
             elif self.provider == "ollama":
-                response = ollama.chat(
-                    model=self.model, messages=[{"role": "user", "content": prompt}]
+                chat_target = self._ollama_client or ollama
+                response = chat_target.chat(  # type: ignore[attr-defined]
+                    model=self.model,
+                    messages=[{"role": "user", "content": prompt}],
                 )
                 logger.info("Successfully generated recommendations (Ollama)")
                 return response["message"]["content"].strip()
@@ -140,7 +158,9 @@ Keep response concise and under 150 words."""
 
         return prompt
 
-    def batch_generate_recommendations(self, queries: list[Dict]) -> list[str]:
+    def batch_generate_recommendations(
+        self, queries: List[Dict[str, Any]]
+    ) -> List[str]:
         """
         Generate recommendations for multiple queries
 
