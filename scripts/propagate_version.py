@@ -35,65 +35,94 @@ def validate_version_consistency(version):
     errors = []
     fixed = []
     # Check package.json version
-    package_json_path = 'package.json'
+    package_json_path = "package.json"
     if os.path.isfile(package_json_path):
         import json
-        with open(package_json_path, 'r', encoding='utf8') as f:
+
+        with open(package_json_path, "r", encoding="utf8") as f:
             package_data = json.load(f)
-        pkg_version = package_data.get('version')
+        pkg_version = package_data.get("version")
         if pkg_version != version:
-            errors.append(f"package.json version '{pkg_version}' does not match VERSION '{version}'")
+            errors.append(
+                f"package.json version '{pkg_version}' does not match VERSION '{version}'"
+            )
         else:
             fixed.append(f"package.json version matches VERSION '{version}'")
     # Check slowquerydoctor/__init__.py
-    init_path = os.path.join('slowquerydoctor', '__init__.py')
+    init_path = os.path.join("slowquerydoctor", "__init__.py")
     if os.path.isfile(init_path):
-        text = open(init_path, 'r', encoding='utf8').read()
+        text = open(init_path, "r", encoding="utf8").read()
         match = re.search(r'__version__\s*=\s*"([^"]+)"', text)
         if match and match.group(1) != version:
-            errors.append(f"slowquerydoctor/__init__.py version '{match.group(1)}' does not match VERSION '{version}'")
+            errors.append(
+                f"slowquerydoctor/__init__.py version '{match.group(1)}' does not match VERSION '{version}'"
+            )
         elif match and match.group(1) == version:
-            fixed.append(f"slowquerydoctor/__init__.py version matches VERSION '{version}'")
+            fixed.append(
+                f"slowquerydoctor/__init__.py version matches VERSION '{version}'"
+            )
     # Check slowquerydoctor/__version__.py (create if missing)
-    version_path = os.path.join('slowquerydoctor', '__version__.py')
+    version_path = os.path.join("slowquerydoctor", "__version__.py")
     if not os.path.isfile(version_path):
-        with open(version_path, 'w', encoding='utf8') as f:
+        with open(version_path, "w", encoding="utf8") as f:
             f.write(f'__version__ = "{version}"\n')
-        print(f"[PRE-COMMIT] Created slowquerydoctor/__version__.py with version '{version}'")
-        fixed.append(f"slowquerydoctor/__version__.py created and matches VERSION '{version}'")
+        print(
+            f"[PRE-COMMIT] Created slowquerydoctor/__version__.py with version '{version}'"
+        )
+        fixed.append(
+            f"slowquerydoctor/__version__.py created and matches VERSION '{version}'"
+        )
     else:
-        text = open(version_path, 'r', encoding='utf8').read()
+        text = open(version_path, "r", encoding="utf8").read()
         match = re.search(r'__version__\s*=\s*"([^"]+)"', text)
         if match and match.group(1) != version:
-            errors.append(f"slowquerydoctor/__version__.py version '{match.group(1)}' does not match VERSION '{version}'")
+            errors.append(
+                f"slowquerydoctor/__version__.py version '{match.group(1)}' does not match VERSION '{version}'"
+            )
         elif match and match.group(1) == version:
-            fixed.append(f"slowquerydoctor/__version__.py version matches VERSION '{version}'")
+            fixed.append(
+                f"slowquerydoctor/__version__.py version matches VERSION '{version}'"
+            )
     # Check Dockerfile LABEL version, org.opencontainers.image.version, and ENV SLOW_QUERY_DOCTOR_VERSION
-    docker_path = 'Dockerfile'
+    docker_path = "Dockerfile"
     if os.path.isfile(docker_path):
-        text = open(docker_path, 'r', encoding='utf8').read()
+        text = open(docker_path, "r", encoding="utf8").read()
         label_match = re.search(r'LABEL version="([^"]+)"', text)
-        image_label_match = re.search(r'org.opencontainers.image.version="([^"]+)"', text)
-        env_match = re.search(r'ENV SLOW_QUERY_DOCTOR_VERSION=([\w\.-]+)', text)
+        image_label_match = re.search(
+            r'org.opencontainers.image.version="([^"]+)"', text
+        )
+        env_match = re.search(r"ENV SLOW_QUERY_DOCTOR_VERSION=([\w\.-]+)", text)
         if label_match and label_match.group(1) != version:
-            errors.append(f"Dockerfile LABEL version '{label_match.group(1)}' does not match VERSION '{version}'")
+            errors.append(
+                f"Dockerfile LABEL version '{label_match.group(1)}' does not match VERSION '{version}'"
+            )
         elif label_match and label_match.group(1) == version:
             fixed.append(f"Dockerfile LABEL version matches VERSION '{version}'")
         if image_label_match and image_label_match.group(1) != version:
-            errors.append(f"Dockerfile org.opencontainers.image.version '{image_label_match.group(1)}' does not match VERSION '{version}'")
+            errors.append(
+                f"Dockerfile org.opencontainers.image.version '{image_label_match.group(1)}' does not match VERSION '{version}'"
+            )
         elif image_label_match and image_label_match.group(1) == version:
-            fixed.append(f"Dockerfile org.opencontainers.image.version matches VERSION '{version}'")
+            fixed.append(
+                f"Dockerfile org.opencontainers.image.version matches VERSION '{version}'"
+            )
         if env_match and env_match.group(1) != version:
-            errors.append(f"Dockerfile ENV SLOW_QUERY_DOCTOR_VERSION '{env_match.group(1)}' does not match VERSION '{version}'")
+            errors.append(
+                f"Dockerfile ENV SLOW_QUERY_DOCTOR_VERSION '{env_match.group(1)}' does not match VERSION '{version}'"
+            )
         elif env_match and env_match.group(1) == version:
-            fixed.append(f"Dockerfile ENV SLOW_QUERY_DOCTOR_VERSION matches VERSION '{version}'")
+            fixed.append(
+                f"Dockerfile ENV SLOW_QUERY_DOCTOR_VERSION matches VERSION '{version}'"
+            )
     # Check pyproject.toml version
-    pyproject_path = 'pyproject.toml'
+    pyproject_path = "pyproject.toml"
     if os.path.isfile(pyproject_path):
-        text = open(pyproject_path, 'r', encoding='utf8').read()
+        text = open(pyproject_path, "r", encoding="utf8").read()
         match = re.search(r'^version\s*=\s*"([^"]+)"', text, re.MULTILINE)
         if match and match.group(1) != version:
-            errors.append(f"pyproject.toml version '{match.group(1)}' does not match VERSION '{version}'")
+            errors.append(
+                f"pyproject.toml version '{match.group(1)}' does not match VERSION '{version}'"
+            )
         elif match and match.group(1) == version:
             fixed.append(f"pyproject.toml version matches VERSION '{version}'")
     if errors:
@@ -106,42 +135,59 @@ def validate_version_consistency(version):
                 print("  +", ok)
         print("[PRE-COMMIT] Please update all version fields to match VERSION file.")
         sys.exit(2)
-    print(f"[PRE-COMMIT] Version consistency validated: All files match VERSION '{version}'.")
+    print(
+        f"[PRE-COMMIT] Version consistency validated: All files match VERSION '{version}'."
+    )
     errors = []
     # Validate __init__.py
-    init_path = os.path.join('slowquerydoctor', '__init__.py')
+    init_path = os.path.join("slowquerydoctor", "__init__.py")
     if os.path.isfile(init_path):
-        text = open(init_path, 'r', encoding='utf8').read()
+        text = open(init_path, "r", encoding="utf8").read()
         match = re.search(r'__version__\s*=\s*"([^"]+)"', text)
         if match and match.group(1) != version:
-            errors.append(f"slowquerydoctor/__init__.py version '{match.group(1)}' does not match VERSION '{version}'")
+            errors.append(
+                f"slowquerydoctor/__init__.py version '{match.group(1)}' does not match VERSION '{version}'"
+            )
     # Validate Dockerfile LABEL version and ENV SLOW_QUERY_DOCTOR_VERSION
-    docker_path = 'Dockerfile'
+    docker_path = "Dockerfile"
     if os.path.isfile(docker_path):
-        text = open(docker_path, 'r', encoding='utf8').read()
+        text = open(docker_path, "r", encoding="utf8").read()
         label_match = re.search(r'LABEL version="([^"]+)"', text)
-        env_match = re.search(r'ENV SLOW_QUERY_DOCTOR_VERSION=([\w\.-]+)', text)
-        image_label_match = re.search(r'org.opencontainers.image.version="([^"]+)"', text)
+        env_match = re.search(r"ENV SLOW_QUERY_DOCTOR_VERSION=([\w\.-]+)", text)
+        image_label_match = re.search(
+            r'org.opencontainers.image.version="([^"]+)"', text
+        )
         if label_match and label_match.group(1) != version:
-            errors.append(f"Dockerfile LABEL version '{label_match.group(1)}' does not match VERSION '{version}'")
+            errors.append(
+                f"Dockerfile LABEL version '{label_match.group(1)}' does not match VERSION '{version}'"
+            )
         if env_match and env_match.group(1) != version:
-            errors.append(f"Dockerfile ENV SLOW_QUERY_DOCTOR_VERSION '{env_match.group(1)}' does not match VERSION '{version}'")
+            errors.append(
+                f"Dockerfile ENV SLOW_QUERY_DOCTOR_VERSION '{env_match.group(1)}' does not match VERSION '{version}'"
+            )
         if image_label_match and image_label_match.group(1) != version:
-            errors.append(f"Dockerfile org.opencontainers.image.version '{image_label_match.group(1)}' does not match VERSION '{version}'")
+            errors.append(
+                f"Dockerfile org.opencontainers.image.version '{image_label_match.group(1)}' does not match VERSION '{version}'"
+            )
     # Validate pyproject.toml version
-    pyproject_path = 'pyproject.toml'
+    pyproject_path = "pyproject.toml"
     if os.path.isfile(pyproject_path):
-        text = open(pyproject_path, 'r', encoding='utf8').read()
+        text = open(pyproject_path, "r", encoding="utf8").read()
         match = re.search(r'^version\s*=\s*"([^"]+)"', text, re.MULTILINE)
         if match and match.group(1) != version:
-            errors.append(f"pyproject.toml version '{match.group(1)}' does not match VERSION '{version}'")
+            errors.append(
+                f"pyproject.toml version '{match.group(1)}' does not match VERSION '{version}'"
+            )
     if errors:
         print("[PRE-COMMIT] Version consistency validation failed:")
         for err in errors:
             print("  -", err)
         print("[PRE-COMMIT] Please update all version fields to match VERSION file.")
         sys.exit(2)
-    print(f"[PRE-COMMIT] Version consistency validated: All files match VERSION '{version}'.")
+    print(
+        f"[PRE-COMMIT] Version consistency validated: All files match VERSION '{version}'."
+    )
+
 
 def read_version():
     p = os.path.join(ROOT, "VERSION")
@@ -291,7 +337,7 @@ def git_commit_and_tag(version):
 
 def main():
     version = read_version()
-    print('Propagating version', version)
+    print("Propagating version", version)
     validate_version_consistency(version)
     changed_any = False
     if update_init_py(version):
