@@ -83,56 +83,89 @@ Useful links
 
 # DBA-Grade Branching Model for Release Lifecycle
 
-Here’s a **DBA-grade, disciplined branching model** to move through the alpha → beta → RC → GA software release lifecycle. This keeps your repo clean and instantly signals project maturity to contributors and stakeholders.
+Here's the **Git Flow branching model** used by the project to manage releases through development phases. This follows the standard Git Flow pattern with main, develop, feature, and release branches.
 
-| Phase  | Purpose                    | Branch Name        | Tag Example        | Actions                                               |
-|--------|----------------------------|--------------------|--------------------|-------------------------------------------------------|
-| α      | Initial unstable changes   | `feature/vX.Y.0`   | `vX.Y.0-alpha.N`   | All dev goes here. Frequent push/PR. Merge to develop.|
-| β      | Feature complete, testable | `develop`          | `vX.Y.0-beta.N`    | Hardening, bugfixes, docs. No breaking features.      |
-| RC     | Release Candidate          | `release/vX.Y.0`   | `vX.Y.0-rc.N`      | Finalize, critical/blocker fixes only.                |
-| GA     | General Availability       | `main` (prod)      | `vX.Y.0`           | Merge release → main. Tag, deploy, announce.          |
+| Branch Type | Purpose | Naming Pattern | Example | When to Use |
+|-------------|---------|----------------|---------|-------------|
+| `main` | Production-ready code | `main` | `main` | Stable releases, hotfixes |
+| `develop` | Integration branch | `develop` | `develop` | Feature integration, ongoing development |
+| `feature/` | Individual features | `feature/description` | `feature/add-mysql-support` | New features, enhancements |
+| `release/` | Release preparation | `release/vX.Y.Z` | `release/v1.0.0` | Final QA, bug fixes before release |
+| `hotfix/` | Critical fixes | `hotfix/description` | `hotfix/security-patch` | Emergency production fixes |
 
 ---
 
 ## Step-by-step Branch Flow
 
-1. **Alpha**
-	- All **new code** starts in `feature/vX.Y.0` branches (per-feature, then aggregate).
-	- Merge to a shared `develop` branch when features begin to combine.
-	- Tag as `vX.Y.0-alpha.1`, `vX.Y.0-alpha.2`, etc.
+1. **Feature Development**
+   - Create `feature/*` branches from `develop`
+   - Work on features independently
+   - Merge back to `develop` when complete
 
-2. **Beta**
-	- Once features are “locked,” create `develop` as your main **integration branch**.
-	- No *new* features—just stabilization.
-	- CI runs here. Tag as `vX.Y.0-beta.1`, etc.
+2. **Release Preparation**
+   - Create `release/*` branch from `develop` when features are ready
+   - Perform final testing and bug fixes
+   - Merge to `main` for production release
 
-3. **Release Candidate (RC)**
-	- When close to production: cut `release/vX.Y.0` from `develop`.
-	- Only bugfixes, release notes, and doc changes permitted.
-	- Tag as `vX.Y.0-rc.1`, `rc.2`, etc.
-	- If blockers, fix in `release/vX.Y.0` and merge back to `develop`.
-
-4. **General Availability (GA)**
-	- Final, stable release: merge `release/vX.Y.0` → `main`.
-	- Tag as `vX.Y.0` (no suffix).
-	- Deploy, announce, maintain bugfixes as patch branches.
+3. **Hotfixes**
+   - Create `hotfix/*` branches from `main` for critical fixes
+   - Merge back to both `main` and `develop`
 
 ---
 
 ## Quick Git View
 
-- **feature/v0.2.0** (early work, unstable)  
- ↳ **develop** (integration, beta)  
-  ↳ **release/v0.2.0** (RC + hotfix)  
-   ↳ **main** (GA, production)
+- **develop** (integration branch)
+  - **feature/user-auth** (feature work)
+  - **feature/api-improvements** (feature work)
+  - ↳ **release/v1.0.0** (release prep)
+    - ↳ **main** (production)
 
 ---
 
-**TL;DR:**
-- Major WIP: `feature/`
-- Beta: `develop`
-- Release Candidate: `release/`
-- Production: `main`
+**Branch Hierarchy:**
+- `main` ← `release/*` ← `develop` ← `feature/*`
+- Hotfixes branch from `main` and merge to both `main` and `develop`
+
+---
+
+## Step-by-step Branch Flow
+
+1. **Feature Development**
+   - Create `feature/*` branches from `develop` for new features
+   - Work independently on features, push regular commits
+   - Merge completed features back to `develop` via pull requests
+
+2. **Release Preparation**
+   - When features are ready for release, create `release/*` branch from `develop`
+   - Perform final testing, bug fixes, and stabilization on release branch
+   - Only critical fixes and documentation updates allowed on release branches
+
+3. **Production Release**
+   - Merge stable `release/*` branch to `main` for production deployment
+   - Tag the release on `main` branch
+   - Deploy and announce the release
+
+4. **Hotfixes**
+   - For critical production issues, create `hotfix/*` branches from `main`
+   - Fix the issue and merge back to both `main` and `develop`
+   - Tag hotfix releases as patch versions
+
+---
+
+## Quick Git View
+
+- **develop** (integration branch)
+  - **feature/user-auth** (feature work)
+  - **feature/api-improvements** (feature work)
+  - ↳ **release/v1.0.0** (release prep)
+    - ↳ **main** (production)
+
+---
+
+**Branch Hierarchy:**
+- `main` ← `release/*` ← `develop` ← `feature/*`
+- Hotfixes branch from `main` and merge to both `main` and `develop`
 
 Let me know if you want git commands or a one-line workflow for creating branches or tags!
 
@@ -140,43 +173,62 @@ Let me know if you want git commands or a one-line workflow for creating branche
 
 ## Basic Git Workflow Actions
 
-### Alpha (feature branch)
+### Feature Development
 ```bash
-# Create a new feature branch for alpha development
-git checkout -b feature/v0.2.0
-# Push changes
-git push -u origin feature/v0.2.0
-# Tag alpha release (VERSION file uses 'v' prefix)
-git tag v0.2.0-alpha.1
-git push origin v0.2.0-alpha.1
-```
-
-### Beta (develop branch)
-```bash
-# Merge feature branch into develop
+# Create a new feature branch from develop
 git checkout develop
-git merge feature/v0.2.0
-# Tag beta release
-git tag v0.2.0-beta.1
-git push origin v0.2.0-beta.1
+git pull origin develop
+git checkout -b feature/add-new-feature
+
+# Work on feature, commit changes
+git add .
+git commit -m "feat: add new feature implementation"
+
+# Push feature branch
+git push -u origin feature/add-new-feature
 ```
 
-### Release Candidate (release branch)
+### Release Preparation
 ```bash
 # Create release branch from develop
-git checkout -b release/v0.2.0 develop
-# Tag RC release
-git tag v0.2.0-rc.1
-git push origin v0.2.0-rc.1
+git checkout develop
+git pull origin develop
+git checkout -b release/v1.0.0
+
+# Final testing and bug fixes on release branch
+git commit -m "fix: resolve issue in release prep"
+
+# Merge release to main when ready
+git checkout main
+git merge release/v1.0.0
+git push origin main
+
+# Tag the release
+git tag v1.0.0
+git push origin v1.0.0
 ```
 
-### General Availability (main branch)
+### Hotfix for Production
 ```bash
-# Merge release branch into main
+# Create hotfix branch from main
 git checkout main
-git merge release/v0.2.0
-# Tag GA release
-git tag v0.2.0
-git push origin v0.2.0
+git pull origin main
+git checkout -b hotfix/critical-fix
+
+# Fix the issue
+git commit -m "fix: critical production issue"
+
+# Merge hotfix to both main and develop
+git checkout main
+git merge hotfix/critical-fix
+git push origin main
+
+git checkout develop
+git merge hotfix/critical-fix
+git push origin develop
+
+# Tag the hotfix
+git tag v1.0.1
+git push origin v1.0.1
 ```
 ``` 
