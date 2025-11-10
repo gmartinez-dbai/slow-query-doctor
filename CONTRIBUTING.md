@@ -8,11 +8,20 @@ We welcome contributions of all kinds, including bug reports, feature requests, 
 
 We follow a **Git Flow** branching model with the following branches:
 
+### Branch Overview Table
+
+| Branch         | What Goes Here                        | Contributor Type      | Stability         |
+| -------------- | ------------------------------------- | -------------------- | ----------------- |
+| `main`         | Stable, production-ready releases     | Maintainers          | Stable            |
+| `develop`      | All new features, fixes (integration) | Everyone             | Unstable/WIP      |
+| `feature/*`    | Isolated experimental features        | Individuals          | Unstable/WIP      |
+| `release/*`    | Final bugfix, QA before release       | Maintainers          | Semi-Stable       |
+
 ### Main Branches
 - **`main`** - Production-ready code, always stable and deployable
 - **`develop`** - Integration branch for features, pre-release testing
 
-### Supporting Branches  
+### Supporting Branches
 - **`feature/*`** - New features and enhancements
 - **`bugfix/*`** - Non-critical bug fixes
 - **`hotfix/*`** - Critical fixes that need immediate deployment
@@ -29,14 +38,31 @@ We follow a **Git Flow** branching model with the following branches:
 
 ## 📋 How to Contribute
 
-### 1. Fork & Clone
+### 🚀 Quick Start for New Contributors
+
+1. **Fork & Clone** the repo.
+2. **Create a Feature Branch:**
+   Example:
+   ```
+   git checkout -b feature/my-new-feature
+   ```
+3. **Do your work:** Commit small, focused changes. Push to your feature branch.
+4. **PR to Develop:** Open a pull request (PR) from `feature/*` to `develop`.
+5. **Review & Testing:** Wait for CI/tests and code review from maintainers.
+6. **Merge to Develop:** Maintainers merge after approval.
+7. **Release Candidate:** When ready for release, maintainers create `release/*` and do final QA.
+8. **Merge to Main:** Final, stable release gets merged to `main` and tagged.
+
+### Detailed Steps
+
+#### 1. Fork & Clone
 ```bash
 git clone https://github.com/YOUR_USERNAME/slow-query-doctor.git
 cd slow-query-doctor
 git remote add upstream https://github.com/gmartinez-dbai/slow-query-doctor.git
 ```
 
-### 2. Create a Feature Branch
+#### 2. Create a Feature Branch
 ```bash
 # Start from develop for new features
 git checkout develop
@@ -48,7 +74,7 @@ git checkout -b bugfix/describe-the-fix
 
 # For hotfixes (from main)
 git checkout main
-git pull upstream main  
+git pull upstream main
 git checkout -b hotfix/critical-fix-name
 ```
 
@@ -145,6 +171,13 @@ ci: add automated release workflow
 
 ## 🔄 Release Process
 
+### Release Phases
+
+- **Alpha:** Early testing, unstable (tag: `v0.x.x-alpha.1`)
+- **Beta:** Feature complete, needs polish (tag: `v0.x.x-beta.1`)
+- **Release Candidate:** Ready for last QA (tag: `v0.x.x-rc.1`)
+- **GA:** General Availability/stable (tag: `v0.x.x`)
+
 ### Version Management
 - Versions follow [Semantic Versioning](https://semver.org/) (MAJOR.MINOR.PATCH)
 - Version is stored in `VERSION` file and propagated by `scripts/propagate_version.py`
@@ -176,6 +209,31 @@ ci: add automated release workflow
    ```
 5. **Automated Release** - GitHub Actions builds and publishes to PyPI
 
+### Example Workflow
+
+```
+# Start with develop
+git checkout develop
+
+# Add a feature
+git checkout -b feature/cool-feature
+# ...code and commit...
+
+# Push and create PR to develop
+git push origin feature/cool-feature
+
+# After review/merge, prepare release
+git checkout develop
+git pull
+git checkout -b release/0.2.0-alpha.1
+
+# Final QA then merge to main
+git checkout main
+git merge release/0.2.0-alpha.1
+git tag v0.2.0-alpha.1
+git push --tags
+```
+
 ### Version Management
 - **Automated Sync**: Git hooks automatically update all version files when `VERSION` changes
 - **Manual Sync**: `make sync-version` or `python scripts/propagate_version.py`  
@@ -190,6 +248,13 @@ ci: add automated release workflow
 4. PR to `main` 
 5. Tag immediately after merge
 6. Cherry-pick to `develop` if needed
+
+## 🏁 Quick Rules
+
+- **Never push unfinished code directly to main.**
+- **Always use PRs (Pull Requests) for changes.**
+- **Ask for help—no question is too small!**
+- **Tag releases clearly for every release phase.**
 
 ## 🔍 Pull Request Review Process
 
