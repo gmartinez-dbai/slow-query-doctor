@@ -83,4 +83,4 @@ LABEL maintainer="Giovanni Martinez <gio@iqtoolkit.ai>" \
 # Default command
 ENTRYPOINT ["slow-query-doctor"]
 CMD ["--help"]
-LABEL key="v0.1.8"
+LABEL version="v0.1.9"
