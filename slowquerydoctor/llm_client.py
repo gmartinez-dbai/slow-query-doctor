@@ -113,15 +113,34 @@ class LLMClient:
                     model=self.model,
                     messages=[{"role": "user", "content": prompt}],
                 )
-                logger.info("Successfully generated recommendations (Ollama)")
+                logger.debug(f"Ollama response type: {type(response)}")
+                logger.debug(f"Ollama response: {response}")
+
                 # Type-safe response parsing
                 content: str = ""
-                if isinstance(response, dict):
+                # Ollama Python SDK returns ChatResponse objects with .message.content attributes
+                if hasattr(response, "message") and hasattr(response.message, "content"):
+                    raw_content = response.message.content
+                    logger.debug(f"Raw content (ChatResponse): {raw_content}")
+                    if isinstance(raw_content, str):
+                        content = raw_content.strip()
+                # Fallback for dict-style responses (mocked tests)
+                elif isinstance(response, dict):
                     message = response.get("message")  # type: ignore[union-attr]
+                    logger.debug(f"Message (dict): {message}")
                     if isinstance(message, dict):
                         raw_content = message.get("content")  # type: ignore[union-attr]
+                        logger.debug(f"Raw content (dict): {raw_content}")
                         if isinstance(raw_content, str):
                             content = raw_content.strip()
+
+                if content:
+                    logger.info(
+                        f"Successfully generated Ollama recommendations ({len(content)} chars)"
+                    )
+                else:
+                    logger.warning("Ollama returned empty content")
+
                 return content
             else:  # pragma: no cover - defensive
                 raise ValueError(f"Unhandled LLM provider: {self.provider}")
