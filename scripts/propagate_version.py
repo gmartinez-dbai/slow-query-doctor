@@ -6,8 +6,14 @@ Behavior:
 - Update Chart.yaml files (appVersion and version) using ruamel.yaml
 - Update src/__init__.py __version__ or version variables if present
 - Update Dockerfile LABEL version="..." or append if missing
-- Commit changes and create a tag v{VERSION}
+- Optionally verify all versions are consistent
+
+Usage:
+    python scripts/propagate_version.py           # Update all version references
+    python scripts/propagate_version.py --verify # Verify versions are consistent
+    python scripts/propagate_version.py --check  # Same as --verify
 """
+import argparse
 import os
 import re
 import subprocess
@@ -28,6 +34,17 @@ os.chdir(ROOT)
 def validate_version_consistency(version):
     errors = []
     fixed = []
+    # Check package.json version
+    package_json_path = 'package.json'
+    if os.path.isfile(package_json_path):
+        import json
+        with open(package_json_path, 'r', encoding='utf8') as f:
+            package_data = json.load(f)
+        pkg_version = package_data.get('version')
+        if pkg_version != version:
+            errors.append(f"package.json version '{pkg_version}' does not match VERSION '{version}'")
+        else:
+            fixed.append(f"package.json version matches VERSION '{version}'")
     # Check slowquerydoctor/__init__.py
     init_path = os.path.join('slowquerydoctor', '__init__.py')
     if os.path.isfile(init_path):
@@ -127,91 +144,148 @@ def validate_version_consistency(version):
     print(f"[PRE-COMMIT] Version consistency validated: All files match VERSION '{version}'.")
 
 def read_version():
-    p = os.path.join(ROOT, 'VERSION')
+    p = os.path.join(ROOT, "VERSION")
     if not os.path.isfile(p):
-        print('VERSION file not found')
+        print("VERSION file not found")
         sys.exit(1)
-    return open(p, 'r').read().strip()
+    return open(p, "r").read().strip()
 
 
 def update_init_py(version):
-    path = os.path.join('src', '__init__.py')
-    if not os.path.isfile(path):
-        return False
-    text = open(path, 'r', encoding='utf8').read()
-    new_text = re.sub(r"(__version__\s*=\s*\")(.*?)(\")",
-                      rf"\1{version}\3",
-                      text)
-    new_text = re.sub(r"(version\s*=\s*\")(.*?)(\")",
-                      rf"\1{version}\3",
-                      new_text)
-    if new_text != text:
-        open(path, 'w', encoding='utf8').write(new_text)
-        print(f'Updated {path}')
-        return True
-    return False
+    # Check multiple possible paths for __init__.py
+    possible_paths = [
+        os.path.join("src", "__init__.py"),
+        os.path.join("slowquerydoctor", "__init__.py"),
+        "__init__.py",
+    ]
+
+    updated = False
+    for path in possible_paths:
+        if not os.path.isfile(path):
+            continue
+
+        text = open(path, "r", encoding="utf8").read()
+        new_text = re.sub(
+            r"(__version__\s*=\s*\")(.*?)(\")", r"\g<1>{}\g<3>".format(version), text
+        )
+        new_text = re.sub(
+            r"(version\s*=\s*\")(.*?)(\")", r"\g<1>{}\g<3>".format(version), new_text
+        )
+        if new_text != text:
+            open(path, "w", encoding="utf8").write(new_text)
+            print(f"Updated {path}")
+            updated = True
+
+    return updated
 
 
 def update_chart_yaml(version):
     yaml = YAML()
     updated = False
-    charts = glob('**/Chart.yaml', recursive=True) + glob('Chart.yaml')
+    charts = glob("**/Chart.yaml", recursive=True) + glob("Chart.yaml")
     for c in charts:
         if not os.path.isfile(c):
             continue
-        with open(c, 'r', encoding='utf8') as fh:
+        with open(c, "r", encoding="utf8") as fh:
             data = yaml.load(fh) or {}
         changed = False
-        if data.get('appVersion') != str(version):
-            data['appVersion'] = str(version)
+        if data.get("appVersion") != str(version):
+            data["appVersion"] = str(version)
             changed = True
-        if data.get('version') != str(version):
-            data['version'] = str(version)
+        if data.get("version") != str(version):
+            data["version"] = str(version)
             changed = True
         if changed:
-            with open(c, 'w', encoding='utf8') as fh:
+            with open(c, "w", encoding="utf8") as fh:
                 yaml.dump(data, fh)
-            print(f'Updated {c}')
+            print(f"Updated {c}")
             updated = True
     return updated
 
 
+def update_pyproject_toml(version):
+    """Update version in pyproject.toml"""
+    path = "pyproject.toml"
+    if not os.path.isfile(path):
+        return False
+
+    text = open(path, "r", encoding="utf8").read()
+    new_text = re.sub(
+        r'(version\s*=\s*")([^"]+)(")', r"\g<1>{}\g<3>".format(version), text
+    )
+
+    if new_text != text:
+        open(path, "w", encoding="utf8").write(new_text)
+        print(f"Updated {path}")
+        return True
+    return False
+
+
 def update_dockerfile(version):
     updated = False
-    for path in ('Dockerfile', 'docker/Dockerfile'):
+    for path in ("Dockerfile", "docker/Dockerfile"):
         if not os.path.isfile(path):
             continue
-        text = open(path, 'r', encoding='utf8').read()
-        if re.search(r'LABEL\s+version=\".*?\"', text):
-            new_text = re.sub(r'(LABEL\s+version=\")(.+?)(\")', rf"\1{version}\3", text)
-        else:
-            new_text = text + f"\nLABEL version=\"{version}\"\n"
-        if new_text != text:
-            open(path, 'w', encoding='utf8').write(new_text)
-            print(f'Updated {path}')
-            updated = True
+        text = open(path, "r", encoding="utf8").read()
+
+        # Update all version references in Dockerfile
+        new_text = text
+
+        # Update environment variable
+    new_text = re.sub(
+        r"(SLOW_QUERY_DOCTOR_VERSION=)([^\s]+)", r"\g<1>{}".format(version), new_text
+    )
+
+    # Update LABEL version (all instances)
+    new_text = re.sub(
+        r'(version="?)([^"\s]+)("?)', r"\g<1>{}\g<3>".format(version), new_text
+    )
+    new_text = re.sub(
+        r'(org\.opencontainers\.image\.version="?)([^"\s]+)("?)',
+        r"\g<1>{}\g<3>".format(version),
+        new_text,
+    )
+
+    if new_text != text:
+        open(path, "w", encoding="utf8").write(new_text)
+        print(f"Updated {path}")
+        updated = True
     return updated
 
 
 def git_commit_and_tag(version):
     try:
-        subprocess.check_call(['git', 'config', 'user.name', 'github-actions[bot]'])
-        subprocess.check_call(['git', 'config', 'user.email', '41898282+github-actions[bot]@users.noreply.github.com'])
+        subprocess.check_call(["git", "config", "user.name", "github-actions[bot]"])
+        subprocess.check_call(
+            [
+                "git",
+                "config",
+                "user.email",
+                "41898282+github-actions[bot]@users.noreply.github.com",
+            ]
+        )
     except subprocess.CalledProcessError:
         pass
 
-    subprocess.check_call(['git', 'add', '-A'])
+    subprocess.check_call(["git", "add", "-A"])
     # Check if anything to commit
-    status = subprocess.check_output(['git', 'status', '--porcelain']).decode().strip()
+    status = subprocess.check_output(["git", "status", "--porcelain"]).decode().strip()
     if not status:
-        print('No changes to commit')
+        print("No changes to commit")
         return False
-    subprocess.check_call(['git', 'commit', '-m', f'chore(release): propagate version {version} [skip ci]'])
-    tag = f'v{version}'
-    subprocess.check_call(['git', 'tag', '-a', tag, '-m', f'Release {tag}'])
-    subprocess.check_call(['git', 'push', 'origin', 'HEAD'])
-    subprocess.check_call(['git', 'push', 'origin', tag])
-    print('Committed and pushed tag', tag)
+        subprocess.check_call(
+            [
+                "git",
+                "commit",
+                "-m",
+                (f"chore(release): propagate version {version} " "[skip ci]"),
+            ]
+        )
+    tag = f"v{version}"
+    subprocess.check_call(["git", "tag", "-a", tag, "-m", f"Release {tag}"])
+    subprocess.check_call(["git", "push", "origin", "HEAD"])
+    subprocess.check_call(["git", "push", "origin", tag])
+    print("Committed and pushed tag", tag)
     return True
 
 
@@ -229,8 +303,45 @@ def main():
     if changed_any:
         git_commit_and_tag(version)
     else:
-        print('No files changed; nothing to do')
+        print("✅ All versions are consistent!")
+        return True
 
 
-if __name__ == '__main__':
+def main():
+    parser = argparse.ArgumentParser(
+        description="Propagate or verify version consistency"
+    )
+    parser.add_argument(
+        "--verify",
+        "--check",
+        action="store_true",
+        help="Verify all versions match instead of updating",
+    )
+
+    args = parser.parse_args()
+
+    if args.verify:
+        version = read_version()
+        validate_version_consistency(version)
+    else:
+        # Update mode
+        version = read_version()
+        print("Propagating version", version)
+        changed_any = False
+        if update_init_py(version):
+            changed_any = True
+        if update_pyproject_toml(version):
+            changed_any = True
+        if update_chart_yaml(version):
+            changed_any = True
+        if update_dockerfile(version):
+            changed_any = True
+        if changed_any:
+            print("Files updated successfully")
+            # Note: Removed auto-commit for manual control
+        else:
+            print("No files changed; nothing to do")
+
+
+if __name__ == "__main__":
     main()

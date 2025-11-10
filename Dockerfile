@@ -37,7 +37,7 @@ FROM python:3.11-slim as production
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PATH="/opt/venv/bin:$PATH" \
-    SLOW_QUERY_DOCTOR_VERSION=0.1.0
+    SLOW_QUERY_DOCTOR_VERSION=v0.1.8
 
 # Create non-root user for security
 RUN groupadd --gid 1001 appuser && \

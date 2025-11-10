@@ -17,40 +17,40 @@ def setup_logging():
     """Configure logging"""
     logging.basicConfig(
         level=logging.INFO,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
 
 def main():
     """Main CLI function"""
     parser = argparse.ArgumentParser(
-        description='Slow Query Doctor - AI-powered database slow query analyzer (PostgreSQL support)'
+        description="Slow Query Doctor - AI-powered database slow query analyzer (PostgreSQL support)"
     )
 
     parser.add_argument(
-        'log_file',
+        "log_file",
         type=str,
-        help='Path to database slow query log file (PostgreSQL format)'
+        help="Path to database slow query log file (PostgreSQL format)",
     )
 
     parser.add_argument(
-        '--output',
+        "--output",
         type=str,
-        default='reports/report.md',
-        help='Output report path (default: reports/report.md)'
+        default="reports/report.md",
+        help="Output report path (default: reports/report.md)",
     )
 
     parser.add_argument(
-        '--top-n',
+        "--top-n",
         type=int,
         default=5,
-        help='Number of top slow queries to analyze (default: 5)'
+        help="Number of top slow queries to analyze (default: 5)",
     )
 
     parser.add_argument(
-        '--verbose',
-        action='store_true',
-        help='Enable verbose (debug) output for troubleshooting and progress tracking.'
+        "--verbose",
+        action="store_true",
+        help="Enable verbose (debug) output for troubleshooting and progress tracking.",
     )
 
     args = parser.parse_args()
@@ -58,7 +58,7 @@ def main():
     if args.verbose:
         logging.basicConfig(
             level=logging.DEBUG,
-            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+            format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         )
         logging.getLogger().setLevel(logging.DEBUG)
     else:
@@ -96,9 +96,9 @@ def main():
         for row in top_queries.itertuples(index=False):
             queries_to_analyze.append(
                 {
-                    'query_text': str(row.example_query),
-                    'avg_duration': float(row.avg_duration),
-                    'frequency': int(row.frequency)
+                    "query_text": str(row.example_query),
+                    "avg_duration": float(row.avg_duration),
+                    "frequency": int(row.frequency),
                 }
             )
 
@@ -127,5 +127,5 @@ def main():
         return 1
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())

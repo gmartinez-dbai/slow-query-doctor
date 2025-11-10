@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Git pre-push hook to double-check version consistency
+# This runs automatically before every push
+
+set -e
+
+echo "🚀 Running pre-push version verification..."
+
+# Check for .venv directory in repo root
+if [ ! -d ".venv" ]; then
+    echo "❌ Virtual environment '.venv' not found in repository root!"
+    echo "💡 Please create it first:"
+    echo "   python -m venv .venv"
+    echo "   source .venv/bin/activate"
+    echo "   pip install -r requirements.txt"
+    exit 1
+fi
+
+# Source the virtual environment
+echo "🐍 Activating virtual environment..."
+source .venv/bin/activate
+
+# Install/update requirements if needed
+if [ -f "requirements.txt" ]; then
+    echo "📦 Ensuring requirements are installed..."
+    pip install -r requirements.txt > /dev/null 2>&1
+fi
+
+# Check if all version references are consistent
+python scripts/propagate_version.py --verify
+
+if [ $? -eq 0 ]; then
+    echo "✅ All versions are consistent - push allowed!"
+else
+    echo "❌ Version inconsistencies detected!"
+    echo "💡 Run: source .venv/bin/activate && python scripts/propagate_version.py"
+    echo "   Then commit the changes before pushing."
+    exit 1
+fi
