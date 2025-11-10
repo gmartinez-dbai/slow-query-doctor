@@ -53,6 +53,7 @@ An intelligent database performance analyzer that uses AI to diagnose slow queri
   - [Dependencies](#dependencies)
 - [License](#-license)
   - [Development Setup](#development-setup)
+- [Documentation](#-documentation)
 - [Roadmap, Technical Debt & Contributing](#-roadmap-technical-debt--contributing)
 
 ## 🎯 Overview
@@ -243,7 +244,7 @@ slow-query-doctor/
 
 ### 🐘 **PostgreSQL Setup** (Current Focus)
 
-See the full guide: [docs/slow_query_log_setup.md](docs/slow_query_log_setup.md)
+See the full guide: [docs/getting-started.md](docs/getting-started.md)
 
 Enable slow query logging in your `postgresql.conf`:
 
@@ -278,7 +279,7 @@ SELECT pg_reload_conf();
 
 For a step-by-step guide to enabling slow query logging, running example queries, and analyzing logs, see:
 
-- [docs/slow_query_log_setup.md](docs/slow_query_log_setup.md)
+- [docs/getting-started.md](docs/getting-started.md)
 
 This guide covers:
 - Editing postgresql.conf
@@ -496,7 +497,16 @@ MIT License - see [LICENSE](LICENSE) file for details.
 git clone https://github.com/yourusername/slow-query-doctor.git
 cd slow-query-doctor
 
-# Create development environment
+# Complete development environment setup
+bash scripts/setup-dev-environment.sh
+source venv/bin/activate
+
+# Install git hooks for automated version management
+bash scripts/setup-hooks.sh
+
+# Verify everything works
+make check-version
+make test
 python -m venv .venv
 source .venv/bin/activate
 
@@ -525,9 +535,24 @@ pip install .[dev,test]
 - **For v0.1.x**: "v0.1.6 is the final feature release. New features go to v0.2.0+ roadmap."
 - **For MySQL/SQL Server**: "Added to v0.4.0 roadmap (Q3 2026) - we're focusing on perfecting PostgreSQL analysis first with v0.2.0 configurable AI providers."
 
+## 📚 Documentation
+
+For complete documentation and guides, see our [**Documentation Index**](DOCUMENTATION_INDEX.md) 📖
+
+**Quick Links:**
+- 🚀 [Getting Started](docs/getting-started.md) - New user tutorial
+- 🤝 [Contributing Guide](CONTRIBUTING.md) - How to contribute
+- ⚙️ [Configuration](docs/configuration.md) - Setup and config options  
+- 💡 [Examples](docs/examples.md) - Real usage examples
+- ❓ [FAQ](docs/faq.md) - Common questions and troubleshooting
+
+## 🤝 Roadmap, Technical Debt & Contributing
+
 - See [ROADMAP.md](ROADMAP.md) for the full project roadmap, timeline, and community requests.
 - See [TECHNICAL_DEBT.md](TECHNICAL_DEBT.md) for known limitations and areas for future improvement.
 - See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines and code standards.
+- See [VERSION_MANAGEMENT.md](VERSION_MANAGEMENT.md) for automated version synchronization.
+- See [BRANCH_PROTECTION.md](BRANCH_PROTECTION.md) for repository governance and branch protection rules.
 - See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed system architecture and extension points.
 
 **Made with ❤️ for Database performance optimization**
