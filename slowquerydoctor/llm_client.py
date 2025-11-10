@@ -1,4 +1,3 @@
-
 import os
 import logging
 from typing import Optional, Dict
@@ -17,7 +16,6 @@ logger = logging.getLogger(__name__)
 
 
 @dataclass
-
 class LLMConfig:
     """Configuration for LLM client"""
 
@@ -28,7 +26,6 @@ class LLMConfig:
     temperature: float = 0.3
     max_tokens: int = 300
     timeout: int = 30
-
 
 
 class LLMClient:
@@ -57,7 +54,6 @@ class LLMClient:
             logger.info(f"Initialized Ollama client with model: {self.model}")
         else:
             raise ValueError(f"Unknown LLM provider: {self.provider}")
-
 
     def generate_recommendations(
         self,
@@ -95,11 +91,10 @@ class LLMClient:
                 return recommendation
             elif self.provider == "ollama":
                 response = ollama.chat(
-                    model=self.model,
-                    messages=[{"role": "user", "content": prompt}]
+                    model=self.model, messages=[{"role": "user", "content": prompt}]
                 )
                 logger.info("Successfully generated recommendations (Ollama)")
-                return response['message']['content'].strip()
+                return response["message"]["content"].strip()
         except Exception as e:
             logger.error(f"Error generating recommendations: {e}")
             return f"Error generating recommendations: {str(e)}"
