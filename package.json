@@ -1,0 +1,14 @@
+{
+  "name": "slow-query-doctor-dev",
+  "version": "0.2.2a1",
+  "private": true,
+  "description": "Development dependencies for Slow Query Doctor",
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3"
+  },
+  "scripts": {
+    "commitlint": "commitlint",
+    "commitlint:check": "commitlint --from HEAD~1 --to HEAD --verbose"
+  }
+}

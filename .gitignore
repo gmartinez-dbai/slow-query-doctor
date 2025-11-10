@@ -136,3 +136,11 @@ Thumbs.db
 
 # Personal notes
 notes/
+
+# vscode settings
+.vscode/settings.json
+
+# personal notes
+.slowquerydoctor.yml
+IMPROVEMENT_RECOMMENDATIONS.md
+IMPROVEMENTS_NODEJS.md

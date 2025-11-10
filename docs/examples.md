@@ -103,6 +103,41 @@ python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt --out
 python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt --top-n 10
 ```
 
+### Using Ollama for Local AI Recommendations
+
+To use Ollama instead of OpenAI for AI-powered recommendations:
+
+1. **Install and start Ollama** (see [Ollama Local Setup](ollama-local.md)):
+   ```sh
+   # Install from https://ollama.com/download
+   ollama serve
+   ```
+
+2. **Pull a model**:
+   ```sh
+   ollama pull llama2
+   ```
+
+3. **Create or update `.slowquerydoctor.yml`** in your project directory:
+   ```yaml
+   llm_provider: ollama
+   ollama_model: llama2
+   top_n: 5
+   output: reports/report.md
+   ```
+
+4. **Run the analysis** (no API key needed):
+   ```sh
+   python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt
+   ```
+
+Ollama runs completely locally—no data leaves your machine. For custom Ollama hosts:
+```yaml
+llm_provider: ollama
+ollama_model: llama2
+ollama_host: http://192.168.1.100:11434
+```
+
 ---
 
 ## 5. Supported Log Formats

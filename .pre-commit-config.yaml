@@ -1,0 +1,24 @@
+
+  repos:
+    - repo: https://github.com/psf/black
+      rev: 23.9.1
+      hooks:
+        - id: black
+          language_version: python3
+    - repo: local
+      hooks:
+        - id: version-consistency
+          name: Version Consistency Check
+          entry: python3 scripts/propagate_version.py --verify
+          language: system
+          types: [python, dockerfile]
+          pass_filenames: false
+          always_run: true
+          description: "Ensure VERSION is consistent across all relevant files before commit."
+        - id: update-requirements
+          name: Update requirements.txt
+          entry: make update-requirements
+          language: system
+          files: ^pyproject\.toml$
+          pass_filenames: false
+          description: "Regenerate requirements.txt when pyproject.toml changes"

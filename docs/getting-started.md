@@ -7,6 +7,7 @@ For a quick overview, see the [Project README](../README.md).
 
 ## Installation
 
+
 ```bash
 git clone https://github.com/gmartinez-dbai/slow-query-doctor.git
 cd slow-query-doctor
@@ -14,6 +15,8 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -e .
 ```
+
+If you want to use local LLMs, see [Ollama Local Setup](ollama-local.md) for installation and usage instructions.
 
 
 
