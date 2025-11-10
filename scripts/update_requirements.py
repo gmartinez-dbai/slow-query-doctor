@@ -20,7 +20,10 @@ def main() -> int:
         try:
             import tomli as tomllib
         except ImportError:
-            print("tomllib/tomli not available; install with: pip install tomli", file=sys.stderr)
+            print(
+                "tomllib/tomli not available; install with: pip install tomli",
+                file=sys.stderr,
+            )
             return 1
 
     try:
@@ -32,26 +35,44 @@ def main() -> int:
 
     # Collect all dependency names
     dep_names: set[str] = set()
-    
+
     # Main dependencies
     for dep in pyproject.get("project", {}).get("dependencies", []):
         # Extract package name from spec like "package>=1.0.0"
-        name = dep.split()[0].split(">=")[0].split("==")[0].split("<=")[0].split("!=")[0].split(";")[0].strip()
+        name = (
+            dep.split()[0]
+            .split(">=")[0]
+            .split("==")[0]
+            .split("<=")[0]
+            .split("!=")[0]
+            .split(";")[0]
+            .strip()
+        )
         dep_names.add(name.lower())
-    
+
     # Optional dependencies
     for deps in pyproject.get("project", {}).get("optional-dependencies", {}).values():
         for dep in deps:
-            name = dep.split()[0].split(">=")[0].split("==")[0].split("<=")[0].split("!=")[0].split(";")[0].strip()
+            name = (
+                dep.split()[0]
+                .split(">=")[0]
+                .split("==")[0]
+                .split("<=")[0]
+                .split("!=")[0]
+                .split(";")[0]
+                .strip()
+            )
             dep_names.add(name.lower())
-    
+
     # Get installed versions using pip show
     packages: Dict[str, str] = {}
     for name in sorted(dep_names):
         try:
             result = subprocess.run(
                 [sys.executable, "-m", "pip", "show", name],
-                capture_output=True, text=True, cwd="."
+                capture_output=True,
+                text=True,
+                cwd=".",
             )
             if result.returncode == 0:
                 for line in result.stdout.splitlines():
@@ -61,9 +82,12 @@ def main() -> int:
                         break
         except Exception:
             continue
-    
+
     if not packages:
-        print("No packages detected; requirements.txt will not be updated.", file=sys.stderr)
+        print(
+            "No packages detected; requirements.txt will not be updated.",
+            file=sys.stderr,
+        )
         return 3
 
     # Write requirements.txt with stable ordering
