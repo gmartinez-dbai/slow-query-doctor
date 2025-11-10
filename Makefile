@@ -19,6 +19,9 @@ help:
 	@echo "  make sync-version Update all files to match VERSION file"
 	@echo "  make check-version Verify all versions are consistent"
 	@echo ""
+	@echo "Dependency Management:"
+	@echo "  make update-requirements  Regenerate requirements.txt from pyproject.toml"
+	@echo ""
 	@echo "Code Quality:"
 	@echo "  make format       Format code with black"
 	@echo "  make lint         Run linting (flake8, mypy)"
@@ -70,6 +73,17 @@ check-version:
 	fi
 	@echo "🔍 Checking version consistency..."
 	@source .venv/bin/activate && pip install -r requirements.txt > /dev/null 2>&1 && python scripts/propagate_version.py --verify
+
+# Dependency management
+update-requirements:
+	@if [ ! -d ".venv" ]; then \
+		echo "❌ Virtual environment '.venv' not found!"; \
+		echo "💡 Create it first: python -m venv .venv && source .venv/bin/activate"; \
+		exit 1; \
+	fi
+	@echo "📦 Updating requirements.txt from pyproject.toml..."
+	@source .venv/bin/activate && pip install pip-tools > /dev/null 2>&1 && pip-compile --extra dev --extra test --extra docs --output-file requirements.txt pyproject.toml
+	@echo "✅ requirements.txt updated!"
 
 # Code formatting
 format:
