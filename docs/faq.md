@@ -5,6 +5,10 @@ For more, see the [Project README](../README.md) and [ROADMAP.md](../ROADMAP.md)
 
 ## Common Questions
 
+
+### Q: How do I use local LLMs or fix 'model not found' errors?
+A: See [Ollama Local Setup](ollama-local.md) for instructions on installing and running models locally.
+
 ### Q: How do I get my PostgreSQL logs?
 A: See [Configuration](configuration.md#postgresql-setup) for setup instructions.
 

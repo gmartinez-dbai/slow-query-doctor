@@ -20,7 +20,8 @@
 - [Technical Debt](../TECHNICAL_DEBT.md)
 - [Contributing Guide](../CONTRIBUTING.md) 🚀
 - [Code of Conduct](../CODE_OF_CONDUCT.md)
- - [Release Process & Versioning](release-process.md)
+- [Release Process & Versioning](release-process.md)
+- [Ollama Local Setup](ollama-local.md)
 
 ---
 
@@ -32,5 +33,6 @@
 - [Advanced Features](advanced-features.md)
 - [FAQ](faq.md)
 - [Setup & Usage Examples](examples.md)
+- [Ollama Local Setup](ollama-local.md)
 
 ---
