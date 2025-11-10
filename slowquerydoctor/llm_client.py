@@ -119,7 +119,9 @@ class LLMClient:
                 # Type-safe response parsing
                 content: str = ""
                 # Ollama Python SDK returns ChatResponse objects with .message.content attributes
-                if hasattr(response, "message") and hasattr(response.message, "content"):
+                if hasattr(response, "message") and hasattr(
+                    response.message, "content"
+                ):
                     raw_content = response.message.content
                     logger.debug(f"Raw content (ChatResponse): {raw_content}")
                     if isinstance(raw_content, str):
