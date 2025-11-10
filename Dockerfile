@@ -71,11 +71,11 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 
 # Labels for metadata
 LABEL maintainer="Giovanni Martinez <gio@iqtoolkit.ai>" \
-      version="v0.2.2-alpha.1" \
+      version="0.2.2a1" \
       description="AI-powered PostgreSQL slow query analyzer" \
       org.opencontainers.image.title="Slow Query Doctor" \
       org.opencontainers.image.description="AI-powered PostgreSQL performance analyzer" \
-      org.opencontainers.image.version="v0.2.2-alpha.1" \
+      org.opencontainers.image.version="0.2.2a1" \
       org.opencontainers.image.authors="Giovanni Martinez <gio@iqtoolkit.ai>" \
       org.opencontainers.image.source="https://github.com/iqtoolkit/slow-query-doctor" \
       org.opencontainers.image.licenses="MIT"
@@ -83,4 +83,4 @@ LABEL maintainer="Giovanni Martinez <gio@iqtoolkit.ai>" \
 # Default command
 ENTRYPOINT ["slow-query-doctor"]
 CMD ["--help"]
-LABEL version="v0.2.2-alpha.1"
+LABEL version="0.2.2a1"

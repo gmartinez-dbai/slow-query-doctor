@@ -1,6 +1,6 @@
 {
   "name": "slow-query-doctor-dev",
-  "version": "v0.2.2-alpha.1",
+  "version": "0.2.2a1",
   "private": true,
   "description": "Development dependencies for Slow Query Doctor",
   "devDependencies": {
