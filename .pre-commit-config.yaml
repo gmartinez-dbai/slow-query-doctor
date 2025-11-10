@@ -1,11 +1,17 @@
-repos:
-  - repo: local
-    hooks:
-      - id: version-consistency
-        name: Version Consistency Check
-        entry: python3 scripts/propagate_version.py --dry-run
-        language: system
-        types: [python, dockerfile]
-        pass_filenames: false
-        always_run: true
-        description: "Ensure VERSION is consistent across all relevant files before commit."
+
+  repos:
+    - repo: https://github.com/psf/black
+      rev: 23.9.1
+      hooks:
+        - id: black
+          language_version: python3
+    - repo: local
+      hooks:
+        - id: version-consistency
+          name: Version Consistency Check
+          entry: python3 scripts/propagate_version.py --validate
+          language: system
+          types: [python, dockerfile]
+          pass_filenames: false
+          always_run: true
+          description: "Ensure VERSION is consistent across all relevant files before commit."
