@@ -100,7 +100,7 @@ description = "The uncompromising code formatter."
 optional = true
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "extra == \"dev\""
+markers = "extra == \"dev\" or extra == \"test\""
 files = [
     {file = "black-25.11.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:ec311e22458eec32a807f029b2646f661e6859c3f61bc6d9ffb67958779f392e"},
     {file = "black-25.11.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:1032639c90208c15711334d681de2e24821af0575573db2810b0763bcd62e0f0"},
@@ -300,7 +300,7 @@ description = "Composable command line interface toolkit"
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "extra == \"dev\" or extra == \"docs\""
+markers = "extra == \"dev\" or extra == \"test\" or extra == \"docs\""
 files = [
     {file = "click-8.3.0-py3-none-any.whl", hash = "sha256:9b9f285302c6e3064f4330c05f05b81945b2a39544279343e6e7c5f27a9baddc"},
     {file = "click-8.3.0.tar.gz", hash = "sha256:e7b8232224eba16f4ebe410c25ced9f7875cb5f3263ffc93cc3e8da705e229c4"},
@@ -1116,7 +1116,7 @@ description = "Type system extensions for programs checked with the mypy type ch
 optional = true
 python-versions = ">=3.8"
 groups = ["main"]
-markers = "extra == \"dev\""
+markers = "extra == \"dev\" or extra == \"test\""
 files = [
     {file = "mypy_extensions-1.1.0-py3-none-any.whl", hash = "sha256:1be4cccdb0f2482337c4743e60421de3a356cd97508abadd57d47403e94f5505"},
     {file = "mypy_extensions-1.1.0.tar.gz", hash = "sha256:52e68efc3284861e772bbcd66823fde5ae21fd2fdb51c62a211403730b916558"},
@@ -1399,7 +1399,7 @@ description = "Utility library for gitignore style pattern matching of file path
 optional = true
 python-versions = ">=3.8"
 groups = ["main"]
-markers = "extra == \"dev\" or extra == \"docs\""
+markers = "extra == \"dev\" or extra == \"test\" or extra == \"docs\""
 files = [
     {file = "pathspec-0.12.1-py3-none-any.whl", hash = "sha256:a0d503e138a4c123b27490a4f7beda6a01c6f288df0e4a8b79c7eb0dc7b4cc08"},
     {file = "pathspec-0.12.1.tar.gz", hash = "sha256:a482d51503a1ab33b1c67a6c3813a26953dbdc71c31dacaef9a838c4e29f5712"},
@@ -1412,7 +1412,7 @@ description = "A small Python package for determining appropriate platform-speci
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "extra == \"dev\" or extra == \"docs\""
+markers = "extra == \"dev\" or extra == \"test\" or extra == \"docs\""
 files = [
     {file = "platformdirs-4.5.0-py3-none-any.whl", hash = "sha256:e578a81bb873cbb89a41fcc904c7ef523cc18284b7e3b3ccf06aca1403b7ebd3"},
     {file = "platformdirs-4.5.0.tar.gz", hash = "sha256:70ddccdd7c99fc5942e9fc25636a8b34d04c24b335100223152c2803e4063312"},
@@ -1802,7 +1802,7 @@ description = "A Fast, spec compliant Python 3.14+ tokenizer that runs on older 
 optional = true
 python-versions = ">=3.8"
 groups = ["main"]
-markers = "extra == \"dev\""
+markers = "extra == \"dev\" or extra == \"test\""
 files = [
     {file = "pytokens-0.3.0-py3-none-any.whl", hash = "sha256:95b2b5eaf832e469d141a378872480ede3f251a5a5041b8ec6e581d3ac71bbf3"},
     {file = "pytokens-0.3.0.tar.gz", hash = "sha256:2f932b14ed08de5fcf0b391ace2642f858f1394c0857202959000b68ed7a458a"},
@@ -2238,9 +2238,9 @@ watchmedo = ["PyYAML (>=3.10)"]
 [extras]
 dev = ["black", "flake8", "isort", "mypy", "pre-commit", "pytest", "pytest-cov", "ruamel.yaml"]
 docs = ["mkdocs", "mkdocs-material", "mkdocs-mermaid2-plugin"]
-test = ["pytest", "pytest-cov", "pytest-mock"]
+test = ["black", "pytest", "pytest-cov", "pytest-mock"]
 
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11"
-content-hash = "011e877bb740e66df20a3ff68ce80f8609b9b5cf0b09fa1dd51cc5b7ab3cca48"
+content-hash = "b1d2dda813ef2d34f50f651f09498084b7cedbd35357c53ca8d5b2b0649eb594"

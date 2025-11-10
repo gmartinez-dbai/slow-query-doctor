@@ -1,3 +1,4 @@
+black>=23.0.0
 ollama
 tqdm>=4.0.0
 # Core dependencies
