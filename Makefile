@@ -82,8 +82,7 @@ update-requirements:
 		exit 1; \
 	fi
 	@echo "📦 Updating requirements.txt from pyproject.toml..."
-	@source .venv/bin/activate && pip install pip-tools > /dev/null 2>&1 && pip-compile --extra dev --extra test --extra docs --output-file requirements.txt pyproject.toml
-	@echo "✅ requirements.txt updated!"
+	@source .venv/bin/activate && python scripts/update_requirements.py
 
 # Code formatting
 format:
