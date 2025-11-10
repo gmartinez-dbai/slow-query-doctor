@@ -24,7 +24,20 @@ openai_model: gpt-4o-mini
 ollama_model: llama2
 ```
 
+
 Set `llm_provider` to `openai` or `ollama` to choose which LLM backend to use. Specify the model for each provider with `openai_model` or `ollama_model`.
+
+### Choosing Your LLM Provider: OpenAI vs Ollama
+
+| Provider | Cost         | Privacy         | Speed         | Notes |
+|----------|--------------|----------------|--------------|-------|
+| OpenAI   | Paid (API)   | Data sent to OpenAI servers | Fast (cloud) | Requires API key, best for latest models |
+| Ollama   | Free/local   | Data stays on your machine | Fast (local, depends on hardware) | Requires local install, limited to available models |
+
+- **OpenAI**: Use for access to the latest GPT models, high reliability, and cloud scalability. Requires an API key and incurs usage costs. Data is processed on OpenAI's servers.
+- **Ollama**: Use for privacy, cost savings, and offline/local inference. No API key needed, but you must install Ollama and download models. Data never leaves your machine.
+
+You can switch providers by changing `llm_provider` in your config file. For most users, OpenAI is best for accuracy and features; Ollama is best for privacy and cost.
 
 See the README and this file for all available options.
 
