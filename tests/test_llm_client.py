@@ -127,7 +127,9 @@ class TestLLMClientOllama:
         """Test Ollama with custom host configuration."""
         mock_client = MagicMock()
         mock_ollama.Client.return_value = mock_client
-        mock_client.chat.return_value = {"message": {"content": "Use prepared statements"}}
+        mock_client.chat.return_value = {
+            "message": {"content": "Use prepared statements"}
+        }
 
         config = LLMConfig(
             llm_provider="ollama",
@@ -195,8 +197,16 @@ class TestLLMClientCommon:
         client = LLMClient(config)
 
         queries = [
-            {"query_text": "SELECT * FROM users", "avg_duration": 100.0, "frequency": 10},
-            {"query_text": "SELECT * FROM orders", "avg_duration": 200.0, "frequency": 5},
+            {
+                "query_text": "SELECT * FROM users",
+                "avg_duration": 100.0,
+                "frequency": 10,
+            },
+            {
+                "query_text": "SELECT * FROM orders",
+                "avg_duration": 200.0,
+                "frequency": 5,
+            },
         ]
 
         results = client.batch_generate_recommendations(queries)

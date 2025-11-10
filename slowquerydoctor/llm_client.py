@@ -59,7 +59,9 @@ class LLMClient:
                         "Initialized Ollama client with custom host: %s",
                         self.config.ollama_host,
                     )
-                except Exception as client_error:  # pragma: no cover - network dependent
+                except (
+                    Exception
+                ) as client_error:  # pragma: no cover - network dependent
                     logger.warning(
                         "Failed to initialize Ollama client with host %s (%s). Falling back to default host.",
                         self.config.ollama_host,

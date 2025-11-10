@@ -73,14 +73,14 @@ def main():
 
     llm_defaults = LLMConfig()
     llm_config = LLMConfig(
-    api_key=user_config.get("openai_api_key", llm_defaults.api_key),
-    llm_provider=user_config.get("llm_provider", llm_defaults.llm_provider),
-    openai_model=user_config.get("openai_model", llm_defaults.openai_model),
-    ollama_model=user_config.get("ollama_model", llm_defaults.ollama_model),
-    ollama_host=user_config.get("ollama_host", llm_defaults.ollama_host),
-    temperature=float(user_config.get("llm_temperature", llm_defaults.temperature)),
-    max_tokens=int(user_config.get("max_tokens", llm_defaults.max_tokens)),
-    timeout=int(user_config.get("llm_timeout", llm_defaults.timeout)),
+        api_key=user_config.get("openai_api_key", llm_defaults.api_key),
+        llm_provider=user_config.get("llm_provider", llm_defaults.llm_provider),
+        openai_model=user_config.get("openai_model", llm_defaults.openai_model),
+        ollama_model=user_config.get("ollama_model", llm_defaults.ollama_model),
+        ollama_host=user_config.get("ollama_host", llm_defaults.ollama_host),
+        temperature=float(user_config.get("llm_temperature", llm_defaults.temperature)),
+        max_tokens=int(user_config.get("max_tokens", llm_defaults.max_tokens)),
+        timeout=int(user_config.get("llm_timeout", llm_defaults.timeout)),
     )
 
     try:
