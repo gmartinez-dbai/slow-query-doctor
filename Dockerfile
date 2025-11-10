@@ -37,7 +37,7 @@ FROM python:3.11-slim as production
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PATH="/opt/venv/bin:$PATH" \
-    SLOW_QUERY_DOCTOR_VERSION=0.1.8
+    SLOW_QUERY_DOCTOR_VERSION=v0.1.8
 
 # Create non-root user for security
 RUN groupadd --gid 1001 appuser && \
@@ -70,12 +70,12 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD python -c "import slowquerydoctor; print('OK')" || exit 1
 
 # Labels for metadata
-LABEL maintainer="Giovanni Martinez <gio@gmartinez.net>" \
-      version="0.1.8" \
+LABEL maintainer="Giovanni Martinez <gio@iqtoolkit.ai>" \
+      version="v0.1.8" \
       description="AI-powered PostgreSQL slow query analyzer" \
       org.opencontainers.image.title="Slow Query Doctor" \
       org.opencontainers.image.description="AI-powered PostgreSQL performance analyzer" \
-      org.opencontainers.image.version="0.1.8" \
+      org.opencontainers.image.version="v0.1.8" \
       org.opencontainers.image.authors="Giovanni Martinez <gio@gmartinez.net>" \
       org.opencontainers.image.source="https://github.com/gmartinez-dbai/slow-query-doctor" \
       org.opencontainers.image.licenses="MIT"
@@ -83,3 +83,4 @@ LABEL maintainer="Giovanni Martinez <gio@gmartinez.net>" \
 # Default command
 ENTRYPOINT ["slow-query-doctor"]
 CMD ["--help"]
+LABEL key="v0.1.8"

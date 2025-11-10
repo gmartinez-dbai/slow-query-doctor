@@ -47,12 +47,13 @@ jobs:
         # - docs/description
         # - refactor/description
         # - chore/description
+        # - release/description
         
-        if [[ $branch_name =~ ^(feature|bugfix|hotfix|docs|refactor|chore)/.+ ]]; then
+        if [[ $branch_name =~ ^(feature|bugfix|hotfix|docs|refactor|chore|release)/.+ ]]; then
           echo "✅ Branch name follows convention: $branch_name"
         else
           echo "❌ Branch name does not follow convention!"
-          echo "Expected: feature/*, bugfix/*, hotfix/*, docs/*, refactor/*, or chore/*"
+          echo "Expected: feature/*, bugfix/*, hotfix/*, docs/*, refactor/*, or chore/* or release/*"
           echo "Got: $branch_name"
           echo ""
           echo "Examples of valid branch names:"
@@ -62,5 +63,6 @@ jobs:
           echo "  - docs/update-readme"
           echo "  - refactor/cleanup-analyzer-code"
           echo "  - chore/update-dependencies"
+          echo "  - release/v1.2.0"
           exit 1
         fi
