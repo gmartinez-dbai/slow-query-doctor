@@ -91,11 +91,6 @@ where = ["."]
 include = ["slowquerydoctor*"]
 exclude = ["tests*", "docs*", "sample_logs*"]
 
-[tool.poetry]
-packages = [
-    { include = "slowquerydoctor" }
-]
-
 [tool.setuptools.package-data]
 slowquerydoctor = ["py.typed"]
 
@@ -197,5 +192,5 @@ skip_covered = false
 [tool.coverage.html]
 directory = "htmlcov"
 
-# Flake8 configuration (via setup.cfg since flake8 doesn't support pyproject.toml yet)
-# You'll need to create a setup.cfg file for flake8 config
+# Flake8 configuration (see setup.cfg)
+# Flake8 doesn't support pyproject.toml configuration yet
