@@ -8,13 +8,19 @@ Key artifacts created by the repository:
 
 ## Semantic Versioning and Pre-release Naming
 
-The project follows [semantic versioning](https://semver.org/) for all releases. For pre-releases, use the following conventions:
+The project follows [semantic versioning](https://semver.org/) for all releases. For PyPI compatibility, versions must follow [PEP 440](https://peps.python.org/pep-0440/) standards, which means **no 'v' prefix**.
 
-- **Alpha releases:** `v0.2.0-alpha.1`, `v0.2.0-alpha.2`, ...
-- **Beta releases:** `v0.2.0-beta.1`, `v0.2.0-beta.2`, ...
-- **Release candidates:** `v0.2.0-rc.1`, `v0.2.0-rc.2`, ...
+### Version Format Examples:
+- **Alpha releases:** `0.2.0a1`, `0.2.0a2`, ...
+- **Beta releases:** `0.2.0b1`, `0.2.0b2`, ...
+- **Release candidates:** `0.2.0rc1`, `0.2.0rc2`, ...
+- **General availability:** `0.2.0`, `1.0.0`, etc.
 
-For general availability (GA) releases, use `v0.2.0`, `v1.0.0`, etc.
+### Important: PEP 440 Compliance
+- **❌ Old format:** `v0.2.0-alpha.1` (not PyPI compatible)
+- **✅ New format:** `0.2.0a1` (PEP 440 compliant)
+
+The 'v' prefix is common in Git tags and GitHub releases, but PyPI requires PEP 440 format for `pyproject.toml` and package metadata. The version propagation script automatically handles this conversion.
 
 Update the `VERSION` file with the appropriate version string before running the propagation workflow.
 Release steps (order: 1 → 2 → 3)
@@ -140,7 +146,7 @@ Let me know if you want git commands or a one-line workflow for creating branche
 git checkout -b feature/v0.2.0
 # Push changes
 git push -u origin feature/v0.2.0
-# Tag alpha release
+# Tag alpha release (VERSION file uses 'v' prefix)
 git tag v0.2.0-alpha.1
 git push origin v0.2.0-alpha.1
 ```

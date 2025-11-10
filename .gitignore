@@ -139,3 +139,8 @@ notes/
 
 # vscode settings
 .vscode/settings.json
+
+# personal notes
+.slowquerydoctor.yml
+docs/IMPROVEMENT_RECOMMENDATIONS.md
+docs/IMPROVEMENT_NODEJS.md
