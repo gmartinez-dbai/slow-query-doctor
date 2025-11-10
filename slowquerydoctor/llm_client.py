@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class LLMConfig:
     """Configuration for LLM client"""
+
     api_key: Optional[str] = None
     model: str = "gpt-4o-mini"  # More cost-effective default
     temperature: float = 0.3
@@ -35,12 +36,12 @@ class LLMClient:
         logger.info(f"Initialized LLM client with model: {self.config.model}")
 
     def generate_recommendations(
-            self,
-            query_text: str,
-            avg_duration: float,
-            frequency: int,
-            max_duration: Optional[float] = None,
-            impact_score: Optional[float] = None
+        self,
+        query_text: str,
+        avg_duration: float,
+        frequency: int,
+        max_duration: Optional[float] = None,
+        impact_score: Optional[float] = None,
     ) -> str:
         """
         Uses GPT to analyze query and suggest optimizations
@@ -60,19 +61,21 @@ class LLMClient:
                 query_text, avg_duration, frequency, max_duration, impact_score
             )
 
-            logger.debug(f"Requesting recommendations for query (avg: {avg_duration:.2f}ms)")
+            logger.debug(
+                f"Requesting recommendations for query (avg: {avg_duration:.2f}ms)"
+            )
 
             response = self.client.chat.completions.create(
                 model=self.config.model,
                 messages=[
                     {
                         "role": "system",
-                        "content": "You are a PostgreSQL performance optimization expert."
+                        "content": "You are a PostgreSQL performance optimization expert.",
                     },
-                    {"role": "user", "content": prompt}
+                    {"role": "user", "content": prompt},
                 ],
                 temperature=self.config.temperature,
-                max_tokens=self.config.max_tokens
+                max_tokens=self.config.max_tokens,
             )
 
             recommendation = response.choices[0].message.content
@@ -84,18 +87,18 @@ class LLMClient:
             return f"Error generating recommendations: {str(e)}"
 
     def _build_prompt(
-            self,
-            query_text: str,
-            avg_duration: float,
-            frequency: int,
-            max_duration: Optional[float],
-            impact_score: Optional[float]
+        self,
+        query_text: str,
+        avg_duration: float,
+        frequency: int,
+        max_duration: Optional[float],
+        impact_score: Optional[float],
     ) -> str:
         """Builds the prompt for the LLM"""
 
         stats = [
             f"Average Duration: {avg_duration:.2f} ms",
-            f"Execution Frequency: {frequency} times"
+            f"Execution Frequency: {frequency} times",
         ]
 
         if max_duration:
@@ -124,10 +127,7 @@ Keep response concise and under 150 words."""
 
         return prompt
 
-    def batch_generate_recommendations(
-            self,
-            queries: list[Dict]
-    ) -> list[str]:
+    def batch_generate_recommendations(self, queries: list[Dict]) -> list[str]:
         """
         Generate recommendations for multiple queries
 
@@ -143,11 +143,11 @@ Keep response concise and under 150 words."""
             logger.info(f"Processing query {i + 1}/{len(queries)}")
 
             rec = self.generate_recommendations(
-                query_text=query_info['query_text'],
-                avg_duration=query_info['avg_duration'],
-                frequency=query_info['frequency'],
-                max_duration=query_info.get('max_duration'),
-                impact_score=query_info.get('impact_score')
+                query_text=query_info["query_text"],
+                avg_duration=query_info["avg_duration"],
+                frequency=query_info["frequency"],
+                max_duration=query_info.get("max_duration"),
+                impact_score=query_info.get("impact_score"),
             )
             recommendations.append(rec)
 
@@ -158,7 +158,9 @@ Keep response concise and under 150 words."""
 _default_client = None
 
 
-def generate_recommendations(query_text: str, avg_duration: float, frequency: int) -> str:
+def generate_recommendations(
+    query_text: str, avg_duration: float, frequency: int
+) -> str:
     """
     Legacy function for backward compatibility
     Uses GPT to analyze query and suggest optimizations
