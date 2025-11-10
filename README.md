@@ -124,12 +124,27 @@ pip install -r requirements.txt
 pip install .[dev,test]
 ```
 
-4. **Set up OpenAI API key (Required for v0.1.x):**
+4. **Set up AI provider:**
+
+**Option A: OpenAI (Cloud, requires API key)**
 ```bash
 export OPENAI_API_KEY="your-openai-api-key-here"
 ```
 
-> **⚠️ OpenAI API Key Required**: v0.1.x only supports OpenAI GPT models. You must have a valid OpenAI API key to use AI recommendations. Local Ollama support comes in v0.2.0.
+**Option B: Ollama (Local, private, no API key needed)**
+```bash
+# Install Ollama from https://ollama.com/download
+ollama serve
+ollama pull llama2
+
+# Create .slowquerydoctor.yml
+cat > .slowquerydoctor.yml << EOF
+llm_provider: ollama
+ollama_model: llama2
+EOF
+```
+
+> **💡 Tip**: Ollama runs completely locally—your queries never leave your machine. Perfect for sensitive production data. See [Ollama Local Setup](docs/ollama-local.md) for details.
 
 ### Basic Usage
 
@@ -290,26 +305,39 @@ This guide covers:
 
 ### Environment Variables
 
-**Current (v0.1.x - OpenAI Only):**
 | Variable | Description | Default | Required |
 |----------|-------------|---------|----------|
-| `OPENAI_API_KEY` | OpenAI API key | None | ✅ **Required** |
+| `OPENAI_API_KEY` | OpenAI API key | None | For OpenAI provider |
 | `OPENAI_MODEL` | GPT model to use | `gpt-4o-mini` | Optional |
 | `OPENAI_BASE_URL` | Custom OpenAI endpoint | `https://api.openai.com/v1` | Optional |
 
-**Coming in v0.2.0 (Configurable AI Providers):**
-| Variable | Description | Default | Required |
-|----------|-------------|---------|----------|
-| `AI_PROVIDER` | AI provider selection | `ollama` | Optional |
-| `AI_BASE_URL` | Provider endpoint | `http://localhost:11434` | Optional |
-| `AI_MODEL` | Provider-specific model | `llama2` (Ollama) | Optional |
-| `AI_API_KEY` | API key (if required by provider) | None (Ollama) / Required (OpenAI) | Conditional |
-
-> **🚨 Breaking Change in v0.2.0**: Environment variables will change from `OPENAI_*` to `AI_*` format for consistency across providers.
-
 ### Configuration File
 
-You can create a `.slowquerydoctor.yml` file in your project directory to customize analysis options (e.g., default log format, thresholds, output paths). See `docs/configuration.md` for details and examples.
+Create a `.slowquerydoctor.yml` file to customize behavior:
+
+```yaml
+# AI Provider Selection
+llm_provider: ollama  # or 'openai'
+ollama_model: llama2
+ollama_host: http://localhost:11434  # optional, for custom hosts
+
+# OpenAI (if using)
+openai_api_key: sk-xxx  # optional, can use env var instead
+openai_model: gpt-4o-mini
+
+# Analysis Options
+log_format: csv
+top_n: 10
+output: reports/report.md
+min_duration: 1000
+
+# LLM Configuration
+llm_temperature: 0.3
+max_tokens: 300
+llm_timeout: 30
+```
+
+See [Configuration Guide](docs/configuration.md) for all options and [Ollama Local Setup](docs/ollama-local.md) for local AI setup.
 
 ## 📊 Sample Output
 

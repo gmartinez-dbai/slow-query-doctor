@@ -102,7 +102,7 @@ class LLMClient:
                     temperature=self.config.temperature,
                     max_tokens=self.config.max_tokens,
                 )
-                recommendation = response.choices[0].message.content
+                recommendation = response.choices[0].message.content or ""
                 logger.info("Successfully generated recommendations (OpenAI)")
                 return recommendation
             elif self.provider == "ollama":
@@ -112,7 +112,17 @@ class LLMClient:
                     messages=[{"role": "user", "content": prompt}],
                 )
                 logger.info("Successfully generated recommendations (Ollama)")
-                return response["message"]["content"].strip()
+                # Type-safe response parsing
+                content: str = ""
+                if isinstance(response, dict):
+                    message = response.get("message")  # type: ignore[union-attr]
+                    if isinstance(message, dict):
+                        raw_content = message.get("content")  # type: ignore[union-attr]
+                        if isinstance(raw_content, str):
+                            content = raw_content.strip()
+                return content
+            else:  # pragma: no cover - defensive
+                raise ValueError(f"Unhandled LLM provider: {self.provider}")
         except Exception as e:
             logger.error(f"Error generating recommendations: {e}")
             return f"Error generating recommendations: {str(e)}"
@@ -170,15 +180,15 @@ Keep response concise and under 150 words."""
         Returns:
             List of recommendation strings
         """
-        recommendations = []
+        recommendations: List[str] = []
 
         for i, query_info in enumerate(queries):
             logger.info(f"Processing query {i + 1}/{len(queries)}")
 
             rec = self.generate_recommendations(
-                query_text=query_info["query_text"],
-                avg_duration=query_info["avg_duration"],
-                frequency=query_info["frequency"],
+                query_text=str(query_info.get("query_text", "")),
+                avg_duration=float(query_info.get("avg_duration", 0)),
+                frequency=int(query_info.get("frequency", 0)),
                 max_duration=query_info.get("max_duration"),
                 impact_score=query_info.get("impact_score"),
             )
