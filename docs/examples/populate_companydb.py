@@ -8,6 +8,7 @@ from decimal import Decimal
 from datetime import datetime, timedelta
 import psycopg
 
+
 DB_PARAMS = dict(
     dbname="companydb",
     # user="postgres",
@@ -29,27 +30,21 @@ random.seed(42)
 def random_string(length):
     return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
 
-
-
-def random_string(length):
-    return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
-
 def main():
     print("Connecting to database with params:", DB_PARAMS)
     try:
         conn = psycopg.connect(**DB_PARAMS)
         cur = conn.cursor()
 
-
-    print("\nPopulating departments...")
-    departments = [f"Department {i+1}" for i in range(NUM_DEPARTMENTS)]
-    print("  Inserting departments...")
-    cur.executemany("INSERT INTO departments (name) VALUES (%s) ON CONFLICT DO NOTHING", [(d,) for d in departments])
-    conn.commit()
-    print("  Fetching department IDs...")
-    cur.execute("SELECT id FROM departments ORDER BY id")
-    department_ids = [row[0] for row in cur.fetchall()]
-    print(f"Inserted {len(department_ids)} departments.")
+        print("\nPopulating departments...")
+        departments = [f"Department {i+1}" for i in range(NUM_DEPARTMENTS)]
+        print("  Inserting departments...")
+        cur.executemany("INSERT INTO departments (name) VALUES (%s) ON CONFLICT DO NOTHING", [(d,) for d in departments])
+        conn.commit()
+        print("  Fetching department IDs...")
+        cur.execute("SELECT id FROM departments ORDER BY id")
+        department_ids = [row[0] for row in cur.fetchall()]
+        print(f"Inserted {len(department_ids)} departments.")
 
         print("\nPopulating employees...")
         employees = []
@@ -87,8 +82,8 @@ def main():
         product_prices = {row[0]: row[1] for row in product_rows}
         print(f"Inserted {len(product_ids)} products.")
 
-    print("\nPopulating customers...")
-    print("  Generating customer data...")
+        print("\nPopulating customers...")
+        print("  Generating customer data...")
         customers = []
         used_emails = set()
         for i in range(NUM_CUSTOMERS):
@@ -187,7 +182,6 @@ def main():
         print("\nData population complete.")
     except Exception as e:
         print("\n[ERROR] Data population failed:", e)
-
 
 if __name__ == "__main__":
     main()
