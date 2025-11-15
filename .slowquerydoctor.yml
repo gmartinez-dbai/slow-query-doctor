@@ -1,5 +1,5 @@
 # Example .slowquerydoctor.yml
-log_format: csv
+log_format: plain
 min_duration: 1000
 output: my_report.md
 top_n: 10

@@ -2,17 +2,19 @@
 
 An intelligent database performance analyzer that uses AI to diagnose slow queries and provide actionable optimization recommendations.
 
-## 🎯 **Current Support: PostgreSQL Only**
+## 🎯 **Current Support: PostgreSQL + MongoDB Coming ASAP**
 **✅ Ready to use**: PostgreSQL slow query analysis with AI-powered recommendations  
-**🚧 Coming Q3 2026**: MySQL and SQL Server support in v0.4.0
+**🚧 Priority Development**: MongoDB support shipping in v0.2.0 (Nov 2025 - Q1 2026)  
+**🚧 Traditional SQL**: MySQL and SQL Server support in v0.4.0 (Q3 2026)
 
-> **🚀 Interested in early MySQL/SQL Server testing?** [File an issue](https://github.com/iqtoolkit/slow-query-doctor/issues/new?labels=mysql-feedback,sqlserver-feedback&title=Early%20Testing%20Interest) to get involved before v0.4.0 development starts!
+> **🚀 MongoDB Users**: We're prioritizing MongoDB support! [File an issue](https://github.com/iqtoolkit/slow-query-doctor/issues/new?labels=mongodb-feedback&title=MongoDB%20Requirements) to share your slow query log formats and optimization needs.
 
 ![Python](https://img.shields.io/badge/python-3.11+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![OpenAI](https://img.shields.io/badge/AI-OpenAI%20Only%20v0.1.x-orange.svg)
 ![Ollama](https://img.shields.io/badge/AI-Ollama%20Coming%20v0.2.0-blue.svg)
 ![PostgreSQL](https://img.shields.io/badge/database-PostgreSQL%20Ready-336791?logo=postgresql&logoColor=white)
+![MongoDB](https://img.shields.io/badge/database-MongoDB%20Priority%20v0.2.0-47A248?logo=mongodb&logoColor=white)
 ![MySQL](https://img.shields.io/badge/database-MySQL%20Planned%20v0.4.0-4479A1?logo=mysql&logoColor=white)
 ![SQL Server](https://img.shields.io/badge/database-SQL%20Server%20Planned%20v0.4.0-CC2927?logo=microsoftssqlserver&logoColor=white)
 
@@ -66,6 +68,7 @@ Slow Query Doctor automatically analyzes your **PostgreSQL** slow query logs and
 | Database | Status | Version | Timeline |
 |----------|--------|---------|----------|
 | **PostgreSQL** | ✅ **Fully Supported** | v0.1.x+ | Available now |
+| **MongoDB** | 🚧 **Priority Development** | v0.2.0 | Nov 2025 - Q1 2026 |
 | **MySQL** | 🚧 Planned | v0.4.0 | Q3 2026 |
 | **SQL Server** | 🚧 Planned | v0.4.0 | Q3 2026 |
 
@@ -76,6 +79,8 @@ Slow Query Doctor automatically analyzes your **PostgreSQL** slow query logs and
 | **Ollama (Local)** | 🚧 **Default in Future** | v0.2.0+ | Nov 2025 - Q1 2026 |
 | **Multiple Providers** | 🚧 Configurable | v0.2.0+ | Nov 2025 - Q1 2026 |
 
+> **📢 MongoDB Priority**: We're building MongoDB support ASAP in v0.2.0! Share your MongoDB slow query requirements and log formats.
+> 
 > **📢 Want to influence MySQL/SQL Server development?** Check out our [future database sample directories](docs/sample_logs/) and share your specific requirements!
 
 > **v0.1.6 Release Note**: This is the **final v0.1.x release with new features**. It includes comprehensive architecture documentation and prepares the codebase for multi-database support coming in v0.4.0. All references have been updated from "PostgreSQL-specific" to "database log analyzer" to reflect our roadmap for MySQL and SQL Server support. Future v0.1.x releases (v0.1.7+) will contain **bug fixes only** - all new features move to v0.2.0+.
@@ -110,18 +115,13 @@ git clone https://github.com/yourusername/slow-query-doctor.git
 cd slow-query-doctor
 ```
 
-2. **Create virtual environment:**
+2. **Create virtual environment and install deps (uv):**
 ```bash
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-```
-
-
-3. **Install dependencies:**
-```bash
-pip install -r requirements.txt
-# Or, for full development setup:
-pip install .[dev,test]
+uv venv --python 3.11
+# Install runtime deps
+uv pip install -r requirements.txt
+# Or full development setup
+uv pip install -e .[dev,test]
 ```
 
 4. **Set up AI provider:**
@@ -148,28 +148,28 @@ EOF
 
 ### Basic Usage
 
-#### Try with Sample Data
+#### Try with Sample Data (via uv)
 ```bash
 # Analyze the included sample log file
-python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md
+uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md
 
 # Analyze top 5 slowest queries
-python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --top-n 5
+uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --top-n 5
 
 # Get more detailed AI analysis
-python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --max-tokens 200
+uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --max-tokens 200
 
 # Enable verbose (debug) output
-python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --verbose
+uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --verbose
 ```
 
 #### With Your Own Logs
 ```bash
 # Basic analysis
-python -m slowquerydoctor /path/to/your/postgresql.log --output analysis_report.md
+uv run python -m slowquerydoctor /path/to/your/postgresql.log --output analysis_report.md
 
 # Advanced options
-python -m slowquerydoctor /path/to/your/postgresql.log \
+uv run python -m slowquerydoctor /path/to/your/postgresql.log \
   --output detailed_report.md \
   --top-n 10 \
   --min-duration 1000 \
@@ -477,10 +477,10 @@ mypy slowquerydoctor/
 ### Testing with Sample Data
 ```bash
 # Test the parser
-python -c "from slowquerydoctor import parse_postgres_log; print(len(parse_postgres_log('sample_logs/postgresql-2025-10-28_192816.log.txt')))"
+uv run python -c "from slowquerydoctor import parse_postgres_log; print(len(parse_postgres_log('sample_logs/postgresql-2025-10-28_192816.log.txt')))"
 
 # Test full pipeline with sample data
-python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output test_report.md
+uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output test_report.md
 
 # Verify AI recommendations are generated
 grep -A 5 "🤖 AI Recommendation" test_report.md
@@ -519,7 +519,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 4. Push to branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-### Development Setup
+### Development Setup (with uv)
 ```bash
 # Clone your fork
 git clone https://github.com/yourusername/slow-query-doctor.git
@@ -527,7 +527,6 @@ cd slow-query-doctor
 
 # Complete development environment setup
 bash scripts/setup-dev-environment.sh
-source venv/bin/activate
 
 # Install git hooks for automated version management
 bash scripts/setup-hooks.sh
@@ -535,13 +534,11 @@ bash scripts/setup-hooks.sh
 # Verify everything works
 make check-version
 make test
-python -m venv .venv
-source .venv/bin/activate
 
-# Install in development mode
-pip install -e .
-# Or, for all dev/test dependencies:
-pip install .[dev,test]
+# Install in development mode (if you didn't run setup script)
+uv venv --python 3.11
+uv pip install -r requirements.txt
+uv pip install -e .[dev]
 ```
 ## 📈 Roadmap, Technical Debt & Contributing
 
