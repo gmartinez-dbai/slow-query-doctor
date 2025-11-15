@@ -1,20 +1,35 @@
+# Build and package management
+uv==0.9.9
+
+# Code quality and formatting  
 black==25.11.0
 flake8==7.3.0
 isort==7.0.0
-mkdocs-material==9.6.23
-mkdocs-mermaid2-plugin==1.2.3
-mkdocs==1.6.1
 mypy==1.18.2
+pre-commit==4.4.0
+
+# Type stubs
+types-pyyaml==6.0.12.20250915
+
+# Core dependencies
 ollama==0.6.0
 openai==2.7.2
 pandas==2.3.3
-pip-tools==7.5.1
-pre-commit==4.4.0
 psycopg==3.2.12
-pytest-cov==7.0.0
-pytest-mock==3.15.1
-pytest==9.0.0
 python-dotenv==1.2.1
 pyyaml==6.0.3
 ruamel.yaml==0.18.16
 tqdm==4.67.1
+
+# Testing
+pytest-cov==7.0.0
+pytest-mock==3.15.1
+pytest==9.0.0
+
+# Documentation
+mkdocs-material==9.6.23
+mkdocs-mermaid2-plugin==1.2.3
+mkdocs==1.6.1
+
+# Development tools
+pip-tools==7.5.1

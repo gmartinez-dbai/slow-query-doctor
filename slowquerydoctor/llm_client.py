@@ -6,11 +6,11 @@ from dataclasses import dataclass
 try:
     from openai import OpenAI
 except ImportError:
-    OpenAI = None
+    OpenAI = None  # type: ignore
 try:
     import ollama
 except ImportError:
-    ollama = None
+    ollama = None  # type: ignore
 
 logger = logging.getLogger(__name__)
 
@@ -43,8 +43,8 @@ class LLMClient:
             api_key = self.config.api_key or os.getenv("OPENAI_API_KEY")
             if not api_key:
                 raise ValueError(
-                    "OpenAI API key not found. Set OPENAI_API_KEY environment variable "
-                    "or pass it in LLMConfig."
+                    "OpenAI API key not found. Set OPENAI_API_KEY environment "
+                    "variable or pass it in LLMConfig."
                 )
             self.client = OpenAI(api_key=api_key, timeout=self.config.timeout)
             self.model = self.config.openai_model
@@ -63,7 +63,8 @@ class LLMClient:
                     Exception
                 ) as client_error:  # pragma: no cover - network dependent
                     logger.warning(
-                        "Failed to initialize Ollama client with host %s (%s). Falling back to default host.",
+                        "Failed to initialize Ollama client with host %s (%s). "
+                        "Falling back to default host.",
                         self.config.ollama_host,
                         client_error,
                     )
@@ -89,7 +90,7 @@ class LLMClient:
                 query_text, avg_duration, frequency, max_duration, impact_score
             )
             logger.debug(
-                f"Requesting recommendations for query (avg: {avg_duration:.2f}ms)"
+                f"Requesting recommendations for query " f"(avg: {avg_duration:.2f}ms)"
             )
             if self.provider == "openai":
                 response = self.client.chat.completions.create(
@@ -97,7 +98,8 @@ class LLMClient:
                     messages=[
                         {
                             "role": "system",
-                            "content": "You are a PostgreSQL performance optimization expert.",
+                            "content": "You are a PostgreSQL performance "
+                            "optimization expert.",
                         },
                         {"role": "user", "content": prompt},
                     ],
@@ -109,7 +111,7 @@ class LLMClient:
                 return recommendation
             elif self.provider == "ollama":
                 chat_target = self._ollama_client or ollama
-                response = chat_target.chat(  # type: ignore[attr-defined]
+                response = chat_target.chat(  # type: ignore
                     model=self.model,
                     messages=[{"role": "user", "content": prompt}],
                 )
@@ -118,27 +120,30 @@ class LLMClient:
 
                 # Type-safe response parsing
                 content: str = ""
-                # Ollama Python SDK returns ChatResponse objects with .message.content attributes
-                if hasattr(response, "message") and hasattr(
-                    response.message, "content"
-                ):
-                    raw_content = response.message.content
-                    logger.debug(f"Raw content (ChatResponse): {raw_content}")
-                    if isinstance(raw_content, str):
-                        content = raw_content.strip()
-                # Fallback for dict-style responses (mocked tests)
-                elif isinstance(response, dict):
-                    message = response.get("message")  # type: ignore[union-attr]
-                    logger.debug(f"Message (dict): {message}")
-                    if isinstance(message, dict):
-                        raw_content = message.get("content")  # type: ignore[union-attr]
-                        logger.debug(f"Raw content (dict): {raw_content}")
+                # Handle both ChatResponse objects and dict responses (for tests)
+                try:
+                    if hasattr(response, "message") and hasattr(
+                        response.message, "content"
+                    ):
+                        raw_content = response.message.content
+                        logger.debug(f"Raw content (ChatResponse): {raw_content}")
                         if isinstance(raw_content, str):
                             content = raw_content.strip()
+                    elif hasattr(response, "get"):  # dict-like object
+                        message = response.get("message")
+                        logger.debug(f"Message (dict): {message}")
+                        if isinstance(message, dict):
+                            raw_content = message.get("content")
+                            logger.debug(f"Raw content (dict): {raw_content}")
+                            if isinstance(raw_content, str):
+                                content = raw_content.strip()
+                except (AttributeError, TypeError):
+                    logger.warning("Could not parse Ollama response format")
 
                 if content:
                     logger.info(
-                        f"Successfully generated Ollama recommendations ({len(content)} chars)"
+                        f"Successfully generated Ollama recommendations "
+                        f"({len(content)} chars)"
                     )
                 else:
                     logger.warning("Ollama returned empty content")

@@ -44,7 +44,8 @@ def validate_version_consistency(version):
         pkg_version = package_data.get("version")
         if pkg_version != version:
             errors.append(
-                f"package.json version '{pkg_version}' does not match VERSION '{version}'"
+                f"package.json version '{pkg_version}' does not match "
+                f"VERSION '{version}'"
             )
         else:
             fixed.append(f"package.json version matches VERSION '{version}'")
@@ -55,7 +56,8 @@ def validate_version_consistency(version):
         match = re.search(r'__version__\s*=\s*"([^"]+)"', text)
         if match and match.group(1) != version:
             errors.append(
-                f"slowquerydoctor/__init__.py version '{match.group(1)}' does not match VERSION '{version}'"
+                f"slowquerydoctor/__init__.py version '{match.group(1)}' "
+                f"does not match VERSION '{version}'"
             )
         elif match and match.group(1) == version:
             fixed.append(
@@ -67,7 +69,8 @@ def validate_version_consistency(version):
         with open(version_path, "w", encoding="utf8") as f:
             f.write(f'__version__ = "{version}"\n')
         print(
-            f"[PRE-COMMIT] Created slowquerydoctor/__version__.py with version '{version}'"
+            f"[PRE-COMMIT] Created slowquerydoctor/__version__.py "
+            f"with version '{version}'"
         )
         fixed.append(
             f"slowquerydoctor/__version__.py created and matches VERSION '{version}'"

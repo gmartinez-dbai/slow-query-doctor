@@ -6,6 +6,7 @@ import argparse
 import sys
 import logging
 from pathlib import Path
+from typing import List, Dict, Any
 
 from .parser import parse_postgres_log, load_config
 from .analyzer import run_slow_query_analysis
@@ -13,7 +14,7 @@ from .llm_client import LLMClient, LLMConfig
 from .report_generator import ReportGenerator
 
 
-def setup_logging():
+def setup_logging() -> None:
     """Configure logging"""
     logging.basicConfig(
         level=logging.INFO,
@@ -21,10 +22,11 @@ def setup_logging():
     )
 
 
-def main():
+def main() -> int:
     """Main CLI function"""
     parser = argparse.ArgumentParser(
-        description="Slow Query Doctor - AI-powered database slow query analyzer (PostgreSQL support)"
+        description="Slow Query Doctor - AI-powered database slow query "
+        "analyzer (PostgreSQL support)"
     )
 
     parser.add_argument(
@@ -95,20 +97,26 @@ def main():
 
         # Analyze queries
         try:
-            top_queries, summary = run_slow_query_analysis(df, top_n=configured_top_n)
+            result = run_slow_query_analysis(df, top_n=configured_top_n)
         except ValueError as analysis_error:
             logger.warning(str(analysis_error))
             return 0
 
-        if top_queries.empty:
-            logger.warning("No slow queries met the analysis criteria")
-            return 0
+        # Type narrowing for DataFrame path
+        if isinstance(result, tuple):
+            top_queries, summary = result
+            if len(top_queries) == 0:
+                logger.warning("No slow queries met the analysis criteria")
+                return 0
+        else:
+            logger.error("Unexpected return type from analysis")
+            return 1
 
         # Generate AI recommendations
         logger.info("Generating recommendations...")
         llm_client = LLMClient(llm_config)
 
-        queries_to_analyze = []
+        queries_to_analyze: List[Dict[str, Any]] = []
         for row in top_queries.itertuples(index=False):
             queries_to_analyze.append(
                 {

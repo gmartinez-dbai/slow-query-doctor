@@ -151,22 +151,22 @@ pip install -e .[dev,test]
 
 #### AI Provider Setup (Both Options)
 
-**Option A: OpenAI (Cloud, requires API key)**
+**Option A: Ollama (Recommended - Local, private, no API key needed) ⭐**
 ```bash
-export OPENAI_API_KEY="your-openai-api-key-here"
-```
-
-**Option B: Ollama (Local, private, no API key needed)**
-```bash
-# Install Ollama from https://ollama.com/download
+# Quick setup (see docs/5-minute-ollama-setup.md for details)
+curl -LsSf https://ollama.com/install.sh | sh
 ollama serve
 ollama pull llama2
 
-# Create .slowquerydoctor.yml
-cat > .slowquerydoctor.yml << EOF
-llm_provider: ollama
-ollama_model: llama2
-EOF
+# Copy example config and customize
+cp .slowquerydoctor.yml.example .slowquerydoctor.yml
+# Edit: set llm_provider: ollama
+```
+
+**Option B: OpenAI (Cloud, requires API key)**
+```bash
+export OPENAI_API_KEY="your-openai-api-key-here"
+# Config will use OpenAI by default if no .slowquerydoctor.yml exists
 ```
 
 > **💡 Tip**: Ollama runs completely locally—your queries never leave your machine. Perfect for sensitive production data. See [Ollama Local Setup](docs/ollama-local.md) for details.

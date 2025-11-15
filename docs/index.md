@@ -22,7 +22,8 @@
 - [Code of Conduct](../CODE_OF_CONDUCT.md)
 - [Release Process & Versioning](release-process.md)
 - [Configuration Guide](configuration.md)
-- [Ollama Local Setup](ollama-local.md)
+- [🚀 5-Minute Ollama Setup](5-minute-ollama-setup.md) ⭐ **New!**
+- [Ollama Local Setup (Detailed)](ollama-local.md)
 - [OpenAI Setup](https://platform.openai.com/docs/guides/authentication)
 - [FAQ & Troubleshooting](faq.md)
 

@@ -26,6 +26,7 @@ help:
 	@echo "  make format       Format code with black"
 	@echo "  make lint         Run linting (flake8, mypy)"
 	@echo "  make test         Run tests with coverage"
+	@echo "  make test-ollama  Test Ollama setup and integration"
 	@echo ""
 	@echo "Maintenance:"
 	@echo "  make clean        Remove build artifacts and cache"
@@ -174,11 +175,11 @@ lint:
 	@echo "🔍 Running linting..."
 	@if command -v uv >/dev/null 2>&1; then \
 		uv pip install -r requirements.txt > /dev/null 2>&1; \
-		uv run flake8 slowquerydoctor tests --max-line-length=88 --extend-ignore=E203,W503; \
+		uv run flake8 slowquerydoctor tests scripts --max-line-length=88 --extend-ignore=E203,W503 --exclude=scripts/propagate_version.py; \
 		uv run mypy slowquerydoctor --ignore-missing-imports; \
 	else \
 		.venv/bin/pip install -r requirements.txt > /dev/null 2>&1; \
-		.venv/bin/python -m flake8 slowquerydoctor tests --max-line-length=88 --extend-ignore=E203,W503; \
+		.venv/bin/python -m flake8 slowquerydoctor tests scripts --max-line-length=88 --extend-ignore=E203,W503 --exclude=scripts/propagate_version.py; \
 		.venv/bin/python -m mypy slowquerydoctor --ignore-missing-imports; \
 	fi
 	@echo "✅ Linting passed!"
@@ -203,6 +204,15 @@ test:
 		.venv/bin/python -m pytest tests/ --cov=slowquerydoctor --cov-report=term-missing --cov-report=html; \
 	fi
 	@echo "✅ Tests completed!"
+
+# Test Ollama setup
+test-ollama:
+	@echo "🤖 Testing Ollama setup..."
+	@if command -v uv >/dev/null 2>&1; then \
+		uv run python scripts/test_ollama.py; \
+	else \
+		.venv/bin/python scripts/test_ollama.py; \
+	fi
 
 # Clean build artifacts
 clean:
