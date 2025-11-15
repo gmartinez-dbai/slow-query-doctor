@@ -11,7 +11,7 @@ echo ""
 # Check 1: Verify .venv directory exists
 if [ ! -d ".venv" ]; then
     echo "❌ FAIL: Virtual environment '.venv' directory not found"
-    echo "💡 Run: python -m venv .venv"
+    echo "💡 Run: uv venv --python 3.11"
     exit 1
 else
     echo "✅ PASS: Virtual environment directory exists"
@@ -20,7 +20,7 @@ fi
 # Check 2: Verify .venv has Python
 if [ ! -f ".venv/bin/python" ]; then
     echo "❌ FAIL: Python executable not found in .venv"
-    echo "💡 Recreate .venv: rm -rf .venv && python -m venv .venv"
+    echo "💡 Recreate .venv: rm -rf .venv && uv venv --python 3.11"
     exit 1
 else
     echo "✅ PASS: Python executable found in .venv"
@@ -39,8 +39,8 @@ else
 fi
 
 # Check 4: Verify requirements can be installed
-echo "📦 Installing/checking requirements..."
-pip install -r requirements.txt > /dev/null 2>&1
+echo "📦 Installing/checking requirements with uv..."
+uv pip install -r requirements.txt > /dev/null 2>&1
 if [ $? -ne 0 ]; then
     echo "❌ FAIL: Could not install requirements"
     exit 1
@@ -50,14 +50,14 @@ fi
 
 # Check 5: Verify ruamel.yaml is available
 echo "🔍 Checking ruamel.yaml..."
-if python -c "import ruamel.yaml" 2>/dev/null; then
-    RUAMEL_VERSION=$(python -c "import ruamel.yaml; print(ruamel.yaml.version_info)")
+if uv run python -c "import ruamel.yaml" 2>/dev/null; then
+    RUAMEL_VERSION=$(uv run python -c "import ruamel.yaml; print(ruamel.yaml.version_info)")
     echo "✅ PASS: ruamel.yaml is available (version: $RUAMEL_VERSION)"
 else
     echo "❌ FAIL: ruamel.yaml not available"
     echo "💡 Installing ruamel.yaml..."
-    pip install ruamel.yaml>=0.17.21
-    if python -c "import ruamel.yaml" 2>/dev/null; then
+    uv pip install "ruamel.yaml>=0.17.21"
+    if uv run python -c "import ruamel.yaml" 2>/dev/null; then
         echo "✅ FIXED: ruamel.yaml installed successfully"
     else
         echo "❌ FAIL: Could not install ruamel.yaml"
@@ -67,7 +67,7 @@ fi
 
 # Check 6: Test version management script
 echo "🧪 Testing version management script..."
-if python scripts/propagate_version.py --verify 2>/dev/null; then
+if uv run python scripts/propagate_version.py --verify 2>/dev/null; then
     echo "✅ PASS: Version management script works"
 else
     echo "⚠️  WARNING: Version management script test failed (may need version sync)"

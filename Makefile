@@ -33,12 +33,12 @@ help:
 # Setup development environment
 setup: hooks install
 	@if [ ! -d ".venv" ]; then \
-		echo "❌ Virtual environment '.venv' not found!"; \
-		echo "💡 Create it first: python -m venv .venv && source .venv/bin/activate"; \
-		exit 1; \
-	fi
-	@echo "📦 Installing development dependencies..."
-	@source .venv/bin/activate && pip install -r requirements.txt && pip install -e .[dev]
+			echo "📦 Creating '.venv' with uv..."; \
+			uv venv --python 3.11; \
+		fi
+	@echo "📦 Installing development dependencies with uv..."
+	@uv pip install -r requirements.txt
+	@uv pip install -e .[dev]
 	@echo "✅ Development environment ready!"
 
 # Install git hooks
@@ -49,70 +49,73 @@ hooks:
 # Install package in development mode
 install:
 	@if [ ! -d ".venv" ]; then \
-		echo "❌ Virtual environment '.venv' not found!"; \
-		echo "💡 Create it first: python -m venv .venv && source .venv/bin/activate"; \
-		exit 1; \
-	fi
-	@source .venv/bin/activate && pip install -r requirements.txt && pip install -e .
+			echo "📦 Creating '.venv' with uv..."; \
+			uv venv --python 3.11; \
+		fi
+	@uv pip install -r requirements.txt
+	@uv pip install -e .
 
 # Version management
 sync-version:
 	@if [ ! -d ".venv" ]; then \
-		echo "❌ Virtual environment '.venv' not found!"; \
-		echo "💡 Create it first: python -m venv .venv && source .venv/bin/activate"; \
-		exit 1; \
-	fi
+			echo "📦 Creating '.venv' with uv..."; \
+			uv venv --python 3.11; \
+		fi
 	@echo "🔄 Synchronizing versions..."
-	@source .venv/bin/activate && pip install -r requirements.txt > /dev/null 2>&1 && python scripts/propagate_version.py
+	@uv pip install -r requirements.txt > /dev/null 2>&1
+	@uv run python scripts/propagate_version.py
 
 check-version:
 	@if [ ! -d ".venv" ]; then \
-		echo "❌ Virtual environment '.venv' not found!"; \
-		echo "💡 Create it first: python -m venv .venv && source .venv/bin/activate"; \
-		exit 1; \
-	fi
+			echo "📦 Creating '.venv' with uv..."; \
+			uv venv --python 3.11; \
+		fi
 	@echo "🔍 Checking version consistency..."
-	@source .venv/bin/activate && pip install -r requirements.txt > /dev/null 2>&1 && python scripts/propagate_version.py --verify
+	@uv pip install -r requirements.txt > /dev/null 2>&1
+	@uv run python scripts/propagate_version.py --verify
 
 # Dependency management
 update-requirements:
 	@if [ ! -d ".venv" ]; then \
-		echo "❌ Virtual environment '.venv' not found!"; \
-		echo "💡 Create it first: python -m venv .venv && source .venv/bin/activate"; \
-		exit 1; \
-	fi
-	@echo "📦 Updating requirements.txt from pyproject.toml..."
-	@source .venv/bin/activate && python scripts/update_requirements.py
+			echo "📦 Creating '.venv' with uv..."; \
+			uv venv --python 3.11; \
+		fi
+	@echo "📦 Updating requirements.txt from pyproject.toml using uv..."
+	@uv lock
+	@uv export --frozen --output-file requirements.txt
 
 # Code formatting
 format:
 	@if [ ! -d ".venv" ]; then \
-		echo "❌ Virtual environment '.venv' not found!"; \
-		exit 1; \
-	fi
+			echo "📦 Creating '.venv' with uv..."; \
+			uv venv --python 3.11; \
+		fi
 	@echo "🎨 Formatting code..."
-	@source .venv/bin/activate && pip install -r requirements.txt > /dev/null 2>&1 && python -m black slowquerydoctor tests scripts
+	@uv pip install -r requirements.txt > /dev/null 2>&1
+	@uv run black slowquerydoctor tests scripts
 	@echo "✅ Code formatted!"
 
 # Linting
 lint:
 	@if [ ! -d ".venv" ]; then \
-		echo "❌ Virtual environment '.venv' not found!"; \
-		exit 1; \
-	fi
+			echo "📦 Creating '.venv' with uv..."; \
+			uv venv --python 3.11; \
+		fi
 	@echo "🔍 Running linting..."
-	@source .venv/bin/activate && pip install -r requirements.txt > /dev/null 2>&1 && python -m flake8 slowquerydoctor tests --max-line-length=88 --extend-ignore=E203,W503
-	@source .venv/bin/activate && python -m mypy slowquerydoctor --ignore-missing-imports
+	@uv pip install -r requirements.txt > /dev/null 2>&1
+	@uv run flake8 slowquerydoctor tests --max-line-length=88 --extend-ignore=E203,W503
+	@uv run mypy slowquerydoctor --ignore-missing-imports
 	@echo "✅ Linting passed!"
 
 # Run tests
 test:
 	@if [ ! -d ".venv" ]; then \
-		echo "❌ Virtual environment '.venv' not found!"; \
-		exit 1; \
-	fi
+			echo "📦 Creating '.venv' with uv..."; \
+			uv venv --python 3.11; \
+		fi
 	@echo "🧪 Running tests..."
-	@source .venv/bin/activate && pip install -r requirements.txt > /dev/null 2>&1 && python -m pytest tests/ --cov=slowquerydoctor --cov-report=term-missing --cov-report=html
+	@uv pip install -r requirements.txt > /dev/null 2>&1
+	@uv run pytest tests/ --cov=slowquerydoctor --cov-report=term-missing --cov-report=html
 	@echo "✅ Tests completed!"
 
 # Clean build artifacts
