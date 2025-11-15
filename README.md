@@ -109,22 +109,47 @@ Slow Query Doctor automatically analyzes your **PostgreSQL** slow query logs and
 
 ### Installation
 
+#### Option A: Using uv (Recommended - Fast & Modern)
+
+1. **Install uv** (if not already installed):
+```bash
+# macOS/Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+# Or via pip
+pip install uv
+```
+
+2. **Clone and setup:**
+```bash
+git clone https://github.com/iqtoolkit/slow-query-doctor.git
+cd slow-query-doctor
+
+# Quick setup with uv
+make setup
+```
+
+#### Option B: Traditional Python (Fallback)
+
 1. **Clone the repository:**
 ```bash
-git clone https://github.com/yourusername/slow-query-doctor.git
+git clone https://github.com/iqtoolkit/slow-query-doctor.git
 cd slow-query-doctor
 ```
 
-2. **Create virtual environment and install deps (uv):**
+2. **Create virtual environment:**
 ```bash
-uv venv --python 3.11
-# Install runtime deps
-uv pip install -r requirements.txt
-# Or full development setup
-uv pip install -e .[dev,test]
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 ```
 
-4. **Set up AI provider:**
+3. **Install dependencies:**
+```bash
+pip install -r requirements.txt
+# Or, for full development setup:
+pip install -e .[dev,test]
+```
+
+#### AI Provider Setup (Both Options)
 
 **Option A: OpenAI (Cloud, requires API key)**
 ```bash
@@ -148,33 +173,45 @@ EOF
 
 ### Basic Usage
 
-#### Try with Sample Data (via uv)
+#### Try with Sample Data
 ```bash
-# Analyze the included sample log file
+# With uv (recommended - fast)
 uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md
 
-# Analyze top 5 slowest queries
+# Or traditional approach
+python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md
+```
+
+#### Advanced Usage Examples
+```bash
+# Analyze top 5 slowest queries (uv)
 uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --top-n 5
 
-# Get more detailed AI analysis
+# Get more detailed AI analysis (uv)
 uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --max-tokens 200
 
-# Enable verbose (debug) output
+# Enable verbose debug output (uv)
 uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --verbose
+
+# Traditional approach for any of the above
+python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --top-n 5
 ```
 
 #### With Your Own Logs
 ```bash
-# Basic analysis
+# Basic analysis (uv)
 uv run python -m slowquerydoctor /path/to/your/postgresql.log --output analysis_report.md
 
-# Advanced options
+# Advanced options (uv)
 uv run python -m slowquerydoctor /path/to/your/postgresql.log \
   --output detailed_report.md \
   --top-n 10 \
   --min-duration 1000 \
   --max-tokens 150 \
   --verbose
+
+# Traditional approach
+python -m slowquerydoctor /path/to/your/postgresql.log --output analysis_report.md
 ```
 
 ## 📂 Sample Log Files
@@ -390,6 +427,10 @@ Replace the correlated subquery with a JOIN or window function. Create indexes o
 ## 🔧 Command Line Options
 
 ```bash
+# With uv (recommended)
+uv run python -m slowquerydoctor [LOG_FILE] [OPTIONS]
+
+# Traditional approach
 python -m slowquerydoctor [LOG_FILE] [OPTIONS]
 ```
 
@@ -450,27 +491,43 @@ cp /var/log/postgresql/postgresql.log ~/my_log.log
 
 ## 🧪 Development
 
+### Quick Development Setup
+```bash
+# Clone and setup with uv (recommended)
+git clone https://github.com/iqtoolkit/slow-query-doctor.git
+cd slow-query-doctor
+make setup
+
+# Or traditional approach
+git clone https://github.com/iqtoolkit/slow-query-doctor.git
+cd slow-query-doctor
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .[dev,test]
+```
+
 ### Running Tests
 ```bash
-# Install test dependencies
-pip install pytest pytest-cov
+# With uv (recommended)
+make test          # Run all tests
+make lint          # Run linting
+make format        # Format code
 
-# Run tests
+# Traditional approach
 pytest tests/ -v
-
-# Run with coverage
 pytest tests/ --cov=slowquerydoctor --cov-report=html
 ```
 
 ### Code Quality
 ```bash
-# Format code
+# With uv and Makefile (recommended)
+make format        # Format with black
+make lint          # Lint with flake8 + mypy
+make validate      # Full validation suite
+
+# Traditional approach
 black slowquerydoctor/
-
-# Lint code  
 flake8 slowquerydoctor/
-
-# Type checking
 mypy slowquerydoctor/
 ```
 

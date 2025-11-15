@@ -82,24 +82,40 @@ cp /var/log/postgresql/postgresql-2025-10-31_*.log ./sample_logs/
 ### Analyze with Slow Query Doctor
 
 ```sh
+# With uv (recommended)
+uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt
+
+# Traditional approach
 python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt
 ```
 
 ### With Verbose Output
 
 ```sh
+# With uv (recommended)
+uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt --verbose
+
+# Traditional approach
 python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt --verbose
 ```
 
 ### Specify Output Report Path
 
 ```sh
+# With uv (recommended)
+uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt --output reports/my_report.md
+
+# Traditional approach
 python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt --output reports/my_report.md
 ```
 
 ### Analyze Top N Slow Queries
 
 ```sh
+# With uv (recommended)
+uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt --top-n 10
+
+# Traditional approach
 python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt --top-n 10
 ```
 
@@ -128,6 +144,10 @@ To use Ollama instead of OpenAI for AI-powered recommendations:
 
 4. **Run the analysis** (no API key needed):
    ```sh
+   # With uv (recommended)
+   uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt
+   
+   # Traditional approach
    python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt
    ```
 
