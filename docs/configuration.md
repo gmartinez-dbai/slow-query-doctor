@@ -21,7 +21,7 @@ output: my_report.md
 top_n: 10
 llm_provider: openai  # or 'ollama'
 openai_model: gpt-4o-mini
-ollama_model: llama2
+ollama_model: arctic-text2sql-r1:7b
 ```
 
 

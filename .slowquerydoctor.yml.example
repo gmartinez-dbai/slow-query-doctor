@@ -3,7 +3,7 @@
 
 # AI Provider Configuration
 llm_provider: ollama              # 'ollama' (local/private) or 'openai' (cloud/API key)
-ollama_model: llama2             # Model name for Ollama (llama2, codellama, mistral, etc.)
+ollama_model: arctic-text2sql-r1:7b  # Model name for Ollama (specialized SQL model)
 ollama_host: http://localhost:11434  # Optional: Custom Ollama host (default: http://localhost:11434)
 
 # OpenAI Configuration (alternative to Ollama)

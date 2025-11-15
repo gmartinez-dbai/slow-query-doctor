@@ -30,7 +30,7 @@ def test_ollama_connection():
         # Test direct ollama connection
         logger.info("Testing direct Ollama connection...")
         response = ollama.chat(
-            model="llama2",
+            model="arctic-text2sql-r1:7b",
             messages=[
                 {"role": "user", "content": "Say 'Ollama is working' in one sentence."}
             ],
@@ -47,7 +47,7 @@ def test_ollama_connection():
     except Exception as e:
         logger.error(f"❌ Ollama connection failed: {e}")
         logger.error("Make sure Ollama is running: ollama serve")
-        logger.error("And model is pulled: ollama pull llama2")
+        logger.error("And model is pulled: ollama pull arctic-text2sql-r1:7b")
         return False
 
     return True
@@ -58,7 +58,9 @@ def test_slow_query_doctor_ollama():
     try:
         logger.info("Testing Slow Query Doctor Ollama integration...")
 
-        config = LLMConfig(llm_provider="ollama", ollama_model="llama2", max_tokens=100)
+        config = LLMConfig(
+            llm_provider="ollama", ollama_model="arctic-text2sql-r1:7b", max_tokens=100
+        )
 
         client = LLMClient(config)
 

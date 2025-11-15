@@ -131,13 +131,13 @@ To use Ollama instead of OpenAI for AI-powered recommendations:
 
 2. **Pull a model**:
    ```sh
-   ollama pull llama2
+   ollama pull arctic-text2sql-r1:7b
    ```
 
 3. **Create or update `.slowquerydoctor.yml`** in your project directory:
    ```yaml
    llm_provider: ollama
-   ollama_model: llama2
+   ollama_model: arctic-text2sql-r1:7b
    top_n: 5
    output: reports/report.md
    ```
@@ -154,7 +154,7 @@ To use Ollama instead of OpenAI for AI-powered recommendations:
 Ollama runs completely locally—no data leaves your machine. For custom Ollama hosts:
 ```yaml
 llm_provider: ollama
-ollama_model: llama2
+ollama_model: arctic-text2sql-r1:7b
 ollama_host: http://192.168.1.100:11434
 ```
 

@@ -17,14 +17,14 @@ Ollama lets you run large language models on your own machine. To use it with th
 ## 3. Pull a Model
 - Before you can use a model, you need to download it. For example, to use Llama 2:
     ```sh
-    ollama pull llama2
+    ollama pull arctic-text2sql-r1:7b
     ```
 - You can find other models at https://ollama.com/library
 
 ## 4. Test the Server
 - You can test the server with:
     ```sh
-    ollama run llama2
+    ollama run arctic-text2sql-r1:7b
     ```
 - Or use the Python client as shown in `scripts/test_ollama.py`.
 

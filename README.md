@@ -156,7 +156,7 @@ pip install -e .[dev,test]
 # Quick setup (see docs/5-minute-ollama-setup.md for details)
 curl -LsSf https://ollama.com/install.sh | sh
 ollama serve
-ollama pull llama2
+ollama pull arctic-text2sql-r1:7b  # SQL-specialized model (recommended)
 
 # Copy example config and customize
 cp .slowquerydoctor.yml.example .slowquerydoctor.yml
@@ -355,7 +355,7 @@ Create a `.slowquerydoctor.yml` file to customize behavior:
 ```yaml
 # AI Provider Selection
 llm_provider: ollama  # or 'openai'
-ollama_model: llama2
+ollama_model: arctic-text2sql-r1:7b
 ollama_host: http://localhost:11434  # optional, for custom hosts
 
 # OpenAI (if using)

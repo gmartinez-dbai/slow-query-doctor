@@ -22,7 +22,7 @@ class LLMConfig:
     api_key: Optional[str] = None
     llm_provider: str = "openai"  # 'openai' or 'ollama'
     openai_model: str = "gpt-4o-mini"
-    ollama_model: str = "llama2"
+    ollama_model: str = "arctic-text2sql-r1:7b"
     ollama_host: Optional[str] = None
     temperature: float = 0.3
     max_tokens: int = 300

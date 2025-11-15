@@ -17,9 +17,11 @@ curl -LsSf https://ollama.com/install.sh | sh
 # Start the Ollama server
 ollama serve
 
-# In a new terminal, pull a model
-ollama pull llama2
+# In a new terminal, pull a model (specialized for SQL)
+ollama pull arctic-text2sql-r1:7b
 ```
+
+> **Why Arctic-Text2SQL-R1 7B?** This model is specifically fine-tuned for SQL tasks, making it ideal for database query analysis and optimization recommendations.
 
 ## Step 3: Configure Slow Query Doctor (1 minute)
 
@@ -27,7 +29,7 @@ Create `.slowquerydoctor.yml` in your project:
 
 ```yaml
 llm_provider: ollama
-ollama_model: llama2
+ollama_model: arctic-text2sql-r1:7b
 top_n: 5
 output: reports/report.md
 ```
@@ -54,7 +56,7 @@ uv run python -m slowquerydoctor your_postgresql.log
 **Model not found?**  
 ```bash
 ollama list  # Check installed models
-ollama pull llama2  # Pull if missing
+ollama pull arctic-text2sql-r1:7b  # Pull if missing
 ```
 
 **Connection refused?**  
@@ -64,8 +66,13 @@ ollama serve  # Make sure server is running
 
 **Need different model?**  
 ```bash
-ollama pull codellama  # For code-focused analysis
-# Update .slowquerydoctor.yml: ollama_model: codellama
+# Alternative SQL-focused models
+ollama pull codellama     # General code analysis
+ollama pull sqlcoder      # SQL-specific (if available)
+ollama pull llama3.2        # General purpose fallback
+
+# Update .slowquerydoctor.yml with your chosen model:
+# ollama_model: your-model-name
 ```
 
 ---
