@@ -3,11 +3,11 @@
 An intelligent database performance analyzer that uses AI to diagnose slow queries and provide actionable optimization recommendations.
 
 ## 🎯 **Current Support: PostgreSQL + MongoDB Ready**
-**✅ Ready to use**: PostgreSQL slow query analysis with AI-powered recommendations  
-**✅ Ready to use**: MongoDB slow query analysis with profiler integration and AI recommendations  
+**✅ Production Ready**: PostgreSQL slow query analysis with comprehensive AI-powered recommendations  
+**✅ Production Ready**: MongoDB slow query analysis with real-time profiler integration and multi-format reporting  
 **🚧 Traditional SQL**: MySQL and SQL Server support in v0.4.0 (Q3 2026)
 
-> **🚀 MongoDB Users**: We're prioritizing MongoDB support! [File an issue](https://github.com/iqtoolkit/slow-query-doctor/issues/new?labels=mongodb-feedback&title=MongoDB%20Requirements) to share your slow query log formats and optimization needs.
+> **🚀 NEW in v0.2.0**: MongoDB support is now fully available! Use `slowquerydoctor mongodb` to analyze your MongoDB performance with real-time profiler integration, comprehensive indexing recommendations, and multi-format reports.
 
 ![Python](https://img.shields.io/badge/python-3.11+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
@@ -245,7 +245,7 @@ The `docs/sample_logs/` directory contains database slow query log examples for 
 
 ### ✅ **Current Support**
 - **PostgreSQL**: Real sample logs from 100M record database operations with authentic slow queries → [View samples](docs/sample_logs/postgresql/)
-- **MongoDB**: Sample profiler data and configuration examples for testing MongoDB analysis → [View samples](docs/sample_logs/mongodb/)
+- **MongoDB**: Complete profiler integration with real-time slow query detection and comprehensive optimization recommendations → [View samples](docs/sample_logs/mongodb/)
 
 ### 🚧 **Future Support (v0.4.0 - Q3 2026)**
 - **MySQL**: Placeholder directory with configuration examples and feedback collection → [View samples](docs/sample_logs/mysql/)
