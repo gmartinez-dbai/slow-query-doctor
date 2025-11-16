@@ -82,25 +82,80 @@ cp /var/log/postgresql/postgresql-2025-10-31_*.log ./sample_logs/
 ### Analyze with Slow Query Doctor
 
 ```sh
+# With uv (recommended)
+uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt
+
+# Traditional approach
 python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt
 ```
 
 ### With Verbose Output
 
 ```sh
+# With uv (recommended)
+uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt --verbose
+
+# Traditional approach
 python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt --verbose
 ```
 
 ### Specify Output Report Path
 
 ```sh
+# With uv (recommended)
+uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt --output reports/my_report.md
+
+# Traditional approach
 python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt --output reports/my_report.md
 ```
 
 ### Analyze Top N Slow Queries
 
 ```sh
+# With uv (recommended)
+uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt --top-n 10
+
+# Traditional approach
 python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt --top-n 10
+```
+
+### Using Ollama for Local AI Recommendations
+
+To use Ollama instead of OpenAI for AI-powered recommendations:
+
+1. **Install and start Ollama** (see [Ollama Local Setup](ollama-local.md)):
+   ```sh
+   # Install from https://ollama.com/download
+   ollama serve
+   ```
+
+2. **Pull a model**:
+   ```sh
+   ollama pull arctic-text2sql-r1:7b
+   ```
+
+3. **Create or update `.slowquerydoctor.yml`** in your project directory:
+   ```yaml
+   llm_provider: ollama
+   ollama_model: arctic-text2sql-r1:7b
+   top_n: 5
+   output: reports/report.md
+   ```
+
+4. **Run the analysis** (no API key needed):
+   ```sh
+   # With uv (recommended)
+   uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt
+   
+   # Traditional approach
+   python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt
+   ```
+
+Ollama runs completely locally—no data leaves your machine. For custom Ollama hosts:
+```yaml
+llm_provider: ollama
+ollama_model: arctic-text2sql-r1:7b
+ollama_host: http://192.168.1.100:11434
 ```
 
 ---

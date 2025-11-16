@@ -20,7 +20,12 @@
 - [Technical Debt](../TECHNICAL_DEBT.md)
 - [Contributing Guide](../CONTRIBUTING.md) 🚀
 - [Code of Conduct](../CODE_OF_CONDUCT.md)
- - [Release Process & Versioning](release-process.md)
+- [Release Process & Versioning](release-process.md)
+- [Configuration Guide](configuration.md)
+- [🚀 5-Minute Ollama Setup](5-minute-ollama-setup.md) ⭐ **New!**
+- [Ollama Local Setup (Detailed)](ollama-local.md)
+- [OpenAI Setup](https://platform.openai.com/docs/guides/authentication)
+- [FAQ & Troubleshooting](faq.md)
 
 ---
 
@@ -30,7 +35,9 @@
 - [Configuration](configuration.md)
 - [Sample Data & Usage](sample-data.md)
 - [Advanced Features](advanced-features.md)
-- [FAQ](faq.md)
+- [FAQ & Troubleshooting](faq.md)
 - [Setup & Usage Examples](examples.md)
+- [Ollama Local Setup](ollama-local.md)
+- [OpenAI Setup](https://platform.openai.com/docs/guides/authentication)
 
 ---

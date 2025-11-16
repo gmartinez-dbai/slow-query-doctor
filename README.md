@@ -2,17 +2,19 @@
 
 An intelligent database performance analyzer that uses AI to diagnose slow queries and provide actionable optimization recommendations.
 
-## 🎯 **Current Support: PostgreSQL Only**
+## 🎯 **Current Support: PostgreSQL + MongoDB Coming ASAP**
 **✅ Ready to use**: PostgreSQL slow query analysis with AI-powered recommendations  
-**🚧 Coming Q3 2026**: MySQL and SQL Server support in v0.4.0
+**🚧 Priority Development**: MongoDB support shipping in v0.2.0 (Nov 2025 - Q1 2026)  
+**🚧 Traditional SQL**: MySQL and SQL Server support in v0.4.0 (Q3 2026)
 
-> **🚀 Interested in early MySQL/SQL Server testing?** [File an issue](https://github.com/iqtoolkit/slow-query-doctor/issues/new?labels=mysql-feedback,sqlserver-feedback&title=Early%20Testing%20Interest) to get involved before v0.4.0 development starts!
+> **🚀 MongoDB Users**: We're prioritizing MongoDB support! [File an issue](https://github.com/iqtoolkit/slow-query-doctor/issues/new?labels=mongodb-feedback&title=MongoDB%20Requirements) to share your slow query log formats and optimization needs.
 
 ![Python](https://img.shields.io/badge/python-3.11+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![OpenAI](https://img.shields.io/badge/AI-OpenAI%20Only%20v0.1.x-orange.svg)
 ![Ollama](https://img.shields.io/badge/AI-Ollama%20Coming%20v0.2.0-blue.svg)
 ![PostgreSQL](https://img.shields.io/badge/database-PostgreSQL%20Ready-336791?logo=postgresql&logoColor=white)
+![MongoDB](https://img.shields.io/badge/database-MongoDB%20Priority%20v0.2.0-47A248?logo=mongodb&logoColor=white)
 ![MySQL](https://img.shields.io/badge/database-MySQL%20Planned%20v0.4.0-4479A1?logo=mysql&logoColor=white)
 ![SQL Server](https://img.shields.io/badge/database-SQL%20Server%20Planned%20v0.4.0-CC2927?logo=microsoftssqlserver&logoColor=white)
 
@@ -66,6 +68,7 @@ Slow Query Doctor automatically analyzes your **PostgreSQL** slow query logs and
 | Database | Status | Version | Timeline |
 |----------|--------|---------|----------|
 | **PostgreSQL** | ✅ **Fully Supported** | v0.1.x+ | Available now |
+| **MongoDB** | 🚧 **Priority Development** | v0.2.0 | Nov 2025 - Q1 2026 |
 | **MySQL** | 🚧 Planned | v0.4.0 | Q3 2026 |
 | **SQL Server** | 🚧 Planned | v0.4.0 | Q3 2026 |
 
@@ -76,6 +79,8 @@ Slow Query Doctor automatically analyzes your **PostgreSQL** slow query logs and
 | **Ollama (Local)** | 🚧 **Default in Future** | v0.2.0+ | Nov 2025 - Q1 2026 |
 | **Multiple Providers** | 🚧 Configurable | v0.2.0+ | Nov 2025 - Q1 2026 |
 
+> **📢 MongoDB Priority**: We're building MongoDB support ASAP in v0.2.0! Share your MongoDB slow query requirements and log formats.
+> 
 > **📢 Want to influence MySQL/SQL Server development?** Check out our [future database sample directories](docs/sample_logs/) and share your specific requirements!
 
 > **v0.1.6 Release Note**: This is the **final v0.1.x release with new features**. It includes comprehensive architecture documentation and prepares the codebase for multi-database support coming in v0.4.0. All references have been updated from "PostgreSQL-specific" to "database log analyzer" to reflect our roadmap for MySQL and SQL Server support. Future v0.1.x releases (v0.1.7+) will contain **bug fixes only** - all new features move to v0.2.0+.
@@ -104,9 +109,30 @@ Slow Query Doctor automatically analyzes your **PostgreSQL** slow query logs and
 
 ### Installation
 
+#### Option A: Using uv (Recommended - Fast & Modern)
+
+1. **Install uv** (if not already installed):
+```bash
+# macOS/Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+# Or via pip
+pip install uv
+```
+
+2. **Clone and setup:**
+```bash
+git clone https://github.com/iqtoolkit/slow-query-doctor.git
+cd slow-query-doctor
+
+# Quick setup with uv
+make setup
+```
+
+#### Option B: Traditional Python (Fallback)
+
 1. **Clone the repository:**
 ```bash
-git clone https://github.com/yourusername/slow-query-doctor.git
+git clone https://github.com/iqtoolkit/slow-query-doctor.git
 cd slow-query-doctor
 ```
 
@@ -116,50 +142,76 @@ python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 ```
 
-
 3. **Install dependencies:**
 ```bash
 pip install -r requirements.txt
 # Or, for full development setup:
-pip install .[dev,test]
+pip install -e .[dev,test]
 ```
 
-4. **Set up OpenAI API key (Required for v0.1.x):**
+#### AI Provider Setup (Both Options)
+
+**Option A: Ollama (Recommended - Local, private, no API key needed) ⭐**
+```bash
+# Quick setup (see docs/5-minute-ollama-setup.md for details)
+curl -LsSf https://ollama.com/install.sh | sh
+ollama serve
+ollama pull arctic-text2sql-r1:7b  # SQL-specialized model (recommended)
+
+# Copy example config and customize
+cp .slowquerydoctor.yml.example .slowquerydoctor.yml
+# Edit: set llm_provider: ollama
+```
+
+**Option B: OpenAI (Cloud, requires API key)**
 ```bash
 export OPENAI_API_KEY="your-openai-api-key-here"
+# Config will use OpenAI by default if no .slowquerydoctor.yml exists
 ```
 
-> **⚠️ OpenAI API Key Required**: v0.1.x only supports OpenAI GPT models. You must have a valid OpenAI API key to use AI recommendations. Local Ollama support comes in v0.2.0.
+> **💡 Tip**: Ollama runs completely locally—your queries never leave your machine. Perfect for sensitive production data. See [Ollama Local Setup](docs/ollama-local.md) for details.
 
 ### Basic Usage
 
 #### Try with Sample Data
 ```bash
-# Analyze the included sample log file
+# With uv (recommended - fast)
+uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md
+
+# Or traditional approach
 python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md
+```
 
-# Analyze top 5 slowest queries
+#### Advanced Usage Examples
+```bash
+# Analyze top 5 slowest queries (uv)
+uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --top-n 5
+
+# Get more detailed AI analysis (uv)
+uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --max-tokens 200
+
+# Enable verbose debug output (uv)
+uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --verbose
+
+# Traditional approach for any of the above
 python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --top-n 5
-
-# Get more detailed AI analysis
-python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --max-tokens 200
-
-# Enable verbose (debug) output
-python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --verbose
 ```
 
 #### With Your Own Logs
 ```bash
-# Basic analysis
-python -m slowquerydoctor /path/to/your/postgresql.log --output analysis_report.md
+# Basic analysis (uv)
+uv run python -m slowquerydoctor /path/to/your/postgresql.log --output analysis_report.md
 
-# Advanced options
-python -m slowquerydoctor /path/to/your/postgresql.log \
+# Advanced options (uv)
+uv run python -m slowquerydoctor /path/to/your/postgresql.log \
   --output detailed_report.md \
   --top-n 10 \
   --min-duration 1000 \
   --max-tokens 150 \
   --verbose
+
+# Traditional approach
+python -m slowquerydoctor /path/to/your/postgresql.log --output analysis_report.md
 ```
 
 ## 📂 Sample Log Files
@@ -290,26 +342,39 @@ This guide covers:
 
 ### Environment Variables
 
-**Current (v0.1.x - OpenAI Only):**
 | Variable | Description | Default | Required |
 |----------|-------------|---------|----------|
-| `OPENAI_API_KEY` | OpenAI API key | None | ✅ **Required** |
+| `OPENAI_API_KEY` | OpenAI API key | None | For OpenAI provider |
 | `OPENAI_MODEL` | GPT model to use | `gpt-4o-mini` | Optional |
 | `OPENAI_BASE_URL` | Custom OpenAI endpoint | `https://api.openai.com/v1` | Optional |
 
-**Coming in v0.2.0 (Configurable AI Providers):**
-| Variable | Description | Default | Required |
-|----------|-------------|---------|----------|
-| `AI_PROVIDER` | AI provider selection | `ollama` | Optional |
-| `AI_BASE_URL` | Provider endpoint | `http://localhost:11434` | Optional |
-| `AI_MODEL` | Provider-specific model | `llama2` (Ollama) | Optional |
-| `AI_API_KEY` | API key (if required by provider) | None (Ollama) / Required (OpenAI) | Conditional |
-
-> **🚨 Breaking Change in v0.2.0**: Environment variables will change from `OPENAI_*` to `AI_*` format for consistency across providers.
-
 ### Configuration File
 
-You can create a `.slowquerydoctor.yml` file in your project directory to customize analysis options (e.g., default log format, thresholds, output paths). See `docs/configuration.md` for details and examples.
+Create a `.slowquerydoctor.yml` file to customize behavior:
+
+```yaml
+# AI Provider Selection
+llm_provider: ollama  # or 'openai'
+ollama_model: arctic-text2sql-r1:7b
+ollama_host: http://localhost:11434  # optional, for custom hosts
+
+# OpenAI (if using)
+openai_api_key: sk-xxx  # optional, can use env var instead
+openai_model: gpt-4o-mini
+
+# Analysis Options
+log_format: csv
+top_n: 10
+output: reports/report.md
+min_duration: 1000
+
+# LLM Configuration
+llm_temperature: 0.3
+max_tokens: 300
+llm_timeout: 30
+```
+
+See [Configuration Guide](docs/configuration.md) for all options and [Ollama Local Setup](docs/ollama-local.md) for local AI setup.
 
 ## 📊 Sample Output
 
@@ -362,6 +427,10 @@ Replace the correlated subquery with a JOIN or window function. Create indexes o
 ## 🔧 Command Line Options
 
 ```bash
+# With uv (recommended)
+uv run python -m slowquerydoctor [LOG_FILE] [OPTIONS]
+
+# Traditional approach
 python -m slowquerydoctor [LOG_FILE] [OPTIONS]
 ```
 
@@ -422,37 +491,53 @@ cp /var/log/postgresql/postgresql.log ~/my_log.log
 
 ## 🧪 Development
 
+### Quick Development Setup
+```bash
+# Clone and setup with uv (recommended)
+git clone https://github.com/iqtoolkit/slow-query-doctor.git
+cd slow-query-doctor
+make setup
+
+# Or traditional approach
+git clone https://github.com/iqtoolkit/slow-query-doctor.git
+cd slow-query-doctor
+python -m venv .venv
+source .venv/bin/activate
+pip install -e .[dev,test]
+```
+
 ### Running Tests
 ```bash
-# Install test dependencies
-pip install pytest pytest-cov
+# With uv (recommended)
+make test          # Run all tests
+make lint          # Run linting
+make format        # Format code
 
-# Run tests
+# Traditional approach
 pytest tests/ -v
-
-# Run with coverage
 pytest tests/ --cov=slowquerydoctor --cov-report=html
 ```
 
 ### Code Quality
 ```bash
-# Format code
+# With uv and Makefile (recommended)
+make format        # Format with black
+make lint          # Lint with flake8 + mypy
+make validate      # Full validation suite
+
+# Traditional approach
 black slowquerydoctor/
-
-# Lint code  
 flake8 slowquerydoctor/
-
-# Type checking
 mypy slowquerydoctor/
 ```
 
 ### Testing with Sample Data
 ```bash
 # Test the parser
-python -c "from slowquerydoctor import parse_postgres_log; print(len(parse_postgres_log('sample_logs/postgresql-2025-10-28_192816.log.txt')))"
+uv run python -c "from slowquerydoctor import parse_postgres_log; print(len(parse_postgres_log('sample_logs/postgresql-2025-10-28_192816.log.txt')))"
 
 # Test full pipeline with sample data
-python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output test_report.md
+uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output test_report.md
 
 # Verify AI recommendations are generated
 grep -A 5 "🤖 AI Recommendation" test_report.md
@@ -491,7 +576,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 4. Push to branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-### Development Setup
+### Development Setup (with uv)
 ```bash
 # Clone your fork
 git clone https://github.com/yourusername/slow-query-doctor.git
@@ -499,7 +584,6 @@ cd slow-query-doctor
 
 # Complete development environment setup
 bash scripts/setup-dev-environment.sh
-source venv/bin/activate
 
 # Install git hooks for automated version management
 bash scripts/setup-hooks.sh
@@ -507,13 +591,11 @@ bash scripts/setup-hooks.sh
 # Verify everything works
 make check-version
 make test
-python -m venv .venv
-source .venv/bin/activate
 
-# Install in development mode
-pip install -e .
-# Or, for all dev/test dependencies:
-pip install .[dev,test]
+# Install in development mode (if you didn't run setup script)
+uv venv --python 3.11
+uv pip install -r requirements.txt
+uv pip install -e .[dev]
 ```
 ## 📈 Roadmap, Technical Debt & Contributing
 

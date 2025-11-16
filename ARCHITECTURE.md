@@ -16,7 +16,7 @@
 
 ## System Overview
 
-Slow Query Doctor is a modular Python application that analyzes database slow query logs and provides AI-powered optimization recommendations. Currently focused on PostgreSQL with multi-database support planned for v0.4.0. The system follows a **pipeline architecture** with clear separation of concerns:
+Slow Query Doctor is a modular Python application that analyzes database slow query logs and provides AI-powered optimization recommendations. Currently focused on PostgreSQL with **MongoDB support prioritized for v0.2.0** (Nov 2025-Q1 2026) and traditional SQL databases (MySQL/SQL Server) planned for v0.4.0. The system follows a **pipeline architecture** with clear separation of concerns:
 
 ```
 Log Files → Parser → Analyzer → AI Client → Report Generator → Markdown Report
@@ -34,7 +34,7 @@ Log Files → Parser → Analyzer → AI Client → Report Generator → Markdow
 
 ### 1. Parser Module (`parser.py`)
 
-**Purpose**: Extracts slow query information from database log files (currently PostgreSQL)
+**Purpose**: Extracts slow query information from database log files (PostgreSQL now, MongoDB in v0.2.0)
 
 **Key Features**:
 - Multi-format support (plain text, CSV, JSON)
@@ -42,17 +42,21 @@ Log Files → Parser → Analyzer → AI Client → Report Generator → Markdow
 - Configuration file loading
 - Progress tracking with tqdm
 - Robust error handling for malformed logs
+- **v0.2.0**: MongoDB slow query log parsing
 
 **Architecture**:
 ```python
 def parse_postgres_log(log_file_path: str, log_format: str = "plain") -> pd.DataFrame
+# v0.2.0: MongoDB parser
+def parse_mongodb_log(log_file_path: str, log_format: str = "json") -> pd.DataFrame
 ```
 
 **Design Decisions**:
 - Returns pandas DataFrame for efficient data manipulation
-- Uses regex for flexible log parsing
+- Uses regex for flexible log parsing (PostgreSQL) and JSON parsing (MongoDB)
 - Handles multiple log formats through format parameter
 - Graceful degradation for malformed entries
+- **MongoDB-specific**: JSON log format support, aggregation pipeline parsing
 
 ### 2. Analyzer Module (`analyzer.py`)
 
@@ -281,7 +285,7 @@ openai_temperature: 0.3
 # Coming AI provider settings (v0.2.0+)
 ai_provider: "ollama"        # ollama (default), openai, claude, gemini
 ai_base_url: "http://localhost:11434"  # Custom endpoint
-ai_model: "llama2"           # Provider-specific model
+ai_model: "arctic-text2sql-r1:7b"  # Provider-specific model
 ai_max_tokens: 200
 ai_temperature: 0.3
 

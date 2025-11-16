@@ -194,6 +194,26 @@ LABEL org.opencontainers.image.version="0.1.8"  # ← Updated
 4. **Run `make check-version`** - before important releases
 5. **Let CI verify** - GitHub Actions also check consistency
 
+## 📋 **Version Format Standards**
+
+### PEP 440 Compliance for PyPI
+The project follows [PEP 440](https://peps.python.org/pep-0440/) for Python package versions:
+
+- **VERSION file**: Uses semantic versioning with 'v' prefix (e.g., `v0.2.0-alpha.1`)
+- **pyproject.toml**: PEP 440 compliant format (e.g., `0.2.2a1`)
+- **Git tags**: Use 'v' prefix for GitHub releases (e.g., `v0.2.0`)
+
+### Automatic Format Conversion
+The propagation script automatically converts between formats:
+- `v0.2.0-alpha.1` (VERSION file) → `0.2.2a1` (pyproject.toml)
+- `v0.2.0-beta.1` → `0.2.2b1`
+- `v0.2.0-rc.1` → `0.2.2rc1`
+
+### Pre-release Suffixes
+- **Alpha:** `a` (e.g., `0.2.0a1`)
+- **Beta:** `b` (e.g., `0.2.0b1`)
+- **Release Candidate:** `rc` (e.g., `0.2.0rc1`)
+
 ## 🆘 **Need Help?**
 
 - **Check version status**: `make check-version`

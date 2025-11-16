@@ -36,9 +36,15 @@
 
 ---
 
-## v0.2.0 - Enhanced Analysis & Flexible AI (Nov 2025 - Q1 2026) 🔧 IN PROGRESS
+## v0.2.0 - MongoDB + Enhanced Analysis & Flexible AI (Nov 2025 - Q1 2026) 🔧 IN PROGRESS
 
-**Focus:** Enterprise-grade analysis with configurable AI providers
+**Focus:** MongoDB support ASAP + Enterprise-grade analysis with configurable AI providers
+
+**🚨 MONGODB PRIORITY**
+- **Parallel development**: MongoDB + PostgreSQL analyzers simultaneously
+- **MongoDB slow query log parsing** and analysis
+- **MongoDB aggregation pipeline optimization** recommendations
+- **MongoDB indexing strategy** analysis and suggestions
 
 **🚨 AI PROVIDER FLEXIBILITY**
 - Database logs = sensitive business data
@@ -47,10 +53,13 @@
 - **Future-ready**: Pluggable architecture for multiple AI providers
 
 **Features:**
+- [ ] **MongoDB slow query analyzer** (parallel with PostgreSQL enhancements)
+- [ ] **MongoDB aggregation pipeline optimization**
+- [ ] **MongoDB indexing recommendations**
 - [ ] **Configurable AI providers** (Ollama default, OpenAI optional)
 - [ ] **Flexible model configuration** (custom endpoints, multiple models)
 - [ ] **Enhanced configuration system** (expanded .slowquerydoctor.yml options)
-- [ ] Add EXPLAIN plan analysis integration
+- [ ] Add EXPLAIN plan analysis integration (PostgreSQL)
 - [ ] Enhanced anti-pattern detection engine
 - [ ] HTML report generation (interactive dashboards)
 - [ ] Multi-file analysis (batch processing)
@@ -74,14 +83,14 @@
 
 ---
 
-## v0.4.0 - Multi-Database Support (Q3 2026)
+## v0.4.0 - MySQL & SQL Server Support (Q3 2026)
 
-**Focus:** Expand beyond PostgreSQL
+**Focus:** Traditional SQL databases (after MongoDB is stable)
 
 - [ ] **MySQL slow query log support**
 - [ ] **SQL Server Extended Events support**
 - [ ] Database-agnostic query analysis engine
-- [ ] Cross-database performance comparison
+- [ ] Cross-database performance comparison (PostgreSQL + MongoDB + MySQL + SQL Server)
 - [ ] Unified configuration for multiple database types
 - [ ] Database-specific optimization recommendations
 
@@ -90,7 +99,7 @@
 - 📁 `docs/sample_logs/sqlserver/` - Extended Events samples and feedback collection
 - 🎯 **Goal**: Collect real-world requirements before development starts
 
-**Note:** Oracle support not planned - focusing on PostgreSQL, MySQL, and SQL Server as the most common enterprise databases.
+**Note:** Oracle support not planned - focusing on PostgreSQL, MongoDB, MySQL, and SQL Server as the most common enterprise databases.
 
 ---
 
@@ -136,7 +145,7 @@ Track feature requests from users here:
 | v0.1.5 | ✅ SHIPPED | Mature | PostgreSQL analyzer with **OpenAI only** |
 | v0.1.6 | Nov 2025 | 🔒 Feature Freeze | **Final v0.1.x with new features** - Documentation, architecture, **OpenAI only** |
 | v0.1.7+ | Ongoing | 🐛 Bug Fixes Only | Critical fixes, **OpenAI only**, no new features |
-| v0.2.0 | Nov 2025 - Q1 2026 | 🔧 In Progress | **Configurable AI providers** (Ollama default, OpenAI optional), enhanced config system, EXPLAIN plans, HTML reports |
+| v0.2.0 | Nov 2025 - Q1 2026 | 🔧 In Progress | **MongoDB support ASAP** + **Configurable AI providers** (Ollama default, OpenAI optional), enhanced config system, EXPLAIN plans, HTML reports |
 | v0.3.0 | Q2 2026 | 🚫 Do Not Start | ML/self-learning, anomaly detection |
 | v0.4.0 | Q3 2026 | 📋 Planned | **MySQL, SQL Server support** |
 | v1.0.0 | Q4 2026 | 📋 Planned | Web UI, enterprise features |
