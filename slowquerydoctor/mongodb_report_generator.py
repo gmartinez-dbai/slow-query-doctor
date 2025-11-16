@@ -525,54 +525,51 @@ class MongoDBReportGenerator:
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MongoDB Slow Query Analysis Report</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
-                         Roboto, sans-serif;
-            margin: 0; padding: 20px; background-color: #f5f5f5;
-        }
-        .container {
+        body {{ font-family: sans-serif; margin: 0; padding: 20px;
+               background-color: #f5f5f5; }}
+        .container {{
             max-width: 1200px; margin: 0 auto; background: white;
             padding: 30px; border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
+        }}
+        h1 {{
             color: #2c3e50; border-bottom: 3px solid #3498db;
             padding-bottom: 10px;
-        }
-        h2 { color: #34495e; margin-top: 30px; }
-        h3 { color: #7f8c8d; }
-        .metadata {
+        }}
+        h2 {{ color: #34495e; margin-top: 30px; }}
+        h3 {{ color: #7f8c8d; }}
+        .metadata {{
             background: #ecf0f1; padding: 15px; border-radius: 5px;
             margin-bottom: 20px;
-        }
-        .summary-grid {
+        }}
+        .summary-grid {{
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px; margin: 20px 0;
-        }
-        .summary-card {
+        }}
+        .summary-card {{
             background: #fff; border: 1px solid #ddd;
             border-radius: 5px; padding: 15px;
-        }
-        .summary-card h4 { margin-top: 0; color: #2c3e50; }
-        .metric { font-size: 24px; font-weight: bold; color: #3498db; }
-        .query-card {
+        }}
+        .summary-card h4 {{ margin-top: 0; color: #2c3e50; }}
+        .metric {{ font-size: 24px; font-weight: bold; color: #3498db; }}
+        .query-card {{
             background: #f8f9fa; border: 1px solid #e9ecef;
             border-radius: 5px; padding: 20px; margin: 15px 0;
-        }
-        .severity-critical { border-left: 5px solid #e74c3c; }
-        .severity-high { border-left: 5px solid #f39c12; }
-        .severity-medium { border-left: 5px solid #f1c40f; }
-        .suggestions {
+        }}
+        .severity-critical {{ border-left: 5px solid #e74c3c; }}
+        .severity-high {{ border-left: 5px solid #f39c12; }}
+        .severity-medium {{ border-left: 5px solid #f1c40f; }}
+        .suggestions {{
             background: #d5f4e6; border: 1px solid #27ae60;
             border-radius: 3px; padding: 10px; margin: 10px 0;
-        }
-        .suggestions ul { margin: 5px 0; padding-left: 20px; }
-        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #ddd; }
-        th { background-color: #f8f9fa; font-weight: 600; }
-        .code { font-family: 'Monaco', 'Menlo', monospace; background: #f4f4f4;
-                padding: 2px 4px; border-radius: 3px; }
+        }}
+        .suggestions ul {{ margin: 5px 0; padding-left: 20px; }}
+        table {{ width: 100%; border-collapse: collapse; margin: 15px 0; }}
+        th, td {{ text-align: left; padding: 12px; border-bottom: 1px solid #ddd; }}
+        th {{ background-color: #f8f9fa; font-weight: 600; }}
+        .code {{ font-family: monospace; background: #f4f4f4;
+                padding: 2px 4px; border-radius: 3px; }}
     </style>
 </head>
 <body>

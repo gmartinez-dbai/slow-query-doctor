@@ -17,10 +17,12 @@ try:
     from pymongo import MongoClient
     from pymongo.errors import PyMongoError
 
-    pymongo_available = True
+    PYMONGO_AVAILABLE = True
+    pymongo_available = True  # Keep for backward compatibility
 except ImportError:
-    MongoClient = None
-    PyMongoError = Exception
+    MongoClient = None  # type: ignore
+    PyMongoError = Exception  # type: ignore
+    PYMONGO_AVAILABLE = False
     pymongo_available = False
 
 logger = logging.getLogger(__name__)
@@ -78,8 +80,10 @@ class MongoDBQueryPatternRecognizer:
             Normalized query pattern string
         """
         try:
+            import json
+
             normalized = self._normalize_dict(command)
-            return str(normalized)
+            return json.dumps(normalized, sort_keys=True)
         except Exception as e:
             logger.warning(f"Error normalizing MongoDB command: {e}")
             return str(command)
@@ -137,7 +141,7 @@ class MongoDBProfilerIntegration:
     """Integrates with MongoDB profiler to collect slow query data."""
 
     def __init__(self, connection_string: str, thresholds: MongoDBThresholdConfig):
-        if not pymongo_available:
+        if not PYMONGO_AVAILABLE:
             raise ImportError(
                 "pymongo is required for MongoDB integration. "
                 "Install with: pip install pymongo"

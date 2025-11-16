@@ -10,7 +10,7 @@ import pytest
 import tempfile
 from datetime import datetime, timedelta
 from pathlib import Path
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, MagicMock, patch
 
 # Import MongoDB modules
 from slowquerydoctor.mongodb_analyzer import (
@@ -62,9 +62,12 @@ class TestMongoDBQueryPatternRecognizer:
         command = {"find": "users", "filter": {"name": "John", "age": 25}}
 
         normalized = self.recognizer.normalize_query(command)
-        expected = str({"find": "?", "filter": {"name": "?", "age": "?"}})
 
-        assert normalized == expected
+        # Should contain the normalized elements (JSON format with sorted keys)
+        assert '"find": "?"' in normalized
+        assert '"filter":' in normalized
+        assert '"name": "?"' in normalized
+        assert '"age": "?"' in normalized
 
     def test_normalize_complex_aggregation(self):
         """Test normalization of complex aggregation pipeline."""
@@ -224,8 +227,8 @@ class TestMongoDBProfilerIntegration:
 
     def test_enable_profiling(self, mock_mongo_client):
         """Test enabling MongoDB profiling."""
-        mock_client = Mock()
-        mock_db = Mock()
+        mock_client = MagicMock()
+        mock_db = MagicMock()
         mock_db.command.return_value = {"ok": 1}
         mock_client.__getitem__.return_value = mock_db
         mock_mongo_client.return_value = mock_client
@@ -244,9 +247,9 @@ class TestMongoDBProfilerIntegration:
 
     def test_collect_profile_data(self, mock_mongo_client):
         """Test collecting profile data."""
-        mock_client = Mock()
-        mock_db = Mock()
-        mock_collection = Mock()
+        mock_client = MagicMock()
+        mock_db = MagicMock()
+        mock_collection = MagicMock()
 
         # Mock profile data
         profile_records = [
@@ -576,9 +579,14 @@ class TestMongoDBIntegration:
         with patch("slowquerydoctor.mongodb_analyzer.PYMONGO_AVAILABLE", True):
             with patch("slowquerydoctor.mongodb_analyzer.MongoClient") as mock_client:
                 # Setup mocks
-                mock_client_instance = Mock()
+                mock_client_instance = MagicMock()
                 mock_client.return_value = mock_client_instance
                 mock_client_instance.admin.command.return_value = True
+
+                # Setup database mock for profiling
+                mock_db = MagicMock()
+                mock_db.command.return_value = {"ok": 1}
+                mock_client_instance.__getitem__.return_value = mock_db
 
                 # Create detector
                 detector = MongoDBSlowQueryDetector(
