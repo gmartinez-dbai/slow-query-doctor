@@ -281,24 +281,26 @@ def update_dockerfile(version):
         new_text = text
 
         # Update environment variable
-    new_text = re.sub(
-        r"(SLOW_QUERY_DOCTOR_VERSION=)([^\s]+)", r"\g<1>{}".format(version), new_text
-    )
+        new_text = re.sub(
+            r"(SLOW_QUERY_DOCTOR_VERSION=)([^\s]+)",
+            r"\g<1>{}".format(version),
+            new_text,
+        )
 
-    # Update LABEL version (all instances)
-    new_text = re.sub(
-        r'(version="?)([^"\s]+)("?)', r"\g<1>{}\g<3>".format(version), new_text
-    )
-    new_text = re.sub(
-        r'(org\.opencontainers\.image\.version="?)([^"\s]+)("?)',
-        r"\g<1>{}\g<3>".format(version),
-        new_text,
-    )
+        # Update LABEL version (all instances)
+        new_text = re.sub(
+            r'(version="?)([^"\s]+)("?)', r"\g<1>{}\g<3>".format(version), new_text
+        )
+        new_text = re.sub(
+            r'(org\.opencontainers\.image\.version="?)([^"\s]+)("?)',
+            r"\g<1>{}\g<3>".format(version),
+            new_text,
+        )
 
-    if new_text != text:
-        open(path, "w", encoding="utf8").write(new_text)
-        print(f"Updated {path}")
-        updated = True
+        if new_text != text:
+            open(path, "w", encoding="utf8").write(new_text)
+            print(f"Updated {path}")
+            updated = True
     return updated
 
 

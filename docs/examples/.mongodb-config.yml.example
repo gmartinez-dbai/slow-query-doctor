@@ -1,0 +1,119 @@
+# MongoDB Slow Query Doctor Configuration
+# Copy this file to .mongodb-config.yml and customize for your environment
+
+# MongoDB Connection Settings
+connection:
+  # Primary connection string - required
+  connection_string: "mongodb://localhost:27017"
+  
+  # Optional authentication
+  # connection_string: "mongodb://username:password@localhost:27017/authdb"
+  
+  # Connection timeout in milliseconds
+  connection_timeout_ms: 5000
+  
+  # Optional: specific authentication database
+  # auth_database: "admin"
+
+# Performance Analysis Thresholds (in milliseconds)
+thresholds:
+  # Queries slower than this are considered "slow"
+  slow_threshold_ms: 100.0
+  
+  # Queries slower than this are considered "very slow" 
+  very_slow_threshold_ms: 1000.0
+  
+  # Queries slower than this are considered "critical"
+  critical_threshold_ms: 5000.0
+  
+  # Minimum execution count to include in analysis
+  min_execution_count: 1
+
+# Database Selection
+# Specify which databases to monitor
+databases_to_monitor:
+  - "myapp"
+  - "analytics"
+  - "ecommerce"
+
+# Exclude system databases (recommended)
+exclude_databases:
+  - "admin"
+  - "config" 
+  - "local"
+
+# Profiler Settings
+profiler:
+  # Enable profiler automatically (if not already enabled)
+  auto_enable: true
+  
+  # Profiling level: 0=off, 1=slow only, 2=all operations
+  profiling_level: 2
+  
+  # Slow operation threshold for profiler (ms)
+  slow_operation_threshold_ms: 100
+  
+  # Sample rate for profiling (0.0 to 1.0)
+  sample_rate: 1.0
+
+# Report Generation Settings
+reporting:
+  # Output formats: json, html, markdown
+  formats:
+    - "json"
+    - "html" 
+    - "markdown"
+  
+  # Include sample queries in reports
+  include_query_samples: true
+  
+  # Maximum number of query samples per pattern
+  max_query_samples: 5
+  
+  # Include execution statistics
+  include_execution_stats: true
+  
+  # Include index recommendations
+  include_index_recommendations: true
+
+# Analysis Options
+analysis:
+  # Maximum number of top slow queries to analyze in detail
+  top_queries_limit: 20
+  
+  # Group similar queries together
+  normalize_queries: true
+  
+  # Include aggregation pipeline analysis
+  analyze_aggregations: true
+  
+  # Include index usage analysis
+  analyze_index_usage: true
+
+# AI/LLM Settings (optional - uses global config if not specified)
+ai:
+  # AI provider: "openai" or "ollama" 
+  provider: "openai"
+  
+  # OpenAI settings
+  openai:
+    model: "gpt-4o-mini"
+    max_tokens: 300
+    temperature: 0.3
+  
+  # Ollama settings  
+  ollama:
+    model: "arctic-text2sql-r1:7b"
+    host: "http://localhost:11434"
+    timeout: 30
+
+# Logging and Debug
+logging:
+  # Log level: DEBUG, INFO, WARNING, ERROR
+  level: "INFO"
+  
+  # Enable verbose output
+  verbose: false
+  
+  # Log MongoDB operations
+  log_operations: false
