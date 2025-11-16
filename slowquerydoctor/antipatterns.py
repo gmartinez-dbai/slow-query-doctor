@@ -7,7 +7,7 @@ static rewrite suggestions without requiring database schema knowledge.
 
 import re
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Any
 from enum import Enum
 
 
@@ -37,50 +37,63 @@ class AntiPatternMatch:
 class AntiPatternDetector:
     """Detects common SQL anti-patterns and suggests rewrites."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.patterns = self._initialize_patterns()
 
-    def _initialize_patterns(self) -> Dict[AntiPatternType, Dict]:
+    def _initialize_patterns(self) -> Dict[AntiPatternType, Dict[str, Any]]:
         """Initialize anti-pattern detection rules."""
         return {
             AntiPatternType.LEADING_WILDCARD_LIKE: {
                 "regex": r'\bWHERE\s+\w+\s+LIKE\s+[\'"]%[^%\'"]',
                 "flags": re.IGNORECASE | re.MULTILINE,
                 "problem": "Full table scan; cannot use B-tree index",
-                "solution": "Use full-text search (tsvector) or restructure data if possible",
-                    "example": "-- Instead of: WHERE email LIKE '%@example.com'\n-- Consider: WHERE email LIKE 'user@%' (if pattern allows)\n" +
-                               "-- Or use: WHERE email @@ to_tsquery('example.com')",
+                "solution": "Use full-text search (tsvector) or restructure "
+                "data if possible",
+                "example": "-- Instead of: WHERE email LIKE '%@example.com'\n"
+                "-- Consider: WHERE email LIKE 'user@%' (if pattern allows)\n"
+                "-- Or use: WHERE email @@ to_tsquery('example.com')",
             },
             AntiPatternType.FUNCTION_ON_COLUMN: {
                 "regex": r"\bWHERE\s+\w+\s*\(\s*\w+\s*\)\s*[=<>!]",
                 "flags": re.IGNORECASE | re.MULTILINE,
                 "problem": "Function prevents index usage",
-                "solution": "Create function-based index or restructure condition",
-                    "example": "-- Instead of: WHERE LOWER(email) = 'test@example.com'\n-- Create index: CREATE INDEX ON users (LOWER(email))\n" +
-                               "-- Or store normalized data",
+                "solution": "Create function-based index or restructure " "condition",
+                "example": "-- Instead of: WHERE LOWER(email) = "
+                "'test@example.com'\n"
+                "-- Create index: CREATE INDEX ON users (LOWER(email))\n"
+                "-- Or store normalized data",
             },
             AntiPatternType.LARGE_IN_CLAUSE: {
                 "regex": r"\bIN\s*\(\s*[^)]*,.*?,.*?,.*?,.*?[^)]*\)",
                 "flags": re.IGNORECASE | re.DOTALL,
                 "problem": "Can be slow with many values",
-                "solution": "Use JOIN to temporary table or VALUES list instead",
-                    "example": "-- Instead of: WHERE id IN (1, 2, 3, ..., 5000)\n-- Use: JOIN (VALUES (1), (2), (3)) AS t(id) ON table.id = t.id\n" +
-                               "-- Or create temp table with values",
+                "solution": "Use JOIN to temporary table or VALUES list " "instead",
+                "example": "-- Instead of: WHERE id IN (1, 2, 3, ..., 5000)\n"
+                "-- Use: JOIN (VALUES (1), (2), (3)) AS t(id) ON "
+                "table.id = t.id\n"
+                "-- Or create temp table with values",
             },
             AntiPatternType.NOT_IN_WITH_SUBQUERY: {
                 "regex": r"\bNOT\s+IN\s*\(\s*SELECT\b",
                 "flags": re.IGNORECASE | re.MULTILINE,
-                "problem": "Returns incorrect results if subquery has NULL values",
+                "problem": "Returns incorrect results if subquery has " "NULL values",
                 "solution": "Use NOT EXISTS or LEFT JOIN...IS NULL instead",
-                    "example": "-- Instead of: WHERE user_id NOT IN (SELECT id FROM deleted_users)\n-- Use: WHERE NOT EXISTS (SELECT 1 FROM deleted_users d WHERE d.id = user_id)\n" +
-                               "-- Or: LEFT JOIN deleted_users d ON d.id = user_id WHERE d.id IS NULL",
+                "example": "-- Instead of: WHERE user_id NOT IN "
+                "(SELECT id FROM deleted_users)\n"
+                "-- Use: WHERE NOT EXISTS (SELECT 1 FROM deleted_users d "
+                "WHERE d.id = user_id)\n"
+                "-- Or: LEFT JOIN deleted_users d ON d.id = user_id "
+                "WHERE d.id IS NULL",
             },
             AntiPatternType.NO_WHERE_CLAUSE_ON_JOIN: {
                 "regex": r"\bFROM\s+\w+\s*,\s*\w+(?!\s+WHERE)",
                 "flags": re.IGNORECASE | re.DOTALL,
                 "problem": "Cartesian product risk; hard to optimize",
                 "solution": "Use explicit INNER JOIN ON with proper join condition",
-                    "example": "-- Instead of: SELECT * FROM orders o, customers c WHERE o.amount > 1000\n-- Use: SELECT * FROM orders o INNER JOIN customers c ON o.customer_id = c.id WHERE o.amount > 1000\n",
+                "example": "-- Instead of: SELECT * FROM orders o, customers c "
+                "WHERE o.amount > 1000\n"
+                "-- Use: SELECT * FROM orders o INNER JOIN customers c "
+                "ON o.customer_id = c.id WHERE o.amount > 1000\n",
             },
         }
 
@@ -123,7 +136,7 @@ class AntiPatternDetector:
         # Adjust confidence based on context
         if pattern_type == AntiPatternType.LARGE_IN_CLAUSE:
             # Count the number of values in the IN clause
-            in_values = match.group().count(",")
+            in_values: int = match.group().count(",")
             if in_values > 10:
                 return min(1.0, base_confidence + (in_values / 100))
             elif in_values < 5:
@@ -158,7 +171,10 @@ class AntiPatternDetector:
         report = f"🔍 **Anti-Pattern Analysis** ({len(matches)} issues found)\n\n"
 
         for i, match in enumerate(matches, 1):
-            report += f"### Issue #{i}: {match.pattern_type.value.replace('_', ' ').title()}\n\n"
+            report += (
+                f"### Issue #{i}: "
+                f"{match.pattern_type.value.replace('_', ' ').title()}\n\n"
+            )
             report += f"**Problem**: {match.problem_description}\n\n"
             report += f"**Detected Pattern**: `{match.matched_text.strip()}`\n\n"
             report += f"**Recommendation**: {match.rewrite_suggestion}\n\n"
@@ -175,7 +191,7 @@ class AntiPatternDetector:
 class StaticQueryRewriter:
     """Provides static query rewriting suggestions without database schema."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.detector = AntiPatternDetector()
 
     def analyze_query(self, query: str) -> Tuple[List[AntiPatternMatch], str]:

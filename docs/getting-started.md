@@ -7,19 +7,35 @@ For a quick overview, see the [Project README](../README.md).
 
 ## Installation
 
+### Option A: Using uv (Recommended - Fast & Modern)
+
 ```bash
-git clone https://github.com/gmartinez-dbai/slow-query-doctor.git
+# Install uv if not already installed
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Clone and setup
+git clone https://github.com/iqtoolkit/slow-query-doctor.git
+cd slow-query-doctor
+make setup
+```
+
+### Option B: Traditional Python (Fallback)
+
+```bash
+git clone https://github.com/iqtoolkit/slow-query-doctor.git
 cd slow-query-doctor
 python -m venv .venv
 source .venv/bin/activate
 pip install -e .
 ```
 
+If you want to use local LLMs, see [Ollama Local Setup](ollama-local.md) for installation and usage instructions.
+
 
 
 ## Basic Usage
 
-See [Usage Examples](examples.md) for all CLI and log analysis examples.
+See [PostgreSQL Examples](pg_examples.md) for all CLI and log analysis examples.
 
 ## Configuration File
 

@@ -10,7 +10,7 @@ Welcome to the Slow Query Doctor documentation! This guide helps you navigate al
 - [**Configuration Guide**](docs/configuration.md) - Detailed configuration options and examples
 
 ### **Usage & Examples**
-- [**Examples**](docs/examples.md) - Real-world usage examples and sample outputs
+- [**PostgreSQL Examples**](docs/pg_examples.md) - Real-world usage examples and sample outputs
 - [**FAQ**](docs/faq.md) - Frequently asked questions and troubleshooting
 - [**Sample Data**](docs/sample-data.md) - Test data and example log files
 
@@ -74,7 +74,7 @@ make dev-check         # Full development workflow
 ### **I want to...**
 
 #### **Use the Tool**
-→ Start with [README.md](README.md) → [Getting Started](docs/getting-started.md) → [Examples](docs/examples.md)
+→ Start with [README.md](README.md) → [Getting Started](docs/getting-started.md) → [PostgreSQL Examples](docs/pg_examples.md)
 
 #### **Contribute Code**
 → Read [CONTRIBUTING.md](CONTRIBUTING.md) → [VERSION_MANAGEMENT.md](VERSION_MANAGEMENT.md) → [ARCHITECTURE.md](ARCHITECTURE.md)

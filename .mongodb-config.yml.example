@@ -1,0 +1,195 @@
+# MongoDB Slow Query Doctor Configuration
+# This file configures the MongoDB slow query detection and analysis system
+
+# MongoDB Connection Settings
+connection:
+  connection_string: "mongodb://localhost:27017"
+  connection_timeout_ms: 5000
+  server_selection_timeout_ms: 5000
+  socket_timeout_ms: 30000
+  max_pool_size: 100
+  
+  # Authentication (uncomment and configure as needed)
+  # username: "myuser"
+  # password: "mypassword"  
+  # auth_source: "admin"
+  
+  # SSL/TLS (uncomment and configure as needed)
+  # use_ssl: true
+  # ssl_cert_file: "/path/to/cert.pem"
+  # ssl_key_file: "/path/to/key.pem"
+  # ssl_ca_file: "/path/to/ca.pem"
+
+# Performance Thresholds
+thresholds:
+  # Duration thresholds in milliseconds
+  slow_threshold_ms: 100.0          # Queries slower than this are considered slow
+  very_slow_threshold_ms: 1000.0    # Very slow query threshold
+  critical_threshold_ms: 5000.0     # Critical slow query threshold
+  
+  # Document examination thresholds
+  max_examined_ratio: 10.0          # Maximum examined/returned documents ratio
+  max_examined_docs: 100000         # Maximum documents examined threshold
+  
+  # Collection scan detection
+  detect_collection_scans: true
+  max_collection_scan_docs: 1000
+  
+  # Index usage requirements
+  require_index_usage: true
+  min_index_hit_ratio: 0.95
+  
+  # Frequency analysis
+  min_frequency_for_analysis: 5     # Minimum query frequency to include in analysis
+  time_window_minutes: 60           # Time window for analysis in minutes
+  
+  # Resource usage thresholds
+  max_cpu_time_ms: 1000.0
+  max_memory_usage_mb: 100.0
+  
+  # Analysis scoring weights
+  duration_weight: 0.4
+  efficiency_weight: 0.3
+  frequency_weight: 0.2
+  impact_weight: 0.1
+
+# MongoDB Profiling Configuration
+profiling:
+  # Profiling level: 0=off, 1=slow ops only, 2=all ops
+  profiling_level: 1
+  enable_on_startup: true
+  
+  # Profile collection settings
+  profile_collection_size_mb: 100
+  profile_collection_max_docs: 1000000
+  
+  # Data retention
+  profile_data_retention_hours: 24
+  auto_cleanup_enabled: true
+  
+  # Sampling rate (1.0 = 100%, 0.1 = 10%)
+  sample_rate: 1.0
+  
+  # Operation filtering
+  include_operations:
+    - "find"
+    - "aggregate" 
+    - "update"
+    - "delete"
+    - "insert"
+    - "count"
+    - "distinct"
+    - "createIndex"
+  
+  exclude_operations:
+    - "ping"
+    - "buildInfo"
+    - "serverStatus"
+
+# Analysis Configuration
+analysis:
+  # Query pattern recognition
+  normalize_queries: true
+  group_similar_queries: true
+  similarity_threshold: 0.8
+  
+  # Collection-level analysis
+  analyze_collections: true
+  max_collections_to_analyze: 50
+  skip_system_collections: true
+  
+  # Index analysis
+  analyze_index_usage: true
+  suggest_new_indexes: true
+  detect_unused_indexes: true
+  
+  # Aggregation pipeline analysis
+  analyze_pipeline_stages: true
+  suggest_pipeline_optimizations: true
+  
+  # Report generation options
+  include_query_examples: true
+  max_query_examples: 5
+  truncate_large_queries: true
+  max_query_length: 1000
+  
+  # Performance impact calculation
+  calculate_impact_scores: true
+  include_efficiency_metrics: true
+  
+  # Machine learning features (future enhancement)
+  enable_ml_pattern_detection: false
+  # ml_model_path: "/path/to/model.pkl"
+
+# Report Generation Configuration
+reporting:
+  # Report formats
+  supported_formats:
+    - "json"
+    - "yaml" 
+    - "html"
+    - "markdown"
+  default_format: "json"
+  
+  # Report content
+  include_executive_summary: true
+  include_detailed_analysis: true
+  include_optimization_suggestions: true
+  include_collection_stats: true
+  
+  # Visualization options
+  generate_charts: false
+  chart_library: "matplotlib"  # matplotlib, plotly
+  
+  # Export options
+  export_raw_data: false
+  compress_reports: false
+  
+  # Automated reporting (future enhancement)
+  auto_generate_reports: false
+  report_schedule_cron: "0 6 * * 1"  # Weekly on Monday at 6 AM
+
+# Database Configuration
+databases_to_monitor:
+  - "myapp"
+  - "analytics"
+  # - "logs"
+
+exclude_databases:
+  - "admin"
+  - "config" 
+  - "local"
+
+# Logging Configuration
+log_level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+# log_file: "/var/log/mongodb-slow-query-doctor.log"
+
+# Example configurations for different environments:
+
+# Development Environment
+# connection:
+#   connection_string: "mongodb://localhost:27017"
+# thresholds:
+#   slow_threshold_ms: 50.0
+# profiling:
+#   profiling_level: 2
+# log_level: "DEBUG"
+
+# Production Environment  
+# connection:
+#   connection_string: "mongodb://prod-replica-set/mydb?replicaSet=rs0"
+#   username: "monitoring_user"
+#   password: "secure_password"
+#   auth_source: "admin"
+#   use_ssl: true
+# thresholds:
+#   slow_threshold_ms: 200.0
+#   critical_threshold_ms: 2000.0  
+# profiling:
+#   profiling_level: 1
+#   sample_rate: 0.1  # Sample 10% of operations
+# databases_to_monitor:
+#   - "production_app"
+#   - "user_data"
+# log_level: "INFO"
+# log_file: "/var/log/slow-query-doctor.log"

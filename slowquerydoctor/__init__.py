@@ -7,7 +7,7 @@ AI Providers:
   - v0.2.0+: Configurable (Ollama default, OpenAI optional)
 """
 
-__version__ = "v0.1.8"
+__version__ = "0.2.2a1"
 
 from .parser import parse_postgres_log
 from .analyzer import run_slow_query_analysis, normalize_query

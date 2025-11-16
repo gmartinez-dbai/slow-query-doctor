@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "slow-query-doctor"
-version = "v0.1.8"
+version = "0.2.2a1"
 description = "AI-powered PostgreSQL performance analyzer that diagnoses slow queries and provides actionable optimization recommendations"
 readme = "README.md"
 license = {text = "MIT"}
@@ -42,13 +42,14 @@ classifiers = [
 ]
 requires-python = ">=3.11"
 dependencies = [
+    "ollama",
     "pandas>=2.0.0",
     "openai>=1.0.0",
     "python-dotenv>=0.19.0",
     "pyyaml>=6.0.0",
     "ruamel.yaml>=0.17.21",
     "tqdm>=4.0.0",
-    "psycopg>=3.1.18",
+    "psycopg>=3.1.18"
 ]
 
 [project.optional-dependencies]
@@ -60,12 +61,15 @@ dev = [
     "mypy>=1.0.0",
     "isort>=5.12.0",
     "pre-commit>=3.0.0",
+    "ruamel.yaml>=0.17.0",
+    "pip-tools>=7.0.0",
 ]
 
 test = [
     "pytest>=7.0.0",
     "pytest-cov>=4.0.0",
     "pytest-mock>=3.10.0",
+    "black>=23.0.0",
 ]
 docs = [
     "mkdocs>=1.4.0",
@@ -74,10 +78,10 @@ docs = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/gmartinez-dbai/slow-query-doctor"
-Repository = "https://github.com/gmartinez-dbai/slow-query-doctor"
-Issues = "https://github.com/gmartinez-dbai/slow-query-doctor/issues"
-Changelog = "https://github.com/gmartinez-dbai/slow-query-doctor/releases"
+Homepage = "https://github.com/iqtoolkit/slow-query-doctor"
+Repository = "https://github.com/iqtoolkit/slow-query-doctor"
+Issues = "https://github.com/iqtoolkit/slow-query-doctor/issues"
+Changelog = "https://github.com/iqtoolkit/slow-query-doctor/releases"
 
 [project.scripts]
 slow-query-doctor = "slowquerydoctor.__main__:main"
@@ -120,7 +124,7 @@ sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
 
 # MyPy configuration
 [tool.mypy]
-python_version = "0.1.8"
+python_version = "3.11"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
@@ -141,7 +145,6 @@ ignore_missing_imports = true
 
 # Pytest configuration
 [tool.pytest.ini_options]
-minversion = "0.1.8"
 addopts = [
     "-ra",
     "--strict-markers",
@@ -189,5 +192,5 @@ skip_covered = false
 [tool.coverage.html]
 directory = "htmlcov"
 
-# Flake8 configuration (via setup.cfg since flake8 doesn't support pyproject.toml yet)
-# You'll need to create a setup.cfg file for flake8 config
+# Flake8 configuration (see setup.cfg)
+# Flake8 doesn't support pyproject.toml configuration yet
