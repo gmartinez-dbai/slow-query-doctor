@@ -25,6 +25,8 @@ var/
 wheels/
 share/python-wheels/
 *.egg-info/
+slow_query_doctor.egg-info/
+slowquerydoctor.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
@@ -95,6 +97,16 @@ ENV/
 env.bak/
 venv.bak/
 
+# Node.js / npm
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+.npm
+.eslintcache
+
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -126,6 +138,12 @@ cython_debug/
 *.swo
 *~
 
+# JetBrains IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+
 # OS files
 .DS_Store
 Thumbs.db
@@ -133,6 +151,29 @@ Thumbs.db
 # Project-specific
 *.db
 *.sqlite
+reports/
+logs/
+*.log
+
+# Generated output files
+report.md
+output/
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/
+.temp/
+
+# Build outputs
+dist/
+build/
+out/
+
+# Cache directories
+.cache/
+.npm/
+.yarn/
 
 # Personal notes
 notes/
@@ -144,3 +185,15 @@ notes/
 .slowquerydoctor.yml
 IMPROVEMENT_RECOMMENDATIONS.md
 IMPROVEMENTS_NODEJS.md
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
