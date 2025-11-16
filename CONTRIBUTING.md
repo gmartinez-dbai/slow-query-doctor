@@ -40,18 +40,28 @@ We follow a **Git Flow** branching model with the following branches:
 
 ### 🚀 Quick Start for New Contributors
 
-1. **Fork & Clone** the repo.
-2. **Create a Feature Branch:**
-   Example:
+1. **Fork & Clone** the repo and set up environment:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/slow-query-doctor.git
+   cd slow-query-doctor
+   make setup  # Automatically uses uv if available, falls back to pip
    ```
+2. **Create a Feature Branch:**
+   ```bash
    git checkout -b feature/my-new-feature
    ```
 3. **Do your work:** Commit small, focused changes. Push to your feature branch.
-4. **PR to Develop:** Open a pull request (PR) from `feature/*` to `develop`.
-5. **Review & Testing:** Wait for CI/tests and code review from maintainers.
-6. **Merge to Develop:** Maintainers merge after approval.
-7. **Release Candidate:** When ready for release, maintainers create `release/*` and do final QA.
-8. **Merge to Main:** Final, stable release gets merged to `main` and tagged.
+4. **Test your changes:**
+   ```bash
+   make test    # Run tests
+   make lint    # Run linting
+   make format  # Format code
+   ```
+5. **PR to Develop:** Open a pull request (PR) from `feature/*` to `develop`.
+6. **Review & Testing:** Wait for CI/tests and code review from maintainers.
+7. **Merge to Develop:** Maintainers merge after approval.
+8. **Release Candidate:** When ready for release, maintainers create `release/*` and do final QA.
+9. **Merge to Main:** Final, stable release gets merged to `main` and tagged.
 
 ### Detailed Steps
 
@@ -59,7 +69,7 @@ We follow a **Git Flow** branching model with the following branches:
 ```bash
 git clone https://github.com/YOUR_USERNAME/slow-query-doctor.git
 cd slow-query-doctor
-git remote add upstream https://github.com/gmartinez-dbai/slow-query-doctor.git
+git remote add upstream https://github.com/iqtoolkit/slow-query-doctor.git
 ```
 
 #### 2. Create a Feature Branch
@@ -109,9 +119,14 @@ git push origin feature/your-feature-name
 - Use descriptive variable and function names
 - Keep functions small and focused
 - Add or update tests for new features and bug fixes
-- Run `black` and `flake8` before submitting your PR
+- Run code quality checks before submitting:
+  ```bash
+  make format  # Format with black (uv/pip compatible)
+  make lint    # Lint with flake8 + mypy
+  make test    # Run all tests
+  ```
 - Keep PRs focused and minimal; avoid unrelated changes
-- Ensure you have `pyyaml`, `tqdm`, and all dev dependencies installed (see README)
+- Development environment setup is automated via `make setup`
 - Reference `.slowquerydoctor.yml` for config-driven tests if needed
 
 ## 📝 Commit Message Convention

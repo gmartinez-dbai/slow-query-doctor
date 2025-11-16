@@ -90,11 +90,11 @@ class TestLLMClientOllama:
     @patch("slowquerydoctor.llm_client.ollama")
     def test_ollama_initialization(self, mock_ollama):
         """Test Ollama client initializes correctly."""
-        config = LLMConfig(llm_provider="ollama", ollama_model="llama2")
+        config = LLMConfig(llm_provider="ollama", ollama_model="arctic-text2sql-r1:7b")
         client = LLMClient(config)
 
         assert client.provider == "ollama"
-        assert client.model == "llama2"
+        assert client.model == "arctic-text2sql-r1:7b"
 
     @patch("slowquerydoctor.llm_client.ollama", None)
     def test_ollama_import_error(self):
@@ -110,7 +110,7 @@ class TestLLMClientOllama:
             "message": {"content": "Create index on email column"}
         }
 
-        config = LLMConfig(llm_provider="ollama", ollama_model="llama2")
+        config = LLMConfig(llm_provider="ollama", ollama_model="arctic-text2sql-r1:7b")
         client = LLMClient(config)
 
         result = client.generate_recommendations(
@@ -133,7 +133,7 @@ class TestLLMClientOllama:
 
         config = LLMConfig(
             llm_provider="ollama",
-            ollama_model="llama2",
+            ollama_model="arctic-text2sql-r1:7b",
             ollama_host="http://custom-host:11434",
         )
         client = LLMClient(config)

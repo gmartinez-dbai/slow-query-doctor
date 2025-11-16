@@ -285,7 +285,7 @@ openai_temperature: 0.3
 # Coming AI provider settings (v0.2.0+)
 ai_provider: "ollama"        # ollama (default), openai, claude, gemini
 ai_base_url: "http://localhost:11434"  # Custom endpoint
-ai_model: "llama2"           # Provider-specific model
+ai_model: "arctic-text2sql-r1:7b"  # Provider-specific model
 ai_max_tokens: 200
 ai_temperature: 0.3
 

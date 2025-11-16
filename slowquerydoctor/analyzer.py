@@ -312,16 +312,13 @@ def run_slow_query_analysis(
     if not callable(to_dict_method):
         raise ValueError("Log DataFrame cannot be converted to records for analysis.")
 
-    records: List[Any] = list(to_dict_method(orient="records"))  # type: ignore[call-arg]
+    raw_records = to_dict_method(orient="records")
+    records = cast(List[Dict[str, Any]], raw_records or [])
 
     query_dicts: List[QueryRecord] = []
     durations_for_summary: List[float] = []
 
-    for entry_obj in records:
-        if not isinstance(entry_obj, dict):
-            continue
-
-        entry = cast(Dict[str, Any], entry_obj)
+    for entry in records:
 
         try:
             duration = float(entry["duration_ms"])
@@ -357,7 +354,7 @@ def run_slow_query_analysis(
     summary = _build_summary(durations_for_summary, analyzed_queries)
 
     result_df = _build_dataframe(analyzed_queries)
-    result_df = result_df.sort_values("impact_score", ascending=False)  # type: ignore[call-arg]
+    result_df = result_df.sort_values("impact_score", ascending=False)
 
     if top_n > 0:
         result_df = result_df.head(top_n)

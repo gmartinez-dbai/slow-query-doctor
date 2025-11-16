@@ -6,11 +6,12 @@ from pathlib import Path
 import yaml
 import json
 import csv
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
 
-def load_config(config_path: str = ".slowquerydoctor.yml") -> dict:
+def load_config(config_path: str = ".slowquerydoctor.yml") -> dict[str, Any]:
     """Load YAML config file if present."""
     path = Path(config_path)
     if path.exists():
@@ -44,15 +45,18 @@ def parse_postgres_log(log_file_path: str, log_format: str = "plain") -> pd.Data
         with open(log_file_path, "r", encoding="utf-8", errors="ignore") as f:
             log_text = f.read()
         # Improved regex for multi-line queries and edge cases
-        pattern = r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}).*?duration: ([\d.]+) ms.*?statement: ([\s\S]+?)(?=\n\d{4}-\d{2}-\d{2} |\Z)"
+        pattern = (
+            r"(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}).*?duration: "
+            r"([\d.]+) ms.*?statement: ([\s\S]+?)(?=\n\d{4}-\d{2}-\d{2} |\Z)"
+        )
         matches = re.findall(pattern, log_text, re.DOTALL)
         if not matches:
-            logger.warning(
-                "No slow query entries matched the expected pattern. Check your log format and log_min_duration_statement setting."
+            warning_msg = (
+                "No slow query entries matched the expected pattern. "
+                "Check your log format and log_min_duration_statement setting."
             )
-            print(
-                "No slow query entries matched the expected pattern. Check your log format and log_min_duration_statement setting."
-            )
+            logger.warning(warning_msg)
+            print(warning_msg)
             raise ValueError(
                 "No slow query entries found. "
                 "Ensure log_min_duration_statement is configured."
