@@ -1,5 +1,6 @@
 # Data population script for companydb
-# This script uses Python and psycopg (psycopg3) to efficiently insert millions of records into each table.
+# This script uses Python and psycopg (psycopg3) to efficiently insert millions of
+# records into each table.
 # Usage: python populate_companydb.py
 
 import random
@@ -63,7 +64,8 @@ def main():
                 print(f"  Prepared {i+1} employees...")
         print("  Inserting employees...")
         cur.executemany(
-            "INSERT INTO employees (name, department_id, hire_date, salary) VALUES (%s, %s, %s, %s)",
+            "INSERT INTO employees (name, department_id, hire_date, salary) "
+            "VALUES (%s, %s, %s, %s)",
             employees,
         )
         conn.commit()
@@ -122,7 +124,8 @@ def main():
             pass
         print("  Inserting customers...")
         cur.executemany(
-            "INSERT INTO customers (name, email, signup_date) VALUES (%s, %s, %s) ON CONFLICT (email) DO NOTHING",
+            "INSERT INTO customers (name, email, signup_date) VALUES (%s, %s, %s) "
+            "ON CONFLICT (email) DO NOTHING",
             customers,
         )
         conn.commit()
@@ -134,10 +137,12 @@ def main():
         )
         if inserted_count < len(customers):
             print(
-                f"[WARNING] {len(customers) - inserted_count} duplicate customers were skipped due to existing emails."
+                f"[WARNING] {len(customers) - inserted_count} duplicate customers "
+                f"were skipped due to existing emails."
             )
         print(
-            f"Inserted {inserted_count} new customers. Total in table: {len(customer_ids)}."
+            f"Inserted {inserted_count} new customers. "
+            f"Total in table: {len(customer_ids)}."
         )
 
         print("\nPopulating sales...")
@@ -160,14 +165,16 @@ def main():
             if len(sales) % 10000 == 0:
                 print(f"    Inserting sales batch at {i+1}... ({len(sales)} records)")
                 cur.executemany(
-                    "INSERT INTO sales (product_id, customer_id, sale_date, quantity, total_amount) VALUES (%s, %s, %s, %s, %s)",
+                    "INSERT INTO sales (product_id, customer_id, sale_date, quantity, "
+                    "total_amount) VALUES (%s, %s, %s, %s, %s)",
                     sales,
                 )
                 sales = []
         if sales:
             print(f"    Inserting final sales batch... ({len(sales)} records)")
             cur.executemany(
-                "INSERT INTO sales (product_id, customer_id, sale_date, quantity, total_amount) VALUES (%s, %s, %s, %s, %s)",
+                "INSERT INTO sales (product_id, customer_id, sale_date, quantity, "
+                "total_amount) VALUES (%s, %s, %s, %s, %s)",
                 sales,
             )
         conn.commit()
@@ -195,7 +202,8 @@ def main():
                 print(f"  Prepared {i+1} tickets...")
         print("  Inserting support tickets...")
         cur.executemany(
-            "INSERT INTO support_tickets (customer_id, created_at, resolved_at, status, subject, description) VALUES (%s, %s, %s, %s, %s, %s)",
+            "INSERT INTO support_tickets (customer_id, created_at, resolved_at, "
+            "status, subject, description) VALUES (%s, %s, %s, %s, %s, %s)",
             tickets,
         )
         conn.commit()
@@ -218,14 +226,16 @@ def main():
             if len(logs) % 10000 == 0:
                 print(f"    Inserting logs batch at {i+1}... ({len(logs)} records)")
                 cur.executemany(
-                    "INSERT INTO activity_logs (employee_id, activity_type, activity_time, details) VALUES (%s, %s, %s, %s)",
+                    "INSERT INTO activity_logs (employee_id, activity_type, "
+                    "activity_time, details) VALUES (%s, %s, %s, %s)",
                     logs,
                 )
                 logs = []
         if logs:
             print(f"    Inserting final logs batch... ({len(logs)} records)")
             cur.executemany(
-                "INSERT INTO activity_logs (employee_id, activity_type, activity_time, details) VALUES (%s, %s, %s, %s)",
+                "INSERT INTO activity_logs (employee_id, activity_type, activity_time, "
+                "details) VALUES (%s, %s, %s, %s)",
                 logs,
             )
         conn.commit()

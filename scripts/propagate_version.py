@@ -339,24 +339,6 @@ def git_commit_and_tag(version):
 
 
 def main():
-    version = read_version()
-    print("Propagating version", version)
-    validate_version_consistency(version)
-    changed_any = False
-    if update_init_py(version):
-        changed_any = True
-    if update_chart_yaml(version):
-        changed_any = True
-    if update_dockerfile(version):
-        changed_any = True
-    if changed_any:
-        git_commit_and_tag(version)
-    else:
-        print("✅ All versions are consistent!")
-        return True
-
-
-def main():
     parser = argparse.ArgumentParser(
         description="Propagate or verify version consistency"
     )

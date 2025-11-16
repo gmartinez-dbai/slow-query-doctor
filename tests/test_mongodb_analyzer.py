@@ -217,7 +217,9 @@ class TestMongoDBProfilerIntegration:
 
     def test_connection_failure(self, mock_mongo_client):
         """Test MongoDB connection failure."""
-        mock_mongo_client.side_effect = Exception("Connection failed")
+        from pymongo.errors import PyMongoError
+
+        mock_mongo_client.side_effect = PyMongoError("Connection failed")
 
         thresholds = MongoDBThresholdConfig()
         profiler = MongoDBProfilerIntegration("mongodb://localhost:27017", thresholds)
