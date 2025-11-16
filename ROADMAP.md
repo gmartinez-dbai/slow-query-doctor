@@ -36,7 +36,7 @@
 
 ---
 
-## v0.2.2 - MongoDB Support (Nov 2025) ✅ ALPHA READY
+## v0.2.2a1 - MongoDB Support (Nov 2025) ✅ ALPHA READY
 
 **Focus:** MongoDB slow query analysis and reporting
 
@@ -164,7 +164,7 @@ Track feature requests from users here:
 | v0.1.5 | ✅ SHIPPED | Mature | PostgreSQL analyzer with **OpenAI only** |
 | v0.1.6 | Nov 2025 | 🔒 Feature Freeze | **Final v0.1.x with new features** - Documentation, architecture, **OpenAI only** |
 | v0.1.7+ | Ongoing | 🐛 Bug Fixes Only | Critical fixes, **OpenAI only**, no new features |
-| v0.2.2 | Nov 2025 | ✅ Alpha Ready | **MongoDB support** - analyzer, profiler integration, multi-format reports, CLI, **OpenAI only** |
+| v0.2.2a1 | Nov 2025 | ✅ Alpha Ready | **MongoDB support** - analyzer, profiler integration, multi-format reports, CLI, **OpenAI only** |
 | v0.2.3 | Q1 2026 | � Planned | **Enhanced MongoDB** - aggregation optimization, indexing recommendations |
 | v0.2.4 | Q1 2026 | 📋 Planned | **Configurable AI providers** (Ollama default, OpenAI optional), EXPLAIN plans, FastAPI |
 | v0.3.0 | Q2 2026 | 🚫 Do Not Start | ML/self-learning, anomaly detection |
