@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "slow-query-doctor"
-version = "0.2.0"
+version = "0.2.2a1"
 description = "AI-powered PostgreSQL performance analyzer that diagnoses slow queries and provides actionable optimization recommendations"
 readme = "README.md"
 license = {text = "MIT"}
@@ -124,7 +124,7 @@ sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
 
 # MyPy configuration
 [tool.mypy]
-python_version = "0.2.0"
+python_version = "0.2.2a1"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
