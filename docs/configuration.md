@@ -6,7 +6,7 @@ For a summary, see the [Project README](../README.md#configuration).
 
 ## PostgreSQL Log Setup
 
-See [Setup & Usage Examples](examples.md) for complete instructions on enabling slow query logging in PostgreSQL.
+See [PostgreSQL Examples](pg_examples.md) for complete instructions on enabling slow query logging in PostgreSQL.
 
 
 ## Configuration File (.slowquerydoctor.yml)

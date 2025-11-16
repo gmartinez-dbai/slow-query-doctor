@@ -2,7 +2,7 @@
 # 📂 Sample Data & Usage
 
 
-See the [Setup & Usage Examples](examples.md) for a complete guide to log setup, sample data, and CLI usage.
+See the [PostgreSQL Examples](pg_examples.md) for a complete guide to log setup, sample data, and CLI usage.
 
 ## Sample Log Files
 
@@ -14,7 +14,7 @@ See the [Setup & Usage Examples](examples.md) for a complete guide to log setup,
 
 ## Example Usage
 
-See [Usage Examples](../examples.md) for all CLI and log analysis examples.
+See [PostgreSQL Examples](pg_examples.md) for all CLI and log analysis examples.
 
 ## Why Use Sample Data?
 

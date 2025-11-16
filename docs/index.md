@@ -36,7 +36,7 @@
 - [Sample Data & Usage](sample-data.md)
 - [Advanced Features](advanced-features.md)
 - [FAQ & Troubleshooting](faq.md)
-- [Setup & Usage Examples](examples.md)
+- [Setup & Usage Examples (PostgreSQL)](pg_examples.md)
 - [Ollama Local Setup](ollama-local.md)
 - [OpenAI Setup](https://platform.openai.com/docs/guides/authentication)
 

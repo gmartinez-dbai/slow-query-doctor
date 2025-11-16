@@ -50,7 +50,9 @@ An intelligent database performance analyzer that uses AI to diagnose slow queri
 - [Development](#-development)
   - [Running Tests](#running-tests)
   - [Code Quality](#code-quality)
+    - [What does mypy do?](#what-does-mypy-do)
   - [Testing with Sample Data](#testing-with-sample-data)
+  - [What is htmlcov and is it excluded?](#what-is-htmlcov-and-is-it-excluded)
 - [System Requirements](#-system-requirements)
   - [Dependencies](#dependencies)
 - [License](#-license)
@@ -300,7 +302,7 @@ See the full guide: [docs/getting-started.md](docs/getting-started.md)
 
 Enable slow query logging in your `postgresql.conf`:
 
-```postgresql
+```conf
 # Log queries taking longer than 1 second
 log_min_duration_statement = 1000
 
@@ -412,7 +414,7 @@ This query suffers from expensive mathematical operations and multiple window fu
 ### Query #2: Correlated Subquery with Pattern Matching (Impact Score: 109,234.02)
 **Duration**: 109,234.02 ms | **Frequency**: 1 | **First seen**: 2025-10-28 19:31:23
 
-```sql
+```text
 SELECT DISTINCT l1.random_number, l1.random_text, l1.created_at,
     (SELECT COUNT(*) FROM large_test_table l2 WHERE l2.random_number = l1.random_number)
 FROM large_test_table l1
@@ -518,6 +520,21 @@ pytest tests/ -v
 pytest tests/ --cov=slowquerydoctor --cov-report=html
 ```
 
+### What is htmlcov and is it excluded?
+htmlcov is the folder where the HTML coverage report is generated when you run tests with coverage reporting. In this project:
+
+- How it’s generated:
+  - Pytest is configured in pyproject.toml to produce coverage reports, including HTML, via addopts:
+    --cov=slowquerydoctor --cov-report=term-missing --cov-report=html --cov-report=xml
+  - The HTML output directory is configured under [tool.coverage.html] as directory = "htmlcov".
+  - You’ll typically get it by running make test (which runs pytest with those flags) or pytest ... --cov-report=html.
+- Where to view it:
+  - Open htmlcov/index.html in your browser to see per-file and line-level coverage.
+- Is it excluded from Git?
+  - Yes. .gitignore contains htmlcov/ so the generated report is not committed.
+- How to clean it up:
+  - make clean removes htmlcov/ along with other build/test artifacts.
+
 ### Code Quality
 ```bash
 # With uv and Makefile (recommended)
@@ -530,6 +547,36 @@ black slowquerydoctor/
 flake8 slowquerydoctor/
 mypy slowquerydoctor/
 ```
+
+#### What does mypy do?
+Mypy is a static type checker for Python. It analyzes your code without executing it to catch type-related errors early and to make the codebase easier to maintain.
+
+In this repository, mypy helps to:
+- Prevent common bugs by verifying function inputs/outputs match their annotations
+- Enforce consistent, explicit types (useful in a data-heavy tool like this)
+- Improve editor/IDE auto-completion and refactoring safety
+
+How it’s configured here:
+- Configuration lives in pyproject.toml under [tool.mypy]
+- We enable a relatively strict set of options:
+  - disallow-untyped-defs, disallow-incomplete-defs, disallow-untyped-decorators
+  - no_implicit_optional, warn_redundant_casts, warn_unused_ignores, warn_no_return, warn_unreachable
+  - strict_equality and check_untyped_defs
+- Third‑party modules with incomplete type hints (like openai, dotenv) are allowed via ignore_missing_imports overrides.
+
+How to run it:
+- Recommended: make lint (runs flake8 then mypy via uv)
+- Directly: uv run mypy slowquerydoctor
+
+Common fixes:
+- Add or refine type hints: parameters, return types, and local variables when useful
+- Use Optional[T] (or | None) when something can be None
+- Narrow types with isinstance checks before using values
+- For one-off unavoidable cases, use a targeted suppression:  # type: ignore[code]
+
+Type stubs:
+- If a dependency lacks types, prefer installing its types (e.g., types-pyyaml)
+- If none exist, consider adding minimal annotations around your usage or a local stub package later
 
 ### Testing with Sample Data
 ```bash
@@ -625,7 +672,7 @@ For complete documentation and guides, see our [**Documentation Index**](DOCUMEN
 - 🚀 [Getting Started](docs/getting-started.md) - New user tutorial
 - 🤝 [Contributing Guide](CONTRIBUTING.md) - How to contribute
 - ⚙️ [Configuration](docs/configuration.md) - Setup and config options  
-- 💡 [Examples](docs/examples.md) - Real usage examples
+- 💡 [PostgreSQL Examples](docs/pg_examples.md) - Real usage examples
 - ❓ [FAQ](docs/faq.md) - Common questions and troubleshooting
 
 ## 🤝 Roadmap, Technical Debt & Contributing
