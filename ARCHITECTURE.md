@@ -602,7 +602,7 @@ This tagging strategy makes it immediately clear to anyone browsing the reposito
 - [TECHNICAL_DEBT.md](TECHNICAL_DEBT.md) - Known limitations
 - [docs/configuration.md](docs/configuration.md) - Configuration guide
 - [docs/getting-started.md](docs/getting-started.md) - Installation and usage
-- [docs/examples.md](docs/examples.md) - Usage examples
+- [docs/pg_examples.md](docs/pg_examples.md) - PostgreSQL usage examples
 - [docs/advanced-features.md](docs/advanced-features.md) - Advanced configuration
 - [docs/sample-data.md](docs/sample-data.md) - Sample log files documentation
 - [docs/sample_logs/mysql/](docs/sample_logs/mysql/) - Future MySQL sample logs

@@ -6,6 +6,9 @@ For more, see the [Project README](../README.md) and [ROADMAP.md](../ROADMAP.md)
 ## Common Questions
 
 
+### Q: What is `htmlcov` and is it excluded from Git?
+A: `htmlcov/` is the folder where pytest/coverage.py writes the HTML coverage report. In this project, pytest is configured in `pyproject.toml` to generate HTML coverage (`--cov-report=html`) and the output directory is set to `htmlcov` under `[tool.coverage.html]`. The `htmlcov/` directory is ignored by Git via `.gitignore`, and `make clean` removes it. Open `htmlcov/index.html` in a browser to view the report.
+
 ### Q: How do I use local LLMs or fix 'model not found' errors?
 A: See [Ollama Local Setup](ollama-local.md) for instructions on installing and running models locally.
 
