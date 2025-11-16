@@ -124,6 +124,24 @@ def mongodb_command(args: argparse.Namespace) -> int:
         # Load configuration
         config = load_mongodb_config(args.config)
 
+        # Override connection string if provided via CLI
+        if hasattr(args, "connection_string") and args.connection_string:
+            if config.connection:
+                config.connection.connection_string = args.connection_string
+            else:
+                from slowquerydoctor.mongodb_config import MongoDBConnectionConfig
+
+                config.connection = MongoDBConnectionConfig(
+                    connection_string=args.connection_string
+                )
+
+        # Validate that we have a connection string
+        if not config.get_effective_connection_string():
+            print("Error: MongoDB connection string is required. Provide it via:")
+            print("  --connection-string argument, or")
+            print("  configuration file with connection settings")
+            return 1
+
         # Setup logging
         if args.verbose:
             setup_logging("DEBUG", config.log_file)
@@ -145,7 +163,11 @@ def mongodb_command(args: argparse.Namespace) -> int:
             return 1
 
         # Start monitoring if requested
-        if args.enable_profiling and config.databases_to_monitor:
+        if (
+            hasattr(args, "enable_profiling")
+            and args.enable_profiling
+            and config.databases_to_monitor
+        ):
             logger.info("Enabling profiling on target databases")
             if not detector.start_monitoring(config.databases_to_monitor):
                 logger.warning("Failed to enable profiling on some databases")
@@ -160,9 +182,13 @@ def mongodb_command(args: argparse.Namespace) -> int:
             logger.info(f"Analyzing database: {database_name}")
 
             # Generate comprehensive report
+            skip_collection = (
+                hasattr(args, "skip_collection_analysis")
+                and args.skip_collection_analysis
+            )
             report = detector.generate_comprehensive_report(
                 database_name,
-                include_collection_analysis=not args.skip_collection_analysis,
+                include_collection_analysis=not skip_collection,
             )
 
             all_reports[database_name] = report
@@ -251,11 +277,15 @@ Examples:
   # Analyze PostgreSQL log file
   %(prog)s postgresql /path/to/slow.log
 
-  # Analyze MongoDB database
-  %(prog)s mongodb --database myapp --config mongodb_config.yml
+  # Analyze MongoDB database with connection string
+  %(prog)s mongodb --connection-string "mongodb://localhost:27017" --database myapp
+
+  # Use MongoDB config file
+  %(prog)s mongodb --config mongodb_config.yml
 
   # Generate HTML report for MongoDB
-  %(prog)s mongodb --database myapp --output ./reports --format html
+  %(prog)s mongodb --connection-string "mongodb://localhost:27017" \
+    --output ./reports --format html
         """,
     )
 
@@ -298,6 +328,10 @@ Examples:
     mongo_parser = subparsers.add_parser(
         "mongodb", aliases=["mongo"], help="Analyze MongoDB slow queries"
     )
+    mongo_parser.add_argument(
+        "--connection-string",
+        help="MongoDB connection string (e.g., 'mongodb://localhost:27017')",
+    )
     mongo_parser.add_argument("--database", "-d", help="Database name to analyze")
     mongo_parser.add_argument(
         "--config", "-c", default=None, help="Configuration file path (YAML format)"
@@ -338,10 +372,6 @@ Examples:
     else:
         print(f"Unknown database type: {args.database_type}", file=sys.stderr)
         return 1
-
-
-if __name__ == "__main__":
-    sys.exit(main())
 
 
 if __name__ == "__main__":

@@ -4,11 +4,12 @@
 
 # 📚 Slow Query Doctor Documentation
 
-**Slow Query Doctor** is an AI-powered tool for analyzing PostgreSQL slow query logs. It helps you:
-- Parse and summarize slow query logs (plain, CSV, or JSON)
+**Slow Query Doctor** is an AI-powered tool for analyzing PostgreSQL and MongoDB slow query logs. It helps you:
+- **PostgreSQL**: Parse and summarize slow query logs (plain, CSV, or JSON)
+- **MongoDB**: Real-time profiler integration for live slow query detection
 - Identify the slowest and most frequent queries
-- Get AI-powered recommendations for query optimization
-- Generate detailed Markdown reports
+- Get AI-powered recommendations for query optimization  
+- Generate detailed reports (Markdown for PostgreSQL, JSON/HTML/Markdown for MongoDB)
 - Track progress with real-time progress bars
 
 ---
@@ -37,6 +38,7 @@
 - [Advanced Features](advanced-features.md)
 - [FAQ & Troubleshooting](faq.md)
 - [Setup & Usage Examples (PostgreSQL)](pg_examples.md)
+- [MongoDB Guide](mongodb-guide.md) ⭐ **New!**
 - [Ollama Local Setup](ollama-local.md)
 - [OpenAI Setup](https://platform.openai.com/docs/guides/authentication)
 
