@@ -2,19 +2,19 @@
 
 An intelligent database performance analyzer that uses AI to diagnose slow queries and provide actionable optimization recommendations.
 
-## 🎯 **Current Support: PostgreSQL + MongoDB Coming ASAP**
-**✅ Ready to use**: PostgreSQL slow query analysis with AI-powered recommendations  
-**🚧 Priority Development**: MongoDB support shipping in v0.2.0 (Nov 2025 - Q1 2026)  
+## 🎯 **Current Support: PostgreSQL + MongoDB Ready**
+**✅ Production Ready**: PostgreSQL slow query analysis with comprehensive AI-powered recommendations  
+**✅ Production Ready**: MongoDB slow query analysis with real-time profiler integration and multi-format reporting  
 **🚧 Traditional SQL**: MySQL and SQL Server support in v0.4.0 (Q3 2026)
 
-> **🚀 MongoDB Users**: We're prioritizing MongoDB support! [File an issue](https://github.com/iqtoolkit/slow-query-doctor/issues/new?labels=mongodb-feedback&title=MongoDB%20Requirements) to share your slow query log formats and optimization needs.
+> **🚀 NEW in v0.2.0**: MongoDB support is now fully available! Use `slowquerydoctor mongodb` to analyze your MongoDB performance with real-time profiler integration, comprehensive indexing recommendations, and multi-format reports.
 
 ![Python](https://img.shields.io/badge/python-3.11+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![OpenAI](https://img.shields.io/badge/AI-OpenAI%20Only%20v0.1.x-orange.svg)
 ![Ollama](https://img.shields.io/badge/AI-Ollama%20Coming%20v0.2.0-blue.svg)
 ![PostgreSQL](https://img.shields.io/badge/database-PostgreSQL%20Ready-336791?logo=postgresql&logoColor=white)
-![MongoDB](https://img.shields.io/badge/database-MongoDB%20Priority%20v0.2.0-47A248?logo=mongodb&logoColor=white)
+![MongoDB](https://img.shields.io/badge/database-MongoDB%20Ready-47A248?logo=mongodb&logoColor=white)
 ![MySQL](https://img.shields.io/badge/database-MySQL%20Planned%20v0.4.0-4479A1?logo=mysql&logoColor=white)
 ![SQL Server](https://img.shields.io/badge/database-SQL%20Server%20Planned%20v0.4.0-CC2927?logo=microsoftssqlserver&logoColor=white)
 
@@ -50,7 +50,9 @@ An intelligent database performance analyzer that uses AI to diagnose slow queri
 - [Development](#-development)
   - [Running Tests](#running-tests)
   - [Code Quality](#code-quality)
+    - [What does mypy do?](#what-does-mypy-do)
   - [Testing with Sample Data](#testing-with-sample-data)
+  - [What is htmlcov and is it excluded?](#what-is-htmlcov-and-is-it-excluded)
 - [System Requirements](#-system-requirements)
   - [Dependencies](#dependencies)
 - [License](#-license)
@@ -60,7 +62,7 @@ An intelligent database performance analyzer that uses AI to diagnose slow queri
 
 ## 🎯 Overview
 
-Slow Query Doctor automatically analyzes your **PostgreSQL** slow query logs and provides intelligent, AI-powered optimization recommendations. It identifies performance bottlenecks, calculates impact scores, and generates detailed reports with specific suggestions for improving database performance.
+Slow Query Doctor automatically analyzes your **PostgreSQL** and **MongoDB** slow query logs and provides intelligent, AI-powered optimization recommendations. It identifies performance bottlenecks, calculates impact scores, and generates detailed reports with specific suggestions for improving database performance.
 
 ### 🗄️ **Database & AI Support Status**
 
@@ -68,7 +70,7 @@ Slow Query Doctor automatically analyzes your **PostgreSQL** slow query logs and
 | Database | Status | Version | Timeline |
 |----------|--------|---------|----------|
 | **PostgreSQL** | ✅ **Fully Supported** | v0.1.x+ | Available now |
-| **MongoDB** | 🚧 **Priority Development** | v0.2.0 | Nov 2025 - Q1 2026 |
+| **MongoDB** | ✅ **Fully Supported** | v0.2.0+ | Available now |
 | **MySQL** | 🚧 Planned | v0.4.0 | Q3 2026 |
 | **SQL Server** | 🚧 Planned | v0.4.0 | Q3 2026 |
 
@@ -79,7 +81,7 @@ Slow Query Doctor automatically analyzes your **PostgreSQL** slow query logs and
 | **Ollama (Local)** | 🚧 **Default in Future** | v0.2.0+ | Nov 2025 - Q1 2026 |
 | **Multiple Providers** | 🚧 Configurable | v0.2.0+ | Nov 2025 - Q1 2026 |
 
-> **📢 MongoDB Priority**: We're building MongoDB support ASAP in v0.2.0! Share your MongoDB slow query requirements and log formats.
+> **📢 MongoDB Ready**: MongoDB slow query analysis is now available! Use the `mongodb` command to analyze your MongoDB performance.
 > 
 > **📢 Want to influence MySQL/SQL Server development?** Check out our [future database sample directories](docs/sample_logs/) and share your specific requirements!
 
@@ -88,23 +90,31 @@ Slow Query Doctor automatically analyzes your **PostgreSQL** slow query logs and
 
 ### Key Features
 
-- 🔍 **Smart Log Parsing**: Extracts slow queries from database logs, supports multi-line queries and unusual characters
+- 🔍 **Smart Log Parsing**: 
+  - **PostgreSQL**: Extracts slow queries from log files, supports multi-line queries and unusual characters
+  - **MongoDB**: Real-time profiler integration for live slow query detection
 - 📊 **Impact Analysis**: Calculates query impact using duration × frequency scoring
 - 🤖 **AI-Powered Recommendations**: 
   - **v0.1.x**: OpenAI GPT models only (requires API key)
-  - **v0.2.0+**: Configurable providers (Ollama default, OpenAI optional)
-- 📝 **Comprehensive Reports**: Generates detailed Markdown reports with statistics and recommendations
-- 📂 **Sample Data Included**: Ready-to-use sample PostgreSQL log files for testing and demonstration
-- 🗂️ **Multiple Log Formats**: Supports plain, CSV, and JSON log formats
-- ⚙️ **Config File Support**: Use a `.slowquerydoctor.yml` file to customize analysis options
+  - **v0.2.0+**: Configurable providers (Ollama default, OpenAI optional)  
+- 📝 **Comprehensive Reports**: 
+  - **PostgreSQL**: Detailed Markdown reports with statistics and recommendations
+  - **MongoDB**: Multi-format reports (JSON, HTML, Markdown) with collection-level insights
+- 📂 **Sample Data Included**: Ready-to-use sample log files for both PostgreSQL and MongoDB
+- 🗂️ **Multiple Formats**: 
+  - **PostgreSQL**: Plain, CSV, and JSON log formats
+  - **MongoDB**: Direct profiler integration with configurable thresholds
+- ⚙️ **Config File Support**: 
+  - **PostgreSQL**: Use `.slowquerydoctor.yml` for analysis options
+  - **MongoDB**: Use `.mongodb-config.yml` for connection and profiling settings
 - 🔒 **Privacy Evolution**: 
   - **v0.1.x**: OpenAI public API (privacy considerations for sensitive data)
   - **v0.2.0+**: Local Ollama models by default (enterprise-safe)
-- 🔧 **Extensible**: Future-ready architecture supports multiple AI providers
+- 🔧 **Extensible**: Future-ready architecture supports multiple databases and AI providers
 
 ## 🚀 Quick Start
 
-> **⚡ Ready to analyze PostgreSQL slow queries right now?** Follow the installation below.  
+> **⚡ Ready to analyze PostgreSQL or MongoDB slow queries right now?** Follow the installation below.  
 > **🔮 Planning for MySQL/SQL Server?** [Join the early feedback program](https://github.com/iqtoolkit/slow-query-doctor/discussions) to shape v0.4.0 development!
 
 ### Installation
@@ -173,28 +183,43 @@ export OPENAI_API_KEY="your-openai-api-key-here"
 
 ### Basic Usage
 
-#### Try with Sample Data
+#### PostgreSQL Analysis
 ```bash
 # With uv (recommended - fast)
-uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md
+uv run python -m slowquerydoctor postgresql sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md
 
 # Or traditional approach
-python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md
+python -m slowquerydoctor postgresql sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md
+```
+
+#### MongoDB Analysis
+```bash
+# Connect to MongoDB and analyze slow queries
+uv run python -m slowquerydoctor mongodb --connection-string "mongodb://localhost:27017" --output ./reports
+
+# With configuration file
+uv run python -m slowquerydoctor mongodb --config .mongodb-config.yml --output ./reports
+
+# Traditional approach
+python -m slowquerydoctor mongodb --connection-string "mongodb://localhost:27017" --output ./reports
 ```
 
 #### Advanced Usage Examples
 ```bash
-# Analyze top 5 slowest queries (uv)
-uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --top-n 5
+# PostgreSQL: Analyze top 5 slowest queries (uv)
+uv run python -m slowquerydoctor postgresql sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --top-n 5
 
-# Get more detailed AI analysis (uv)
-uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --max-tokens 200
+# MongoDB: Generate multiple report formats
+uv run python -m slowquerydoctor mongodb --connection-string "mongodb://localhost:27017" --output ./reports --format json html markdown
 
-# Enable verbose debug output (uv)
-uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --verbose
+# PostgreSQL: Get more detailed AI analysis (uv)
+uv run python -m slowquerydoctor postgresql sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --max-tokens 200
+
+# MongoDB: Enable verbose debug output
+uv run python -m slowquerydoctor mongodb --connection-string "mongodb://localhost:27017" --output ./reports --verbose
 
 # Traditional approach for any of the above
-python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --top-n 5
+python -m slowquerydoctor postgresql sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --top-n 5
 ```
 
 #### With Your Own Logs
@@ -218,8 +243,9 @@ python -m slowquerydoctor /path/to/your/postgresql.log --output analysis_report.
 
 The `docs/sample_logs/` directory contains database slow query log examples for testing and demonstration:
 
-### ✅ **Current Support (v0.1.x)**
-- **PostgreSQL**: Real sample logs from 100M record database operations with authentic slow queries
+### ✅ **Current Support**
+- **PostgreSQL**: Real sample logs from 100M record database operations with authentic slow queries → [View samples](docs/sample_logs/postgresql/)
+- **MongoDB**: Complete profiler integration with real-time slow query detection and comprehensive optimization recommendations → [View samples](docs/sample_logs/mongodb/)
 
 ### 🚧 **Future Support (v0.4.0 - Q3 2026)**
 - **MySQL**: Placeholder directory with configuration examples and feedback collection → [View samples](docs/sample_logs/mysql/)
@@ -294,13 +320,13 @@ slow-query-doctor/
 
 ## ⚙️ Configuration
 
-### 🐘 **PostgreSQL Setup** (Current Focus)
+### 🐘 **PostgreSQL Setup**
 
 See the full guide: [docs/getting-started.md](docs/getting-started.md)
 
 Enable slow query logging in your `postgresql.conf`:
 
-```postgresql
+```conf
 # Log queries taking longer than 1 second
 log_min_duration_statement = 1000
 
@@ -339,6 +365,47 @@ This guide covers:
 - Running example slow queries
 - Collecting and analyzing logs with Slow Query Doctor
 
+### 🍃 **MongoDB Setup**
+
+MongoDB analysis uses the built-in profiler to collect slow operation data. Enable profiling for your databases:
+
+```javascript
+// Enable profiling for operations slower than 100ms
+db.setProfilingLevel(2, {slowms: 100})
+
+// Check profiling status
+db.getProfilingStatus()
+
+// View recent slow operations
+db.system.profile.find().limit(5).sort({ts: -1}).pretty()
+```
+
+Create a `.mongodb-config.yml` configuration file:
+
+```yaml
+# MongoDB Connection
+connection:
+  connection_string: "mongodb://localhost:27017"
+  connection_timeout_ms: 5000
+  
+# Performance Thresholds
+thresholds:
+  slow_threshold_ms: 100.0
+  very_slow_threshold_ms: 1000.0
+  critical_threshold_ms: 5000.0
+  
+# Analysis Settings
+databases_to_monitor: ["myapp", "analytics"]
+exclude_databases: ["admin", "config", "local"]
+
+# Report Settings
+reporting:
+  formats: ["json", "html", "markdown"]
+  include_query_samples: true
+  max_query_samples: 5
+```
+
+For complete MongoDB setup instructions, see: [docs/mongodb-guide.md](docs/mongodb-guide.md)
 
 ### Environment Variables
 
@@ -412,7 +479,7 @@ This query suffers from expensive mathematical operations and multiple window fu
 ### Query #2: Correlated Subquery with Pattern Matching (Impact Score: 109,234.02)
 **Duration**: 109,234.02 ms | **Frequency**: 1 | **First seen**: 2025-10-28 19:31:23
 
-```sql
+```text
 SELECT DISTINCT l1.random_number, l1.random_text, l1.created_at,
     (SELECT COUNT(*) FROM large_test_table l2 WHERE l2.random_number = l1.random_number)
 FROM large_test_table l1
@@ -426,12 +493,13 @@ Replace the correlated subquery with a JOIN or window function. Create indexes o
 
 ## 🔧 Command Line Options
 
+### PostgreSQL Analysis
 ```bash
 # With uv (recommended)
-uv run python -m slowquerydoctor [LOG_FILE] [OPTIONS]
+uv run python -m slowquerydoctor postgresql [LOG_FILE] [OPTIONS]
 
 # Traditional approach
-python -m slowquerydoctor [LOG_FILE] [OPTIONS]
+python -m slowquerydoctor postgresql [LOG_FILE] [OPTIONS]
 ```
 
 | Option | Description | Default |
@@ -445,9 +513,30 @@ python -m slowquerydoctor [LOG_FILE] [OPTIONS]
 | `--verbose` | Enable verbose (debug) output for troubleshooting and progress tracking | - |
 | `--help`, `-h` | Show help message | - |
 
+### MongoDB Analysis
+```bash
+# With uv (recommended)
+uv run python -m slowquerydoctor mongodb [OPTIONS]
+
+# Traditional approach
+python -m slowquerydoctor mongodb [OPTIONS]
+```
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `--connection-string` | MongoDB connection string | Required |
+| `--config`, `-c` | Configuration file path (YAML format) | None |
+| `--output`, `-o` | Output directory for reports | `./reports` |
+| `--format`, `-f` | Report formats: json, markdown, html | `json` |
+| `--databases` | Databases to analyze (comma-separated) | All accessible |
+| `--verbose` | Enable verbose (debug) output | - |
+| `--help`, `-h` | Show help message | - |
+
 ## 🐛 Troubleshooting
 
 ### Common Issues
+
+#### PostgreSQL Issues
 
 **"No slow queries found"**
 ```bash
@@ -457,6 +546,34 @@ grep -i "duration:" your_log_file.log
 # Verify PostgreSQL logging is enabled
 psql -c "SHOW log_min_duration_statement;"
 ```
+
+**"Permission denied on log file"**
+```bash
+# Fix file permissions
+chmod 644 /path/to/postgresql.log
+```
+
+#### MongoDB Issues
+
+**"Connection failed"**
+```bash
+# Test MongoDB connection
+mongosh "mongodb://localhost:27017" --eval "db.adminCommand('ismaster')"
+
+# Check if profiler is enabled
+mongosh "mongodb://localhost:27017/mydb" --eval "db.getProfilingStatus()"
+```
+
+**"No profiler data found"**
+```bash
+# Enable MongoDB profiling for slow operations (>100ms)
+mongosh "mongodb://localhost:27017/mydb" --eval "db.setProfilingLevel(2, {slowms: 100})"
+
+# Check system.profile collection
+mongosh "mongodb://localhost:27017/mydb" --eval "db.system.profile.count()"
+```
+
+#### AI/General Issues
 
 **"OpenAI API Error" (v0.1.x Only)**
 ```bash
@@ -469,11 +586,6 @@ curl -H "Authorization: Bearer $OPENAI_API_KEY" \
 ```
 
 > **💡 Alternative**: If you prefer local AI processing for privacy, consider waiting for v0.2.0 with Ollama support (Nov 2025 - Q1 2026).
-
-**"Permission denied on log file"**
-```bash
-# Fix file permissions
-chmod 644 /path/to/postgresql.log
 
 # Or copy to accessible location
 cp /var/log/postgresql/postgresql.log ~/my_log.log
@@ -518,6 +630,21 @@ pytest tests/ -v
 pytest tests/ --cov=slowquerydoctor --cov-report=html
 ```
 
+### What is htmlcov and is it excluded?
+htmlcov is the folder where the HTML coverage report is generated when you run tests with coverage reporting. In this project:
+
+- How it’s generated:
+  - Pytest is configured in pyproject.toml to produce coverage reports, including HTML, via addopts:
+    --cov=slowquerydoctor --cov-report=term-missing --cov-report=html --cov-report=xml
+  - The HTML output directory is configured under [tool.coverage.html] as directory = "htmlcov".
+  - You’ll typically get it by running make test (which runs pytest with those flags) or pytest ... --cov-report=html.
+- Where to view it:
+  - Open htmlcov/index.html in your browser to see per-file and line-level coverage.
+- Is it excluded from Git?
+  - Yes. .gitignore contains htmlcov/ so the generated report is not committed.
+- How to clean it up:
+  - make clean removes htmlcov/ along with other build/test artifacts.
+
 ### Code Quality
 ```bash
 # With uv and Makefile (recommended)
@@ -530,6 +657,36 @@ black slowquerydoctor/
 flake8 slowquerydoctor/
 mypy slowquerydoctor/
 ```
+
+#### What does mypy do?
+Mypy is a static type checker for Python. It analyzes your code without executing it to catch type-related errors early and to make the codebase easier to maintain.
+
+In this repository, mypy helps to:
+- Prevent common bugs by verifying function inputs/outputs match their annotations
+- Enforce consistent, explicit types (useful in a data-heavy tool like this)
+- Improve editor/IDE auto-completion and refactoring safety
+
+How it’s configured here:
+- Configuration lives in pyproject.toml under [tool.mypy]
+- We enable a relatively strict set of options:
+  - disallow-untyped-defs, disallow-incomplete-defs, disallow-untyped-decorators
+  - no_implicit_optional, warn_redundant_casts, warn_unused_ignores, warn_no_return, warn_unreachable
+  - strict_equality and check_untyped_defs
+- Third‑party modules with incomplete type hints (like openai, dotenv) are allowed via ignore_missing_imports overrides.
+
+How to run it:
+- Recommended: make lint (runs flake8 then mypy via uv)
+- Directly: uv run mypy slowquerydoctor
+
+Common fixes:
+- Add or refine type hints: parameters, return types, and local variables when useful
+- Use Optional[T] (or | None) when something can be None
+- Narrow types with isinstance checks before using values
+- For one-off unavoidable cases, use a targeted suppression:  # type: ignore[code]
+
+Type stubs:
+- If a dependency lacks types, prefer installing its types (e.g., types-pyyaml)
+- If none exist, consider adding minimal annotations around your usage or a local stub package later
 
 ### Testing with Sample Data
 ```bash
@@ -625,7 +782,7 @@ For complete documentation and guides, see our [**Documentation Index**](DOCUMEN
 - 🚀 [Getting Started](docs/getting-started.md) - New user tutorial
 - 🤝 [Contributing Guide](CONTRIBUTING.md) - How to contribute
 - ⚙️ [Configuration](docs/configuration.md) - Setup and config options  
-- 💡 [Examples](docs/examples.md) - Real usage examples
+- 💡 [PostgreSQL Examples](docs/pg_examples.md) - Real usage examples
 - ❓ [FAQ](docs/faq.md) - Common questions and troubleshooting
 
 ## 🤝 Roadmap, Technical Debt & Contributing

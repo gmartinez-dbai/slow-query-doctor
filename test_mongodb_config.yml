@@ -1,0 +1,25 @@
+connection:
+  connection_string: "mongodb://localhost:27017"
+  connection_timeout_ms: 5000
+
+thresholds:
+  slow_threshold_ms: 100
+  critical_threshold_ms: 1000
+  max_examined_ratio: 10.0
+
+analysis:
+  normalize_queries: true
+  group_similar_queries: true
+  analyze_collections: true
+  max_collections_to_analyze: 50
+
+databases_to_monitor:
+  - "testdb"
+  - "myapp"
+exclude_databases:
+  - "admin"
+  - "config"
+  - "local"
+
+output:
+  log_level: "INFO"
