@@ -1,6 +1,6 @@
 # 📚 Documentation Index
 
-Welcome to the Slow Query Doctor documentation! This guide helps you navigate all available documentation and resources.
+Welcome to the Iqtoolkit Analyzer documentation! This guide helps you navigate all available documentation and resources.
 
 ## 🏠 **Main Documentation**
 

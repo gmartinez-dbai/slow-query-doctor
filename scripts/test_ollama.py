@@ -102,7 +102,7 @@ def main():
 
     logger.info("🎉 All tests passed! Ollama is ready for Slow Query Doctor.")
     logger.info("You can now run: python -m iqtoolkit_analyzer your_log_file.log")
-    logger.info("Make sure your .slowquerydoctor.yml has: llm_provider: ollama")
+    logger.info("Make sure your .iqtoolkit-analyzer.yml has: llm_provider: ollama")
 
     return 0
 

@@ -11,13 +11,13 @@ import logging
 import sys
 from typing import List, Optional
 
-from slowquerydoctor.mongodb_analyzer import MongoDBSlowQueryDetector
-from slowquerydoctor.mongodb_config import (
+from iqtoolkit_analyzer.mongodb_analyzer import MongoDBSlowQueryDetector
+from iqtoolkit_analyzer.mongodb_config import (
     MongoDBConfig,
     load_mongodb_config,
     create_sample_config_file,
 )
-from slowquerydoctor.mongodb_report_generator import MongoDBReportGenerator
+from iqtoolkit_analyzer.mongodb_report_generator import MongoDBReportGenerator
 
 
 def setup_logging(log_level: str, log_file: Optional[str] = None) -> None:

@@ -181,7 +181,7 @@ version = "0.1.8"  # ← Updated
 
 ### `Dockerfile`
 ```dockerfile
-ENV SLOW_QUERY_DOCTOR_VERSION=0.1.8  # ← Updated
+ENV IQTOOLKIT_ANALYZER_VERSION=0.1.8  # ← Updated
 LABEL version="0.1.8"                # ← Updated  
 LABEL org.opencontainers.image.version="0.1.8"  # ← Updated
 ```

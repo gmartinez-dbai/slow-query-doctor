@@ -1,4 +1,4 @@
-from slowquerydoctor import parser
+from iqtoolkit_analyzer import parser
 
 
 def test_multiline_query_parsing(tmp_path):

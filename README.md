@@ -186,22 +186,22 @@ export OPENAI_API_KEY="your-openai-api-key-here"
 #### PostgreSQL Analysis
 ```bash
 # With uv (recommended - fast)
-uv run python -m slowquerydoctor postgresql sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md
+uv run python -m iqtoolkit_analyzer postgresql sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md
 
 # Or traditional approach
-python -m slowquerydoctor postgresql sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md
+python -m iqtoolkit_analyzer postgresql sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md
 ```
 
 #### MongoDB Analysis
 ```bash
 # Connect to MongoDB and analyze slow queries
-uv run python -m slowquerydoctor mongodb --connection-string "mongodb://localhost:27017" --output ./reports
+uv run python -m iqtoolkit_analyzer mongodb --connection-string "mongodb://localhost:27017" --output ./reports
 
 # With configuration file
 uv run python -m iqtoolkit_analyzer mongodb --config .mongodb-config.yml --output ./reports
 
 # Traditional approach
-python -m slowquerydoctor mongodb --connection-string "mongodb://localhost:27017" --output ./reports
+python -m iqtoolkit_analyzer mongodb --connection-string "mongodb://localhost:27017" --output ./reports
 ```
 
 #### Advanced Usage Examples
@@ -496,10 +496,10 @@ Replace the correlated subquery with a JOIN or window function. Create indexes o
 ### PostgreSQL Analysis
 ```bash
 # With uv (recommended)
-uv run python -m slowquerydoctor postgresql [LOG_FILE] [OPTIONS]
+uv run python -m iqtoolkit_analyzer postgresql [LOG_FILE] [OPTIONS]
 
 # Traditional approach
-python -m slowquerydoctor postgresql [LOG_FILE] [OPTIONS]
+python -m iqtoolkit_analyzer postgresql [LOG_FILE] [OPTIONS]
 ```
 
 | Option | Description | Default |
@@ -516,10 +516,10 @@ python -m slowquerydoctor postgresql [LOG_FILE] [OPTIONS]
 ### MongoDB Analysis
 ```bash
 # With uv (recommended)
-uv run python -m slowquerydoctor mongodb [OPTIONS]
+uv run python -m iqtoolkit_analyzer mongodb [OPTIONS]
 
 # Traditional approach
-python -m slowquerydoctor mongodb [OPTIONS]
+python -m iqtoolkit_analyzer mongodb [OPTIONS]
 ```
 
 | Option | Description | Default |
@@ -627,7 +627,7 @@ make format        # Format code
 
 # Traditional approach
 pytest tests/ -v
-pytest tests/ --cov=slowquerydoctor --cov-report=html
+pytest tests/ --cov=iqtoolkit_analyzer --cov-report=html
 ```
 
 ### What is htmlcov and is it excluded?
@@ -635,7 +635,7 @@ htmlcov is the folder where the HTML coverage report is generated when you run t
 
 - How it’s generated:
   - Pytest is configured in pyproject.toml to produce coverage reports, including HTML, via addopts:
-    --cov=slowquerydoctor --cov-report=term-missing --cov-report=html --cov-report=xml
+    --cov=iqtoolkit_analyzer --cov-report=term-missing --cov-report=html --cov-report=xml
   - The HTML output directory is configured under [tool.coverage.html] as directory = "htmlcov".
   - You’ll typically get it by running make test (which runs pytest with those flags) or pytest ... --cov-report=html.
 - Where to view it:
@@ -653,9 +653,9 @@ make lint          # Lint with flake8 + mypy
 make validate      # Full validation suite
 
 # Traditional approach
-black slowquerydoctor/
-flake8 slowquerydoctor/
-mypy slowquerydoctor/
+black iqtoolkit_analyzer/
+flake8 iqtoolkit_analyzer/
+mypy iqtoolkit_analyzer/
 ```
 
 #### What does mypy do?
@@ -676,7 +676,7 @@ How it’s configured here:
 
 How to run it:
 - Recommended: make lint (runs flake8 then mypy via uv)
-- Directly: uv run mypy slowquerydoctor
+- Directly: uv run mypy iqtoolkit_analyzer
 
 Common fixes:
 - Add or refine type hints: parameters, return types, and local variables when useful
@@ -691,10 +691,10 @@ Type stubs:
 ### Testing with Sample Data
 ```bash
 # Test the parser
-uv run python -c "from slowquerydoctor import parse_postgres_log; print(len(parse_postgres_log('sample_logs/postgresql-2025-10-28_192816.log.txt')))"
+uv run python -c "from iqtoolkit_analyzer import parse_postgres_log; print(len(parse_postgres_log('sample_logs/postgresql-2025-10-28_192816.log.txt')))"
 
 # Test full pipeline with sample data
-uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-28_192816.log.txt --output test_report.md
+uv run python -m iqtoolkit_analyzer sample_logs/postgresql-2025-10-28_192816.log.txt --output test_report.md
 
 # Verify AI recommendations are generated
 grep -A 5 "🤖 AI Recommendation" test_report.md

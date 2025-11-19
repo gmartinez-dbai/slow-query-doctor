@@ -1,4 +1,4 @@
-# Contributing to Slow Query Doctor
+# Contributing to Iqtoolkit Analyzer
 
 Thank you for your interest in contributing! 🎉
 
@@ -316,4 +316,4 @@ Open an issue or email gio@gmartinez.net
 
 ---
 
-**Thank you for helping make Slow Query Doctor better!**
+**Thank you for helping make Iqtoolkit Analyzer better!**

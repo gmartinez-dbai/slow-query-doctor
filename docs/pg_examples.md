@@ -85,30 +85,30 @@ cp /var/log/postgresql/postgresql-2025-10-31_*.log ./sample_logs/
 
 ```sh
 # With uv (recommended)
-uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt
+uv run python -m iqtoolkit_analyzer sample_logs/postgresql-2025-10-31_122408.log.txt
 
 # Traditional approach
-python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt
+python -m iqtoolkit_analyzer sample_logs/postgresql-2025-10-31_122408.log.txt
 ```
 
 ### With Verbose Output
 
 ```sh
 # With uv (recommended)
-uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt --verbose
+uv run python -m iqtoolkit_analyzer sample_logs/postgresql-2025-10-31_122408.log.txt --verbose
 
 # Traditional approach
-python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt --verbose
+python -m iqtoolkit_analyzer sample_logs/postgresql-2025-10-31_122408.log.txt --verbose
 ```
 
 ### Specify Output Report Path
 
 ```sh
 # With uv (recommended)
-uv run python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt --output reports/my_report.md
+uv run python -m iqtoolkit_analyzer sample_logs/postgresql-2025-10-31_122408.log.txt --output reports/my_report.md
 
 # Traditional approach
-python -m slowquerydoctor sample_logs/postgresql-2025-10-31_122408.log.txt --output reports/my_report.md
+python -m iqtoolkit_analyzer sample_logs/postgresql-2025-10-31_122408.log.txt --output reports/my_report.md
 ```
 
 ---

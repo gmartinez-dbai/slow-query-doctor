@@ -129,7 +129,7 @@ def mongodb_command(args: argparse.Namespace) -> int:
             if config.connection:
                 config.connection.connection_string = args.connection_string
             else:
-                from slowquerydoctor.mongodb_config import MongoDBConnectionConfig
+                from iqtoolkit_analyzer.mongodb_config import MongoDBConnectionConfig
 
                 config.connection = MongoDBConnectionConfig(
                     connection_string=args.connection_string

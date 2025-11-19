@@ -1,10 +1,10 @@
-# Makefile for slow-query-doctor
+# Makefile for iqtoolkit-analyzer
 
 .PHONY: help setup sync-version check-version install test lint format clean hooks validate
 
 # Default target
 help:
-	@echo "🚀 Slow Query Doctor - Development Commands"
+	@echo "🚀 Iqtoolkit Analyzer - Development Commands"
 	@echo ""
 	@echo "⚠️  IMPORTANT: All commands require '.venv' directory in repo root!"
 	@echo "   First time: make setup  (uses uv if available, fallback to pip)"
@@ -154,10 +154,10 @@ format:
 	@echo "🎨 Formatting code..."
 	@if command -v uv >/dev/null 2>&1; then \
 		uv pip install -r requirements.txt > /dev/null 2>&1; \
-		uv run black slowquerydoctor tests scripts; \
+		uv run black iqtoolkit_analyzer tests scripts; \
 	else \
 		.venv/bin/pip install -r requirements.txt > /dev/null 2>&1; \
-		.venv/bin/python -m black slowquerydoctor tests scripts; \
+		.venv/bin/python -m black iqtoolkit_analyzer tests scripts; \
 	fi
 	@echo "✅ Code formatted!"
 
@@ -175,12 +175,12 @@ lint:
 	@echo "🔍 Running linting..."
 	@if command -v uv >/dev/null 2>&1; then \
 		uv pip install -r requirements.txt > /dev/null 2>&1; \
-		uv run flake8 slowquerydoctor tests scripts --max-line-length=88 --extend-ignore=E203,W503 --exclude=scripts/propagate_version.py; \
-		uv run mypy slowquerydoctor --ignore-missing-imports; \
+		uv run flake8 iqtoolkit_analyzer tests scripts --max-line-length=88 --extend-ignore=E203,W503 --exclude=scripts/propagate_version.py; \
+		uv run mypy iqtoolkit_analyzer --ignore-missing-imports; \
 	else \
 		.venv/bin/pip install -r requirements.txt > /dev/null 2>&1; \
-		.venv/bin/python -m flake8 slowquerydoctor tests scripts --max-line-length=88 --extend-ignore=E203,W503 --exclude=scripts/propagate_version.py; \
-		.venv/bin/python -m mypy slowquerydoctor --ignore-missing-imports; \
+		.venv/bin/python -m flake8 iqtoolkit_analyzer tests scripts --max-line-length=88 --extend-ignore=E203,W503 --exclude=scripts/propagate_version.py; \
+		.venv/bin/python -m mypy iqtoolkit_analyzer --ignore-missing-imports; \
 	fi
 	@echo "✅ Linting passed!"
 
@@ -198,10 +198,10 @@ test:
 	@echo "🧪 Running tests..."
 	@if command -v uv >/dev/null 2>&1; then \
 		uv pip install -r requirements.txt > /dev/null 2>&1; \
-		uv run pytest tests/ --cov=slowquerydoctor --cov-report=term-missing --cov-report=html; \
+		uv run pytest tests/ --cov=iqtoolkit_analyzer --cov-report=term-missing --cov-report=html; \
 	else \
 		.venv/bin/pip install -r requirements.txt > /dev/null 2>&1; \
-		.venv/bin/python -m pytest tests/ --cov=slowquerydoctor --cov-report=term-missing --cov-report=html; \
+		.venv/bin/python -m pytest tests/ --cov=iqtoolkit_analyzer --cov-report=term-missing --cov-report=html; \
 	fi
 	@echo "✅ Tests completed!"
 

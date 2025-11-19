@@ -31,7 +31,7 @@ Ollama lets you run large language models on your own machine. To use it with th
 ## 5. Troubleshooting
 - If you get a `model not found` error, make sure you have pulled the model.
 - The default server runs at `http://localhost:11434`.
-- To make Slow Query Doctor use Ollama, set `llm_provider: ollama` in `.slowquerydoctor.yml`. If your Ollama server runs on a different host/port, add `ollama_host: http://your-host:port` to the config.
+- To make Slow Query Doctor use Ollama, set `llm_provider: ollama` in `.iqtoolkit-analyzer.yml`. If your Ollama server runs on a different host/port, add `ollama_host: http://your-host:port` to the config.
 
 ---
 For more details, see the official docs: https://ollama.com/docs

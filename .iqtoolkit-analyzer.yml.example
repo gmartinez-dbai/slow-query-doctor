@@ -1,5 +1,5 @@
 # Slow Query Doctor Configuration Example
-# Copy to .slowquerydoctor.yml and customize as needed
+# Copy to .iqtoolkit-analyzer.yml and customize as needed
 
 # AI Provider Configuration
 llm_provider: ollama              # 'ollama' (local/private) or 'openai' (cloud/API key)

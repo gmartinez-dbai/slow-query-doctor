@@ -2,7 +2,7 @@
 # Production-ready Docker image with minimal size and security best practices
 
 # Stage 1: Build stage
-FROM python:3.11-slim as builder
+FROM python:3.11-slim as builde
 
 # Set environment variables for build
 ENV PYTHONUNBUFFERED=1 \
@@ -67,7 +67,7 @@ WORKDIR /app
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import slowquerydoctor; print('OK')" || exit 1
+    CMD python -c "import iqtoolkit_analyzer; print('OK')" || exit 1
 
 # Labels for metadata
 LABEL maintainer="Giovanni Martinez <gio@iqtoolkit.ai>" \

@@ -1,9 +1,9 @@
 """
 Iqtoolkit Analyzer - AI-powered multi-database performance analyzer
 
-Database Support: 
+Database Support:
   - PostgreSQL ✓ (Production Ready)
-  - MongoDB ✓ (Production Ready) 
+  - MongoDB ✓ (Production Ready)
   - MySQL (Planned v0.4.0)
   - SQL Server (Planned v0.4.0)
 
