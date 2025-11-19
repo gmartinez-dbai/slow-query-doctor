@@ -26,7 +26,7 @@ wheels/
 share/python-wheels/
 *.egg-info/
 slow_query_doctor.egg-info/
-slowquerydoctor.egg-info/
+iqtoolkit_analyzer.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
@@ -182,7 +182,7 @@ notes/
 .vscode/settings.json
 
 # personal notes
-.slowquerydoctor.yml
+.iqtoolkit-analyzer.yml
 IMPROVEMENT_RECOMMENDATIONS.md
 IMPROVEMENTS_NODEJS.md
 

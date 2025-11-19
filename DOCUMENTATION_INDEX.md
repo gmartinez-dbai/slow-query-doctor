@@ -83,7 +83,7 @@ make dev-check         # Full development workflow
 → Follow [BRANCH_PROTECTION.md](BRANCH_PROTECTION.md) → Configure GitHub settings
 
 #### **Understand the Codebase**
-→ Read [ARCHITECTURE.md](ARCHITECTURE.md) → [TECHNICAL_DEBT.md](TECHNICAL_DEBT.md) → Browse `/slowquerydoctor/`
+→ Read [ARCHITECTURE.md](ARCHITECTURE.md) → [TECHNICAL_DEBT.md](TECHNICAL_DEBT.md) → Browse `/iqtoolkit_analyzer/`
 
 #### **Report Issues or Request Features**
 → Check [FAQ](docs/faq.md) → [GitHub Issues](https://github.com/gmartinez-dbai/slow-query-doctor/issues) → [ROADMAP.md](ROADMAP.md)
@@ -95,7 +95,7 @@ make dev-check         # Full development workflow
 
 - **Repository**: [github.com/gmartinez-dbai/slow-query-doctor](https://github.com/gmartinez-dbai/slow-query-doctor)
 - **Issues**: [GitHub Issues](https://github.com/gmartinez-dbai/slow-query-doctor/issues)
-- **PyPI Package**: [pypi.org/project/slow-query-doctor](https://pypi.org/project/slow-query-doctor/)
+- **PyPI Package**: [pypi.org/project/iqtoolkit-analyzer](https://pypi.org/project/iqtoolkit-analyzer/)
 - **Discussions**: [GitHub Discussions](https://github.com/gmartinez-dbai/slow-query-doctor/discussions)
 
 ## 📋 **Documentation Checklist**

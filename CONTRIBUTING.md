@@ -42,8 +42,8 @@ We follow a **Git Flow** branching model with the following branches:
 
 1. **Fork & Clone** the repo and set up environment:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/slow-query-doctor.git
-   cd slow-query-doctor
+   git clone https://github.com/YOUR_USERNAME/iqtoolkit-analyzer.git
+   cd iqtoolkit-analyzer
    make setup  # Automatically uses uv if available, falls back to pip
    ```
 2. **Create a Feature Branch:**
@@ -67,9 +67,9 @@ We follow a **Git Flow** branching model with the following branches:
 
 #### 1. Fork & Clone
 ```bash
-git clone https://github.com/YOUR_USERNAME/slow-query-doctor.git
-cd slow-query-doctor
-git remote add upstream https://github.com/iqtoolkit/slow-query-doctor.git
+git clone https://github.com/YOUR_USERNAME/iqtoolkit-analyzer.git
+cd iqtoolkit-analyzer
+git remote add upstream https://github.com/iqtoolkit/iqtoolkit-analyzer.git
 ```
 
 #### 2. Create a Feature Branch
@@ -127,7 +127,7 @@ git push origin feature/your-feature-name
   ```
 - Keep PRs focused and minimal; avoid unrelated changes
 - Development environment setup is automated via `make setup`
-- Reference `.slowquerydoctor.yml` for config-driven tests if needed
+- Reference `.iqtoolkit-analyzer.yml` for config-driven tests if needed
 
 ## 📝 Commit Message Convention
 
@@ -300,7 +300,7 @@ git push --tags
 
 ## Reporting Bugs & Requesting Features
 
-- Use [GitHub Issues](https://github.com/gmartinez-dbai/slow-query-doctor/issues)
+- Use [GitHub Issues](https://github.com/gmartinez-dbai/iqtoolkit-analyzer/issues)
 - Provide as much detail as possible (logs, steps to reproduce, screenshots)
 - Label your issue as `bug`, `feature`, or `question`
 

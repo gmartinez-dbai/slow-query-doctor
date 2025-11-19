@@ -1,4 +1,4 @@
-# 🩺 Slow Query Doctor
+# 🧠 Iqtoolkit Analyzer
 
 An intelligent database performance analyzer that uses AI to diagnose slow queries and provide actionable optimization recommendations.
 
@@ -7,7 +7,7 @@ An intelligent database performance analyzer that uses AI to diagnose slow queri
 **✅ Production Ready**: MongoDB slow query analysis with real-time profiler integration and multi-format reporting  
 **🚧 Traditional SQL**: MySQL and SQL Server support in v0.4.0 (Q3 2026)
 
-> **🚀 NEW in v0.2.0**: MongoDB support is now fully available! Use `slowquerydoctor mongodb` to analyze your MongoDB performance with real-time profiler integration, comprehensive indexing recommendations, and multi-format reports.
+> **🚀 NEW in v0.2.0**: MongoDB support is now fully available! Use `iqtoolkit-analyzer mongodb` to analyze your MongoDB performance with real-time profiler integration, comprehensive indexing recommendations, and multi-format reports.
 
 ![Python](https://img.shields.io/badge/python-3.11+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
@@ -105,7 +105,7 @@ Slow Query Doctor automatically analyzes your **PostgreSQL** and **MongoDB** slo
   - **PostgreSQL**: Plain, CSV, and JSON log formats
   - **MongoDB**: Direct profiler integration with configurable thresholds
 - ⚙️ **Config File Support**: 
-  - **PostgreSQL**: Use `.slowquerydoctor.yml` for analysis options
+  - **PostgreSQL**: Use `.iqtoolkit-analyzer.yml` for analysis options
   - **MongoDB**: Use `.mongodb-config.yml` for connection and profiling settings
 - 🔒 **Privacy Evolution**: 
   - **v0.1.x**: OpenAI public API (privacy considerations for sensitive data)
@@ -169,14 +169,14 @@ ollama serve
 ollama pull arctic-text2sql-r1:7b  # SQL-specialized model (recommended)
 
 # Copy example config and customize
-cp .slowquerydoctor.yml.example .slowquerydoctor.yml
+cp .iqtoolkit-analyzer.yml.example .iqtoolkit-analyzer.yml
 # Edit: set llm_provider: ollama
 ```
 
 **Option B: OpenAI (Cloud, requires API key)**
 ```bash
 export OPENAI_API_KEY="your-openai-api-key-here"
-# Config will use OpenAI by default if no .slowquerydoctor.yml exists
+# Config will use OpenAI by default if no .iqtoolkit-analyzer.yml exists
 ```
 
 > **💡 Tip**: Ollama runs completely locally—your queries never leave your machine. Perfect for sensitive production data. See [Ollama Local Setup](docs/ollama-local.md) for details.
@@ -198,7 +198,7 @@ python -m slowquerydoctor postgresql sample_logs/postgresql-2025-10-28_192816.lo
 uv run python -m slowquerydoctor mongodb --connection-string "mongodb://localhost:27017" --output ./reports
 
 # With configuration file
-uv run python -m slowquerydoctor mongodb --config .mongodb-config.yml --output ./reports
+uv run python -m iqtoolkit_analyzer mongodb --config .mongodb-config.yml --output ./reports
 
 # Traditional approach
 python -m slowquerydoctor mongodb --connection-string "mongodb://localhost:27017" --output ./reports
@@ -207,28 +207,28 @@ python -m slowquerydoctor mongodb --connection-string "mongodb://localhost:27017
 #### Advanced Usage Examples
 ```bash
 # PostgreSQL: Analyze top 5 slowest queries (uv)
-uv run python -m slowquerydoctor postgresql sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --top-n 5
+uv run python -m iqtoolkit_analyzer postgresql sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --top-n 5
 
 # MongoDB: Generate multiple report formats
-uv run python -m slowquerydoctor mongodb --connection-string "mongodb://localhost:27017" --output ./reports --format json html markdown
+uv run python -m iqtoolkit_analyzer mongodb --connection-string "mongodb://localhost:27017" --output ./reports --format json html markdown
 
 # PostgreSQL: Get more detailed AI analysis (uv)
-uv run python -m slowquerydoctor postgresql sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --max-tokens 200
+uv run python -m iqtoolkit_analyzer postgresql sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --max-tokens 200
 
 # MongoDB: Enable verbose debug output
-uv run python -m slowquerydoctor mongodb --connection-string "mongodb://localhost:27017" --output ./reports --verbose
+uv run python -m iqtoolkit_analyzer mongodb --connection-string "mongodb://localhost:27017" --output ./reports --verbose
 
 # Traditional approach for any of the above
-python -m slowquerydoctor postgresql sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --top-n 5
+python -m iqtoolkit_analyzer postgresql sample_logs/postgresql-2025-10-28_192816.log.txt --output report.md --top-n 5
 ```
 
 #### With Your Own Logs
 ```bash
 # Basic analysis (uv)
-uv run python -m slowquerydoctor /path/to/your/postgresql.log --output analysis_report.md
+uv run python -m iqtoolkit_analyzer /path/to/your/postgresql.log --output analysis_report.md
 
 # Advanced options (uv)
-uv run python -m slowquerydoctor /path/to/your/postgresql.log \
+uv run python -m iqtoolkit_analyzer /path/to/your/postgresql.log \
   --output detailed_report.md \
   --top-n 10 \
   --min-duration 1000 \
@@ -236,7 +236,7 @@ uv run python -m slowquerydoctor /path/to/your/postgresql.log \
   --verbose
 
 # Traditional approach
-python -m slowquerydoctor /path/to/your/postgresql.log --output analysis_report.md
+python -m iqtoolkit_analyzer /path/to/your/postgresql.log --output analysis_report.md
 ```
 
 ## 📂 Sample Log Files
@@ -296,7 +296,7 @@ Sample log files use the `.txt` extension instead of `.log` to prevent them from
 
 ```
 slow-query-doctor/
-├── slowquerydoctor/          # Main package
+├── iqtoolkit_analyzer/       # Main package
 │   ├── __init__.py          # Package interface
 │   ├── parser.py            # Log file parsing
 │   ├── analyzer.py          # Query analysis & scoring
@@ -417,7 +417,7 @@ For complete MongoDB setup instructions, see: [docs/mongodb-guide.md](docs/mongo
 
 ### Configuration File
 
-Create a `.slowquerydoctor.yml` file to customize behavior:
+Create a `.iqtoolkit-analyzer.yml` file to customize behavior:
 
 ```yaml
 # AI Provider Selection

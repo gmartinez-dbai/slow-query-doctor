@@ -5,7 +5,7 @@
 
 set -e
 
-echo "🔍 Validating slow-query-doctor development environment..."
+echo "🔍 Validating iqtoolkit-analyzer development environment..."
 echo ""
 
 # Check 1: Verify .venv directory exists

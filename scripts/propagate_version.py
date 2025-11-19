@@ -49,43 +49,43 @@ def validate_version_consistency(version):
             )
         else:
             fixed.append(f"package.json version matches VERSION '{version}'")
-    # Check slowquerydoctor/__init__.py
-    init_path = os.path.join("slowquerydoctor", "__init__.py")
+    # Check iqtoolkit_analyzer/__init__.py
+    init_path = os.path.join("iqtoolkit_analyzer", "__init__.py")
     if os.path.isfile(init_path):
         text = open(init_path, "r", encoding="utf8").read()
         match = re.search(r'__version__\s*=\s*"([^"]+)"', text)
         if match and match.group(1) != version:
             errors.append(
-                f"slowquerydoctor/__init__.py version '{match.group(1)}' "
+                f"iqtoolkit_analyzer/__init__.py version '{match.group(1)}' "
                 f"does not match VERSION '{version}'"
             )
         elif match and match.group(1) == version:
             fixed.append(
-                f"slowquerydoctor/__init__.py version matches VERSION '{version}'"
+                f"iqtoolkit_analyzer/__init__.py version matches VERSION '{version}'"
             )
-    # Check slowquerydoctor/__version__.py (create if missing)
-    version_path = os.path.join("slowquerydoctor", "__version__.py")
+    # Check iqtoolkit_analyzer/__version__.py (create if missing)
+    version_path = os.path.join("iqtoolkit_analyzer", "__version__.py")
     if not os.path.isfile(version_path):
         with open(version_path, "w", encoding="utf8") as f:
             f.write(f'__version__ = "{version}"\n')
         print(
-            f"[PRE-COMMIT] Created slowquerydoctor/__version__.py "
+            f"[PRE-COMMIT] Created iqtoolkit_analyzer/__version__.py "
             f"with version '{version}'"
         )
         fixed.append(
-            f"slowquerydoctor/__version__.py created and matches VERSION '{version}'"
+            f"iqtoolkit_analyzer/__version__.py created and matches VERSION '{version}'"
         )
     else:
         text = open(version_path, "r", encoding="utf8").read()
         match = re.search(r'__version__\s*=\s*"([^"]+)"', text)
         if match and match.group(1) != version:
             errors.append(
-                f"""slowquerydoctor/__version__.py version '{match.group(1)}'
+                f"""iqtoolkit_analyzer/__version__.py version '{match.group(1)}'
                 does not match VERSION '{version}'"""
             )
         elif match and match.group(1) == version:
             fixed.append(
-                f"slowquerydoctor/__version__.py version matches VERSION '{version}'"
+                f"iqtoolkit_analyzer/__version__.py version matches VERSION '{version}'"
             )
     # Check Dockerfile LABEL version, org.opencontainers.image.version,
     # and ENV SLOW_QUERY_DOCTOR_VERSION
@@ -152,13 +152,13 @@ def validate_version_consistency(version):
     )
     errors = []
     # Validate __init__.py
-    init_path = os.path.join("slowquerydoctor", "__init__.py")
+    init_path = os.path.join("iqtoolkit_analyzer", "__init__.py")
     if os.path.isfile(init_path):
         text = open(init_path, "r", encoding="utf8").read()
         match = re.search(r'__version__\s*=\s*"([^"]+)"', text)
         if match and match.group(1) != version:
             errors.append(
-                f"""slowquerydoctor/__init__.py version
+                f"""iqtoolkit_analyzer/__init__.py version
                 '{match.group(1)}' does not match VERSION '{version}'"""
             )
     # Validate Dockerfile LABEL version and ENV SLOW_QUERY_DOCTOR_VERSION
@@ -219,7 +219,7 @@ def update_init_py(version):
     # Check multiple possible paths for __init__.py
     possible_paths = [
         os.path.join("src", "__init__.py"),
-        os.path.join("slowquerydoctor", "__init__.py"),
+        os.path.join("iqtoolkit_analyzer", "__init__.py"),
         "__init__.py",
     ]
 

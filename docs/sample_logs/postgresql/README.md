@@ -23,16 +23,16 @@ Using the recommended uv workflow:
 
 ```bash
 # Generate a report from a sample log
-uv run python -m slowquerydoctor docs/sample_logs/postgresql/postgresql-2025-10-28_192816.log.txt \
+uv run python -m iqtoolkit_analyzer docs/sample_logs/postgresql/postgresql-2025-10-28_192816.log.txt \
   --output reports/sample_report.md
 
 # Analyze only the top 5 slowest queries
-uv run python -m slowquerydoctor docs/sample_logs/postgresql/postgresql-2025-10-28_192816.log.txt \
+uv run python -m iqtoolkit_analyzer docs/sample_logs/postgresql/postgresql-2025-10-28_192816.log.txt \
   --output reports/top5_report.md \
   --top-n 5
 
 # Increase analysis depth (token budget) and enable verbose output
-uv run python -m slowquerydoctor docs/sample_logs/postgresql/postgresql-2025-10-28_192816.log.txt \
+uv run python -m iqtoolkit_analyzer docs/sample_logs/postgresql/postgresql-2025-10-28_192816.log.txt \
   --output reports/detailed_report.md \
   --max-tokens 200 \
   --verbose

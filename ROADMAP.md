@@ -51,7 +51,7 @@
 
 **Features:**
 - [x] **MongoDB slow query analyzer** (complete with profiler integration)
-- [x] **Enhanced configuration system** (expanded .slowquerydoctor.yml options)
+- [x] **Enhanced configuration system** (expanded .iqtoolkit-analyzer.yml options)
 - [x] **HTML report generation** (interactive dashboards)
 - [x] **Multi-file analysis** (batch processing)
 - [ ] **MongoDB aggregation pipeline optimization** → v0.2.3
