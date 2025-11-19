@@ -2,7 +2,7 @@
 # Production-ready Docker image with minimal size and security best practices
 
 # Stage 1: Build stage
-FROM python:3.11-slim as builde
+FROM python:3.11-slim as builder
 
 # Set environment variables for build
 ENV PYTHONUNBUFFERED=1 \
