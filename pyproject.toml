@@ -3,9 +3,9 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "slow-query-doctor"
+name = "iqtoolkit-analyzer"
 version = "0.2.2a1"
-description = "AI-powered PostgreSQL performance analyzer that diagnoses slow queries and provides actionable optimization recommendations"
+description = "AI-powered multi-database performance analyzer for PostgreSQL and MongoDB with privacy-first intelligence"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
@@ -16,6 +16,7 @@ maintainers = [
 ]
 keywords = [
     "postgresql",
+    "mongodb",
     "database",
     "performance",
     "optimization",
@@ -84,15 +85,16 @@ Issues = "https://github.com/iqtoolkit/slow-query-doctor/issues"
 Changelog = "https://github.com/iqtoolkit/slow-query-doctor/releases"
 
 [project.scripts]
-slow-query-doctor = "slowquerydoctor.__main__:main"
+iqtoolkit-analyzer = "iqtoolkit_analyzer.__main__:main"
+slow-query-doctor = "iqtoolkit_analyzer.__main__:main"  # Legacy compatibility
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["slowquerydoctor*"]
+include = ["iqtoolkit_analyzer*"]
 exclude = ["tests*", "docs*", "sample_logs*"]
 
 [tool.setuptools.package-data]
-slowquerydoctor = ["py.typed"]
+iqtoolkit_analyzer = ["py.typed"]
 
 # Black configuration
 [tool.black]
@@ -119,7 +121,7 @@ extend-exclude = '''
 profile = "black"
 multi_line_output = 3
 line_length = 88
-known_first_party = ["slowquerydoctor"]
+known_first_party = ["iqtoolkit_analyzer"]
 sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
 
 # MyPy configuration
@@ -149,7 +151,7 @@ addopts = [
     "-ra",
     "--strict-markers",
     "--strict-config",
-    "--cov=slowquerydoctor",
+    "--cov=iqtoolkit_analyzer",
     "--cov-report=term-missing",
     "--cov-report=html",
     "--cov-report=xml",
@@ -166,7 +168,7 @@ markers = [
 
 # Coverage configuration
 [tool.coverage.run]
-source = ["slowquerydoctor"]
+source = ["iqtoolkit_analyzer"]
 omit = [
     "*/tests/*",
     "*/test_*",

@@ -23,16 +23,16 @@ Using the recommended uv workflow:
 
 ```bash
 # Generate a report from a sample log
-uv run python -m slowquerydoctor docs/sample_logs/postgresql/postgresql-2025-10-28_192816.log.txt \
+uv run python -m iqtoolkit_analyzer docs/sample_logs/postgresql/postgresql-2025-10-28_192816.log.txt \
   --output reports/sample_report.md
 
 # Analyze only the top 5 slowest queries
-uv run python -m slowquerydoctor docs/sample_logs/postgresql/postgresql-2025-10-28_192816.log.txt \
+uv run python -m iqtoolkit_analyzer docs/sample_logs/postgresql/postgresql-2025-10-28_192816.log.txt \
   --output reports/top5_report.md \
   --top-n 5
 
 # Increase analysis depth (token budget) and enable verbose output
-uv run python -m slowquerydoctor docs/sample_logs/postgresql/postgresql-2025-10-28_192816.log.txt \
+uv run python -m iqtoolkit_analyzer docs/sample_logs/postgresql/postgresql-2025-10-28_192816.log.txt \
   --output reports/detailed_report.md \
   --max-tokens 200 \
   --verbose
@@ -73,7 +73,7 @@ Typical log locations by platform can be found in the main README under "Log Fil
 
 Have interesting anonymized PostgreSQL slow logs to share (e.g., complex window functions, heavy JOIN graphs, or pathological LIKE/ILIKE patterns)? Contributions help improve test coverage and recommendations.
 
-- Open an issue and attach sanitized samples: https://github.com/iqtoolkit/slow-query-doctor/issues
+- Open an issue and attach sanitized samples: https://github.com/iqtoolkit/iqtoolkit-analyzer/issues
 - Please remove or anonymize sensitive identifiers before sharing.
 
 ---

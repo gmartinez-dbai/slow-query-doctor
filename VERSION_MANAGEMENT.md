@@ -1,10 +1,10 @@
 # 🔄 Version Management Automation
 
-This document explains the automated version synchronization system for the slow-query-doctor project.
+This document explains the automated version synchronization system for the iqtoolkit-analyzer project.
 
 ## 🎯 **The Problem**
 When you update the `VERSION` file, you need to remember to update version references in:
-- `slowquerydoctor/__init__.py` (`__version__`)
+- `iqtoolkit_analyzer/__init__.py` (`__version__`)
 - `pyproject.toml` (`version`)  
 - `Dockerfile` (multiple version labels)
 - Any Chart.yaml files (if present)
@@ -168,7 +168,7 @@ git push --no-verify
 
 The version propagation script updates these patterns:
 
-### `slowquerydoctor/__init__.py`
+### `iqtoolkit_analyzer/__init__.py`
 ```python
 __version__ = "0.1.8"  # ← Updated
 ```
@@ -181,7 +181,7 @@ version = "0.1.8"  # ← Updated
 
 ### `Dockerfile`
 ```dockerfile
-ENV SLOW_QUERY_DOCTOR_VERSION=0.1.8  # ← Updated
+ENV IQTOOLKIT_ANALYZER_VERSION=0.1.8  # ← Updated
 LABEL version="0.1.8"                # ← Updated  
 LABEL org.opencontainers.image.version="0.1.8"  # ← Updated
 ```

@@ -1,5 +1,5 @@
 """
-Allow running the package as a module: python -m slowquerydoctor
+Allow running the package as a module: python -m iqtoolkit_analyzer
 """
 
 from .main import main

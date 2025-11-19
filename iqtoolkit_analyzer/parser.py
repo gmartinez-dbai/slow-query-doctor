@@ -11,7 +11,7 @@ from typing import Any
 logger = logging.getLogger(__name__)
 
 
-def load_config(config_path: str = ".slowquerydoctor.yml") -> dict[str, Any]:
+def load_config(config_path: str = ".iqtoolkit-analyzer.yml") -> dict[str, Any]:
     """Load YAML config file if present."""
     path = Path(config_path)
     if path.exists():

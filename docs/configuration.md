@@ -9,10 +9,10 @@ For a summary, see the [Project README](../README.md#configuration).
 See [PostgreSQL Examples](pg_examples.md) for complete instructions on enabling slow query logging in PostgreSQL.
 
 
-## Configuration File (.slowquerydoctor.yml)
+## Configuration File (.iqtoolkit-analyzer.yml)
 
 
-You can create a `.slowquerydoctor.yml` file in your project directory to customize analysis options. Example:
+You can create a `.iqtoolkit-analyzer.yml` file in your project directory to customize analysis options. Example:
 
 ```yaml
 log_format: csv

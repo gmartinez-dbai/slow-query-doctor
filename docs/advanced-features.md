@@ -17,7 +17,7 @@ For a full list, see the [Project README](../README.md#key-features).
 - Auto-detects format or specify via CLI/config file
 
 ## Config File Support
-- Use `.slowquerydoctor.yml` to set analysis options, log format, and thresholds
+- Use `.iqtoolkit-analyzer.yml` to set analysis options, log format, and thresholds
 - See [Configuration](configuration.md) for details
 
 ## Static Analysis & Anti-Pattern Detection

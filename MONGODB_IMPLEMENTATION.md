@@ -88,7 +88,7 @@ This implementation adds comprehensive MongoDB slow query detection and analysis
 
 ### Modular Design
 ```
-slowquerydoctor/
+iqtoolkit_analyzer/
 ├── mongodb_analyzer.py      # Core analysis engine
 ├── mongodb_config.py        # Configuration management  
 ├── mongodb_report_generator.py  # Report generation
@@ -113,25 +113,25 @@ Environment Variables → YAML Configuration → Command Line Arguments → Defa
 ### Quick Start
 ```bash
 # Create configuration
-python -m slowquerydoctor.mongodb_cli config create --output config.yml
+python -m iqtoolkit_analyzer.mongodb_cli config create --output config.yml
 
 # Test connection
-python -m slowquerydoctor.mongodb_cli test-connection --config config.yml
+python -m iqtoolkit_analyzer.mongodb_cli test-connection --config config.yml
 
 # Run analysis
-python -m slowquerydoctor.mongodb_cli analyze --database myapp --output ./reports --format html
+python -m iqtoolkit_analyzer.mongodb_cli analyze --database myapp --output ./reports --format html
 ```
 
 ### Continuous Monitoring
 ```bash
 # Monitor with 5-minute intervals
-python -m slowquerydoctor.mongodb_cli monitor --config config.yml --interval 5
+python -m iqtoolkit_analyzer.mongodb_cli monitor --config config.yml --interval 5
 ```
 
 ### Programmatic Usage
 ```python
-from slowquerydoctor.mongodb_analyzer import MongoDBSlowQueryDetector
-from slowquerydoctor.mongodb_config import MongoDBConfig
+from iqtoolkit_analyzer.mongodb_analyzer import MongoDBSlowQueryDetector
+from iqtoolkit_analyzer.mongodb_config import MongoDBConfig
 
 config = MongoDBConfig.from_yaml_file('config.yml')
 detector = MongoDBSlowQueryDetector(config.get_effective_connection_string(), config.thresholds)

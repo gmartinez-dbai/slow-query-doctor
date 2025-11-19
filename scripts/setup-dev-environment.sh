@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# Enhanced setup script for slow-query-doctor development environment
+# Enhanced setup script for iqtoolkit-analyzer development environment
 # This script sets up everything needed for development
 
 set -e
 
-echo "🚀 Setting up slow-query-doctor development environment..."
+echo "🚀 Setting up iqtoolkit-analyzer development environment..."
 
 # Ensure uv is installed
 if ! command -v uv >/dev/null 2>&1; then
@@ -29,7 +29,7 @@ fi
 
 echo "🧰 Installing dependencies with uv..."
 uv pip install -r requirements.txt
-echo "📥 Installing slow-query-doctor with dev dependencies (uv)..."
+echo "📥 Installing iqtoolkit-analyzer with dev dependencies (uv)..."
 uv pip install -e .[dev]
 
 # Verify ruamel.yaml is installed
@@ -55,7 +55,7 @@ echo "🎉 Development environment setup complete!"
 echo ""
 echo "📋 What was installed:"
 echo "   • Virtual environment at ./.venv"
-echo "   • slow-query-doctor package (development mode)"
+echo "   • iqtoolkit-analyzer package (development mode)"
 echo "   • All development dependencies (pytest, black, flake8, mypy, etc.)"
 echo "   • ruamel.yaml for version management"
 echo ""

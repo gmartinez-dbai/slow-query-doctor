@@ -13,18 +13,18 @@ from pathlib import Path
 from unittest.mock import Mock, MagicMock, patch
 
 # Import MongoDB modules
-from slowquerydoctor.mongodb_analyzer import (
+from iqtoolkit_analyzer.mongodb_analyzer import (
     MongoDBSlowQuery,
     MongoDBQueryPatternRecognizer,
     MongoDBProfilerIntegration,
     MongoDBSlowQueryDetector,
 )
-from slowquerydoctor.mongodb_config import (
+from iqtoolkit_analyzer.mongodb_config import (
     MongoDBThresholdConfig,
     MongoDBConfig,
     load_mongodb_config,
 )
-from slowquerydoctor.mongodb_report_generator import MongoDBReportGenerator
+from iqtoolkit_analyzer.mongodb_report_generator import MongoDBReportGenerator
 
 
 class TestMongoDBSlowQuery:
@@ -197,8 +197,8 @@ class TestMongoDBConfig:
             Path(f.name).unlink()
 
 
-@patch("slowquerydoctor.mongodb_analyzer.PYMONGO_AVAILABLE", True)
-@patch("slowquerydoctor.mongodb_analyzer.MongoClient")
+@patch("iqtoolkit_analyzer.mongodb_analyzer.PYMONGO_AVAILABLE", True)
+@patch("iqtoolkit_analyzer.mongodb_analyzer.MongoClient")
 class TestMongoDBProfilerIntegration:
     """Test MongoDB profiler integration."""
 
@@ -324,7 +324,7 @@ class TestMongoDBProfilerIntegration:
 class TestMongoDBSlowQueryDetector:
     """Test main MongoDB slow query detector."""
 
-    @patch("slowquerydoctor.mongodb_analyzer.MongoDBProfilerIntegration")
+    @patch("iqtoolkit_analyzer.mongodb_analyzer.MongoDBProfilerIntegration")
     def test_detector_initialization(self, mock_profiler_class):
         """Test detector initialization."""
         mock_profiler = Mock()
@@ -337,7 +337,7 @@ class TestMongoDBSlowQueryDetector:
         assert detector.collection_analyzer is not None
         assert detector.query_cache == {}
 
-    @patch("slowquerydoctor.mongodb_analyzer.MongoDBProfilerIntegration")
+    @patch("iqtoolkit_analyzer.mongodb_analyzer.MongoDBProfilerIntegration")
     def test_query_aggregation(self, mock_profiler_class):
         """Test aggregation of similar queries."""
         mock_profiler = Mock()
@@ -578,8 +578,10 @@ class TestMongoDBIntegration:
         self, sample_mongodb_config, sample_profile_data
     ):
         """Test complete analysis workflow."""
-        with patch("slowquerydoctor.mongodb_analyzer.PYMONGO_AVAILABLE", True):
-            with patch("slowquerydoctor.mongodb_analyzer.MongoClient") as mock_client:
+        with patch("iqtoolkit_analyzer.mongodb_analyzer.PYMONGO_AVAILABLE", True):
+            with patch(
+                "iqtoolkit_analyzer.mongodb_analyzer.MongoClient"
+            ) as mock_client:
                 # Setup mocks
                 mock_client_instance = MagicMock()
                 mock_client.return_value = mock_client_instance
