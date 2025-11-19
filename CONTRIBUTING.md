@@ -300,7 +300,7 @@ git push --tags
 
 ## Reporting Bugs & Requesting Features
 
-- Use [GitHub Issues](https://github.com/gmartinez-dbai/iqtoolkit-analyzer/issues)
+- Use [GitHub Issues](https://github.com/iqtoolkit/iqtoolkit-analyzer/issues)
 - Provide as much detail as possible (logs, steps to reproduce, screenshots)
 - Label your issue as `bug`, `feature`, or `question`
 

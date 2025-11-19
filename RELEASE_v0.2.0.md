@@ -175,7 +175,7 @@ Starting from 8 failing MongoDB tests, we've delivered:
 
 ## 🤝 **Community & Contributions**
 
-- **GitHub Repository**: [gmartinez-dbai/slow-query-doctor](https://github.com/gmartinez-dbai/slow-query-doctor)
+- **GitHub Repository**: [iqtoolkit/iqtoolkit-analyzer](https://github.com/iqtoolkit/iqtoolkit-analyzer)
 - **Issue Tracking**: MongoDB-specific issues welcome with `[mongodb]` label
 - **Feature Requests**: Feedback on MySQL/SQL Server requirements appreciated
 - **Contributions**: See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines

@@ -73,7 +73,7 @@ Typical log locations by platform can be found in the main README under "Log Fil
 
 Have interesting anonymized PostgreSQL slow logs to share (e.g., complex window functions, heavy JOIN graphs, or pathological LIKE/ILIKE patterns)? Contributions help improve test coverage and recommendations.
 
-- Open an issue and attach sanitized samples: https://github.com/iqtoolkit/slow-query-doctor/issues
+- Open an issue and attach sanitized samples: https://github.com/iqtoolkit/iqtoolkit-analyzer/issues
 - Please remove or anonymize sensitive identifiers before sharing.
 
 ---
