@@ -23,13 +23,13 @@ v0.2.0 introduces comprehensive MongoDB slow query analysis capabilities, making
 
 ```bash
 # Basic MongoDB analysis
-python -m slowquerydoctor mongodb --connection-string "mongodb://localhost:27017" --output ./reports
+python -m iqtoolkit_analyzer mongodb --connection-string "mongodb://localhost:27017" --output ./reports
 
 # Advanced analysis with configuration
-python -m slowquerydoctor mongodb --config .mongodb-config.yml --format json html markdown
+python -m iqtoolkit_analyzer mongodb --config .mongodb-config.yml --format json html markdown
 
 # Real-time monitoring with profiler integration
-python -m slowquerydoctor mongodb --connection-string "mongodb://localhost:27017" --databases myapp,analytics --verbose
+python -m iqtoolkit_analyzer mongodb --connection-string "mongodb://localhost:27017" --databases myapp,analytics --verbose
 ```
 
 ### 🔧 **Enhanced Architecture**
@@ -90,10 +90,10 @@ python -m slowquerydoctor mongodb --connection-string "mongodb://localhost:27017
 3. **Update CLI Usage**:
    ```bash
    # Old (still works)
-   python -m slowquerydoctor your_postgres.log --output report.md
+   python -m iqtoolkit_analyzer your_postgres.log --output report.md
    
    # New (recommended)
-   python -m slowquerydoctor postgresql your_postgres.log --output report.md
+   python -m iqtoolkit_analyzer postgresql your_postgres.log --output report.md
    ```
 
 4. **Try MongoDB Analysis**:
@@ -105,7 +105,7 @@ python -m slowquerydoctor mongodb --connection-string "mongodb://localhost:27017
    vim .mongodb-config.yml
    
    # Run analysis
-   python -m slowquerydoctor mongodb --config .mongodb-config.yml --output ./reports
+   python -m iqtoolkit_analyzer mongodb --config .mongodb-config.yml --output ./reports
    ```
 
 ### For New Users:
@@ -154,10 +154,10 @@ v0.2.0 is **fully backward compatible** with v0.1.x usage patterns:
 
 ```bash
 # v0.1.x usage (still works)
-python -m slowquerydoctor postgresql.log --output report.md
+python -m iqtoolkit_analyzer postgresql.log --output report.md
 
 # v0.2.0 usage (recommended)
-python -m slowquerydoctor postgresql postgresql.log --output report.md
+python -m iqtoolkit_analyzer postgresql postgresql.log --output report.md
 ```
 
 No configuration changes are required for existing PostgreSQL workflows.
@@ -175,7 +175,7 @@ Starting from 8 failing MongoDB tests, we've delivered:
 
 ## 🤝 **Community & Contributions**
 
-- **GitHub Repository**: [gmartinez-dbai/slow-query-doctor](https://github.com/gmartinez-dbai/slow-query-doctor)
+- **GitHub Repository**: [iqtoolkit/iqtoolkit-analyzer](https://github.com/iqtoolkit/iqtoolkit-analyzer)
 - **Issue Tracking**: MongoDB-specific issues welcome with `[mongodb]` label
 - **Feature Requests**: Feedback on MySQL/SQL Server requirements appreciated
 - **Contributions**: See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines

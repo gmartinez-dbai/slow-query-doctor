@@ -109,14 +109,14 @@ Configure these in **Settings → Secrets and variables → Actions**:
 #### PyPI Token
 1. Create PyPI account and verify email
 2. Generate API token: Account settings → API tokens → Add API token
-3. Scope: Entire account or specific to slow-query-doctor
+3. Scope: Entire account or specific to iqtoolkit-analyzer
 4. Add to GitHub: Settings → Secrets → New repository secret
    - Name: `PYPI_API_TOKEN`
    - Value: `pypi-...` (your token)
 
 #### Codecov Token (Optional)
 1. Sign up at codecov.io with GitHub account
-2. Add slow-query-doctor repository
+2. Add iqtoolkit-analyzer repository
 3. Copy upload token from repository settings  
 4. Add to GitHub secrets as `CODECOV_TOKEN`
 

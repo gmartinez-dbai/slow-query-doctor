@@ -34,12 +34,15 @@ def test_mongodb_integration(
     try:
         # Test 1: Import MongoDB modules
         print("📦 Testing module imports...")
-        from slowquerydoctor.mongodb_analyzer import (
+        from iqtoolkit_analyzer.mongodb_analyzer import (
             MongoDBProfilerIntegration,
             MongoDBQueryPatternRecognizer,
         )
-        from slowquerydoctor.mongodb_config import MongoDBConfig, MongoDBThresholdConfig
-        from slowquerydoctor.mongodb_report_generator import MongoDBReportGenerator
+        from iqtoolkit_analyzer.mongodb_config import (
+            MongoDBConfig,
+            MongoDBThresholdConfig,
+        )
+        from iqtoolkit_analyzer.mongodb_report_generator import MongoDBReportGenerator
 
         print("✅ All MongoDB modules imported successfully")
 
@@ -76,7 +79,7 @@ def test_mongodb_integration(
             print("\n📊 Testing report generation...")
 
             # Create sample slow query data
-            from slowquerydoctor.mongodb_analyzer import MongoDBSlowQuery
+            from iqtoolkit_analyzer.mongodb_analyzer import MongoDBSlowQuery
             from datetime import datetime
 
             sample_query = MongoDBSlowQuery(
@@ -198,7 +201,9 @@ def main():
         print("\n📖 Next steps:")
         print("1. Copy .mongodb-config.yml.example to .mongodb-config.yml")
         print("2. Customize configuration for your environment")
-        print("3. Run: python -m slowquerydoctor mongodb --config .mongodb-config.yml")
+        print(
+            "3. Run: python -m iqtoolkit_analyzer mongodb --config .mongodb-config.yml"
+        )
         sys.exit(0)
     else:
         print("\n❌ Integration test failed!")

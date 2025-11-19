@@ -16,7 +16,7 @@
 
 ## System Overview
 
-Slow Query Doctor is a modular Python application that analyzes database slow query logs and provides AI-powered optimization recommendations. Currently focused on PostgreSQL with **MongoDB support prioritized for v0.2.0** (Nov 2025-Q1 2026) and traditional SQL databases (MySQL/SQL Server) planned for v0.4.0. The system follows a **pipeline architecture** with clear separation of concerns:
+Iqtoolkit Analyzer is a modular Python application that analyzes database slow query logs and provides AI-powered optimization recommendations. Currently focused on PostgreSQL with **MongoDB support prioritized for v0.2.0** (Nov 2025-Q1 2026) and traditional SQL databases (MySQL/SQL Server) planned for v0.4.0. The system follows a **pipeline architecture** with clear separation of concerns:
 
 ```
 Log Files → Parser → Analyzer → AI Client → Report Generator → Markdown Report
@@ -180,7 +180,7 @@ graph TD
 
 ### Package Structure
 ```
-slowquerydoctor/
+iqtoolkit_analyzer/
 ├── __init__.py          # Public API exports
 ├── __main__.py          # CLI entry point
 ├── main.py              # CLI argument parsing & orchestration
@@ -267,7 +267,7 @@ OPENAI_MODEL       # Still supported for OpenAI provider
 OPENAI_BASE_URL    # Still supported for OpenAI provider
 ```
 
-### Configuration File (`.slowquerydoctor.yml`)
+### Configuration File (`.iqtoolkit-analyzer.yml`)
 ```yaml
 # Parser settings
 log_format: "plain"
@@ -437,7 +437,7 @@ def create_client(cls, provider: AIProvider, config: LLMConfig) -> 'LLMClient':
 
 **Step 4**: Add configuration support:
 ```yaml
-# .slowquerydoctor.yml
+# .iqtoolkit-analyzer.yml
 ai_provider: "claude"
 ai_base_url: "https://api.anthropic.com"
 ai_model: "claude-3-sonnet-20240229"

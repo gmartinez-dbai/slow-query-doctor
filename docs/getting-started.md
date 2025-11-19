@@ -57,15 +57,15 @@ db.getProfilingStatus()
 #### 2. Run Analysis
 ```bash
 # Basic analysis with connection string
-uv run python -m slowquerydoctor mongodb --connection-string "mongodb://localhost:27017" --output ./reports
+uv run python -m iqtoolkit_analyzer mongodb --connection-string "mongodb://localhost:27017" --output ./reports
 
 # Advanced analysis with configuration file
 cp docs/examples/.mongodb-config.yml.example .mongodb-config.yml
 # Edit .mongodb-config.yml for your environment
-uv run python -m slowquerydoctor mongodb --config .mongodb-config.yml --output ./reports
+uv run python -m iqtoolkit_analyzer mongodb --config .mongodb-config.yml --output ./reports
 
 # Generate multiple report formats
-uv run python -m slowquerydoctor mongodb \
+uv run python -m iqtoolkit_analyzer mongodb \
   --connection-string "mongodb://localhost:27017" \
   --output ./reports \
   --format json html markdown
@@ -80,7 +80,7 @@ See [MongoDB Guide](mongodb-guide.md) for complete setup and usage instructions.
 
 ## Configuration File
 
-You can use a `.slowquerydoctor.yml` file to set defaults for log format, thresholds, and output. See [Configuration](configuration.md).
+You can use a `.iqtoolkit-analyzer.yml` file to set defaults for log format, thresholds, and output. See [Configuration](configuration.md).
 
 ## Dependencies
 

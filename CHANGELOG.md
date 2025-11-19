@@ -128,7 +128,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 ## Versioning
 
-We use [Semantic Versioning](https://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/gmartinez-dbai/slow-query-doctor/tags).
+We use [Semantic Versioning](https://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/iqtoolkit/iqtoolkit-analyzer/tags).
 
 ---
 

@@ -1,4 +1,4 @@
-# Example .slowquerydoctor.yml
+# Example .iqtoolkit-analyzer.yml
 log_format: plain
 min_duration: 1000
 output: my_report.md

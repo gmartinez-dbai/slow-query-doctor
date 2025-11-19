@@ -50,7 +50,7 @@ pip install matplotlib  # For chart generation
 
 ```bash
 # Create a sample configuration file
-python -m slowquerydoctor.mongodb_cli config create --output mongodb_config.yml
+python -m iqtoolkit_analyzer.mongodb_cli config create --output mongodb_config.yml
 ```
 
 ### 3. Configure MongoDB Connection
@@ -75,20 +75,20 @@ thresholds:
 ### 4. Test Connection
 
 ```bash
-python -m slowquerydoctor.mongodb_cli test-connection --config mongodb_config.yml
+python -m iqtoolkit_analyzer.mongodb_cli test-connection --config mongodb_config.yml
 ```
 
 ### 5. Run Analysis
 
 ```bash
 # Single analysis
-python -m slowquerydoctor.mongodb_cli analyze --config mongodb_config.yml --database myapp
+python -m iqtoolkit_analyzer.mongodb_cli analyze --config mongodb_config.yml --database myapp
 
 # With HTML report generation
-python -m slowquerydoctor.mongodb_cli analyze --config mongodb_config.yml --database myapp --output ./reports --format html
+python -m iqtoolkit_analyzer.mongodb_cli analyze --config mongodb_config.yml --database myapp --output ./reports --format html
 
 # Continuous monitoring
-python -m slowquerydoctor.mongodb_cli monitor --config mongodb_config.yml --interval 5
+python -m iqtoolkit_analyzer.mongodb_cli monitor --config mongodb_config.yml --interval 5
 ```
 
 ## Configuration
@@ -146,36 +146,36 @@ analysis:
 
 ```bash
 # Analyze specific database
-python -m slowquerydoctor.mongodb_cli analyze --database myapp
+python -m iqtoolkit_analyzer.mongodb_cli analyze --database myapp
 
 # Analyze with custom config
-python -m slowquerydoctor.mongodb_cli analyze --config my_config.yml --database myapp
+python -m iqtoolkit_analyzer.mongodb_cli analyze --config my_config.yml --database myapp
 
 # Enable profiling before analysis
-python -m slowquerydoctor.mongodb_cli analyze --database myapp --enable-profiling
+python -m iqtoolkit_analyzer.mongodb_cli analyze --database myapp --enable-profiling
 ```
 
 #### Report Generation
 
 ```bash
 # Generate JSON report
-python -m slowquerydoctor.mongodb_cli analyze --database myapp --output ./reports --format json
+python -m iqtoolkit_analyzer.mongodb_cli analyze --database myapp --output ./reports --format json
 
 # Generate HTML report
-python -m slowquerydoctor.mongodb_cli analyze --database myapp --output ./reports --format html
+python -m iqtoolkit_analyzer.mongodb_cli analyze --database myapp --output ./reports --format html
 
 # Generate multiple formats
-python -m slowquerydoctor.mongodb_cli analyze --database myapp --output ./reports --format json html markdown
+python -m iqtoolkit_analyzer.mongodb_cli analyze --database myapp --output ./reports --format json html markdown
 ```
 
 #### Continuous Monitoring
 
 ```bash
 # Monitor with 5-minute intervals
-python -m slowquerydoctor.mongodb_cli monitor --database myapp --interval 5
+python -m iqtoolkit_analyzer.mongodb_cli monitor --database myapp --interval 5
 
 # Monitor multiple databases
-python -m slowquerydoctor.mongodb_cli monitor --config config.yml --interval 10
+python -m iqtoolkit_analyzer.mongodb_cli monitor --config config.yml --interval 10
 ```
 
 ### Programmatic Usage
@@ -183,8 +183,8 @@ python -m slowquerydoctor.mongodb_cli monitor --config config.yml --interval 10
 #### Basic Analysis
 
 ```python
-from slowquerydoctor.mongodb_analyzer import MongoDBSlowQueryDetector
-from slowquerydoctor.mongodb_config import MongoDBConfig
+from iqtoolkit_analyzer.mongodb_analyzer import MongoDBSlowQueryDetector
+from iqtoolkit_analyzer.mongodb_config import MongoDBConfig
 
 # Load configuration
 config = MongoDBConfig.from_yaml_file('mongodb_config.yml')
@@ -209,7 +209,7 @@ if detector.initialize():
 #### Report Generation
 
 ```python
-from slowquerydoctor.mongodb_report_generator import MongoDBReportGenerator
+from iqtoolkit_analyzer.mongodb_report_generator import MongoDBReportGenerator
 
 # Generate comprehensive report
 report = detector.generate_comprehensive_report('myapp')
@@ -380,10 +380,10 @@ Human-readable format perfect for documentation:
 
 ```bash
 # Test connection
-python -m slowquerydoctor.mongodb_cli test-connection --config config.yml
+python -m iqtoolkit_analyzer.mongodb_cli test-connection --config config.yml
 
 # Check configuration
-python -m slowquerydoctor.mongodb_cli config validate --config config.yml
+python -m iqtoolkit_analyzer.mongodb_cli config validate --config config.yml
 ```
 
 #### Profiling Issues
@@ -428,7 +428,7 @@ profiling:
 Enable verbose logging for troubleshooting:
 
 ```bash
-python -m slowquerydoctor.mongodb_cli analyze --database myapp --verbose
+python -m iqtoolkit_analyzer.mongodb_cli analyze --database myapp --verbose
 ```
 
 Or in configuration:
@@ -467,8 +467,8 @@ For optimal performance:
 ### Custom Analysis Scripts
 
 ```python
-from slowquerydoctor.mongodb_analyzer import MongoDBSlowQueryDetector
-from slowquerydoctor.mongodb_config import MongoDBThresholdConfig
+from iqtoolkit_analyzer.mongodb_analyzer import MongoDBSlowQueryDetector
+from iqtoolkit_analyzer.mongodb_config import MongoDBThresholdConfig
 
 # Custom thresholds
 thresholds = MongoDBThresholdConfig(

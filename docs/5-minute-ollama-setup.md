@@ -25,7 +25,7 @@ ollama pull arctic-text2sql-r1:7b
 
 ## Step 3: Configure Slow Query Doctor (1 minute)
 
-Create `.slowquerydoctor.yml` in your project:
+Create `.iqtoolkit-analyzer.yml` in your project:
 
 ```yaml
 llm_provider: ollama
@@ -41,7 +41,7 @@ output: reports/report.md
 uv run python scripts/test_ollama.py
 
 # Analyze your logs (no API key needed!)
-uv run python -m slowquerydoctor your_postgresql.log
+uv run python -m iqtoolkit_analyzer your_postgresql.log
 ```
 
 ## ✅ Benefits
@@ -71,7 +71,7 @@ ollama pull codellama     # General code analysis
 ollama pull sqlcoder      # SQL-specific (if available)
 ollama pull llama3.2        # General purpose fallback
 
-# Update .slowquerydoctor.yml with your chosen model:
+# Update .iqtoolkit-analyzer.yml with your chosen model:
 # ollama_model: your-model-name
 ```
 

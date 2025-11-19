@@ -12,11 +12,11 @@ import sys
 import logging
 from pathlib import Path
 
-# Add the project root to sys.path before importing slowquerydoctor
+# Add the project root to sys.path before importing iqtoolkit_analyzer
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-# Now import slowquerydoctor modules
-from slowquerydoctor.llm_client import LLMClient, LLMConfig  # noqa: E402
+# Now import iqtoolkit_analyzer modules
+from iqtoolkit_analyzer.llm_client import LLMClient, LLMConfig  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -101,8 +101,8 @@ def main():
         return 1
 
     logger.info("🎉 All tests passed! Ollama is ready for Slow Query Doctor.")
-    logger.info("You can now run: python -m slowquerydoctor your_log_file.log")
-    logger.info("Make sure your .slowquerydoctor.yml has: llm_provider: ollama")
+    logger.info("You can now run: python -m iqtoolkit_analyzer your_log_file.log")
+    logger.info("Make sure your .iqtoolkit-analyzer.yml has: llm_provider: ollama")
 
     return 0
 

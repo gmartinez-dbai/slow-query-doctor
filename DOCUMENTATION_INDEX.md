@@ -1,6 +1,6 @@
 # 📚 Documentation Index
 
-Welcome to the Slow Query Doctor documentation! This guide helps you navigate all available documentation and resources.
+Welcome to the Iqtoolkit Analyzer documentation! This guide helps you navigate all available documentation and resources.
 
 ## 🏠 **Main Documentation**
 
@@ -83,20 +83,20 @@ make dev-check         # Full development workflow
 → Follow [BRANCH_PROTECTION.md](BRANCH_PROTECTION.md) → Configure GitHub settings
 
 #### **Understand the Codebase**
-→ Read [ARCHITECTURE.md](ARCHITECTURE.md) → [TECHNICAL_DEBT.md](TECHNICAL_DEBT.md) → Browse `/slowquerydoctor/`
+→ Read [ARCHITECTURE.md](ARCHITECTURE.md) → [TECHNICAL_DEBT.md](TECHNICAL_DEBT.md) → Browse `/iqtoolkit_analyzer/`
 
 #### **Report Issues or Request Features**
-→ Check [FAQ](docs/faq.md) → [GitHub Issues](https://github.com/gmartinez-dbai/slow-query-doctor/issues) → [ROADMAP.md](ROADMAP.md)
+→ Check [FAQ](docs/faq.md) → [GitHub Issues](https://github.com/iqtoolkit/iqtoolkit-analyzer/issues) → [ROADMAP.md](ROADMAP.md)
 
 #### **Manage Versions**
 → See [VERSION_MANAGEMENT.md](VERSION_MANAGEMENT.md) → `make sync-version` → Test with sample data
 
 ## 🔗 **External Links**
 
-- **Repository**: [github.com/gmartinez-dbai/slow-query-doctor](https://github.com/gmartinez-dbai/slow-query-doctor)
-- **Issues**: [GitHub Issues](https://github.com/gmartinez-dbai/slow-query-doctor/issues)
-- **PyPI Package**: [pypi.org/project/slow-query-doctor](https://pypi.org/project/slow-query-doctor/)
-- **Discussions**: [GitHub Discussions](https://github.com/gmartinez-dbai/slow-query-doctor/discussions)
+- **Repository**: [github.com/iqtoolkit/iqtoolkit-analyzer](https://github.com/iqtoolkit/iqtoolkit-analyzer)
+- **Issues**: [GitHub Issues](https://github.com/iqtoolkit/iqtoolkit-analyzer/issues)
+- **PyPI Package**: [pypi.org/project/iqtoolkit-analyzer](https://pypi.org/project/iqtoolkit-analyzer/)
+- **Discussions**: [GitHub Discussions](https://github.com/orgs/iqtoolkit/discussions)
 
 ## 📋 **Documentation Checklist**
 
@@ -114,9 +114,9 @@ For maintainers, ensure all documentation stays current:
 ## 🆘 **Getting Help**
 
 - **Quick Questions**: Check [FAQ](docs/faq.md)
-- **Bug Reports**: [GitHub Issues](https://github.com/gmartinez-dbai/slow-query-doctor/issues) with `bug` label
-- **Feature Requests**: [GitHub Issues](https://github.com/gmartinez-dbai/slow-query-doctor/issues) with `feature` label
-- **Development Questions**: [GitHub Discussions](https://github.com/gmartinez-dbai/slow-query-doctor/discussions)
+- **Bug Reports**: [GitHub Issues](https://github.com/iqtoolkit/iqtoolkit-analyzer/issues) with `bug` label
+- **Feature Requests**: [GitHub Issues](https://github.com/iqtoolkit/iqtoolkit-analyzer/issues) with `feature` label
+- **Development Questions**: [GitHub Discussions](https://github.com/orgs/iqtoolkit/discussions)
 - **Direct Contact**: gio@gmartinez.net
 
 ---

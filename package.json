@@ -1,8 +1,8 @@
 {
-  "name": "slow-query-doctor-dev",
+  "name": "iqtoolkit-analyzer-dev",
   "version": "0.2.2a1",
   "private": true,
-  "description": "Development dependencies for Slow Query Doctor",
+  "description": "Development dependencies for Iqtoolkit Analyzer",
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^18.4.3"

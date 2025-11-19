@@ -37,7 +37,7 @@ if git diff --cached --name-only | grep -q "VERSION"; then
         
         # Stage the updated files
         echo "📦 Staging updated version files..."
-        git add pyproject.toml slowquerydoctor/__init__.py Dockerfile
+        git add pyproject.toml iqtoolkit_analyzer/__init__.py Dockerfile
         
         echo "✅ Version synchronization complete!"
     else
