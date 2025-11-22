@@ -1,0 +1,77 @@
+{
+	"name": "IQToolkit Analyzer Dev Container",
+	"image": "mcr.microsoft.com/devcontainers/python:1-3.11-bullseye",
+	
+	"features": {
+		"ghcr.io/devcontainers/features/git:1": {},
+		"ghcr.io/devcontainers/features/github-cli:1": {},
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
+	},
+	
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-python.black-formatter",
+				"ms-python.isort",
+				"ms-python.mypy-type-checker",
+				"charliermarsh.ruff",
+				"tamasfe.even-better-toml",
+				"redhat.vscode-yaml",
+				"yzhang.markdown-all-in-one",
+				"davidanson.vscode-markdownlint",
+				"github.vscode-pull-request-github",
+				"eamodio.gitlens",
+				"gruntfuggly.todo-tree"
+			],
+			"settings": {
+				"python.defaultInterpreterPath": "/usr/local/bin/python",
+				"python.linting.enabled": true,
+				"python.linting.flake8Enabled": true,
+				"python.formatting.provider": "black",
+				"python.testing.pytestEnabled": true,
+				"python.testing.unittestEnabled": false,
+				"editor.formatOnSave": true,
+				"editor.codeActionsOnSave": {
+					"source.organizeImports": "explicit"
+				},
+				"[python]": {
+					"editor.formatOnSave": true,
+					"editor.codeActionsOnSave": {
+						"source.organizeImports": "explicit"
+					}
+				},
+				"files.exclude": {
+					"**/__pycache__": true,
+					"**/*.pyc": true,
+					"**/.pytest_cache": true,
+					"**/.mypy_cache": true,
+					"**/htmlcov": true,
+					"**/.coverage": true
+				}
+			}
+		}
+	},
+	
+	"postCreateCommand": "bash scripts/setup-dev-environment.sh && pip install -e .[dev,test,docs]",
+	
+	"remoteUser": "vscode",
+	
+	"mounts": [
+		"source=${localWorkspaceFolder}/.env,target=/workspaces/iqtoolkit-analyzer/.env,type=bind,consistency=cached"
+	],
+	
+	"forwardPorts": [11434],
+	
+	"portsAttributes": {
+		"11434": {
+			"label": "Ollama",
+			"onAutoForward": "notify"
+		}
+	},
+	
+	"containerEnv": {
+		"PYTHONUNBUFFERED": "1"
+	}
+}
